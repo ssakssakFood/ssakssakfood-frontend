@@ -1,0 +1,58 @@
+@import "tailwindcss";
+
+@theme {
+  /* 폰트 패밀리 변수 */
+  --font-sans:
+    "Pretendard Variable", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+  --font-inter: "Inter", "Helvetica Neue", Arial, sans-serif;
+  --font-roboto: "Roboto", "sans-serif";
+
+  /* 브레이크 포인트 */
+  --breakpoint-xs: 390px;
+  --breakpoint-sm: 720px;
+  --breakpoint-md: 1080px;
+  --breakpoint-lg: 1280px;
+  --breakpoint-xl: 1440px;
+  --breakpoint-2xl: 1640px;
+  --breakpoint-3xl: 1820px;
+
+  /* Button Scale */
+  --color-button: #003efb;
+  --color-button-hover: #1537d9;
+  --color-button-pressed: #1231c1;
+  --color-button-nonSelected: #e6ecff;
+  --color-button-nonSelected-hover: #d9e2fe;
+
+  /* Purple Scale */
+  --color-purple-light: #e8ecfe;
+  --color-purple-light-hover: #dce2fd;
+  --color-purple-light-active: #b7c3fb;
+  --color-purple-normal: #173df1;
+  --color-purple-normal-hover: #1537d9;
+  --color-purple-normal-active: #1231c1;
+  --color-purple-dark: #112eb5;
+  --color-purple-dark-hover: #0e2591;
+  --color-purple-dark-active: #0a1b6c;
+  --color-purple-darker: #081554;
+
+  /* White Scale */
+  --color-white: #ffffff;
+  --color-white-normal-hover: #e6e6e6;
+  --color-white-normal-active: #cccccc;
+  --color-white-dark: #bfbfbf;
+  --color-white-dark-hover: #999999;
+  --color-white-dark-active: #737373;
+  --color-white-darker: #595959;
+}
+
+@layer base {
+  html {
+    font-family: var(--font-sans);
+  }
+}
+
+@layer utilities {
+  .font-inter {
+    font-family: var(--font-inter);
+  }
+}
