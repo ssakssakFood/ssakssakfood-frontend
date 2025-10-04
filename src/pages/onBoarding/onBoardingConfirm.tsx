@@ -8,10 +8,14 @@ export default function OnBoardingConfirmPage() {
   //일단 상태로 관리
   const navigate = useNavigate();
   const [emailAuth, setEmailAuth] = useState<boolean>(false);
+  const [isVerify, setIsVerify] = useState<boolean>(false);
 
-  const handleNext = () => {
+  const handleForm = () => {
     setEmailAuth(true);
-    navigate("/onBoardingPassPage");
+    setIsVerify(true);
+  };
+  const handleNext = () => {
+    if (isVerify) navigate("/onBoardingPassPage");
   };
   return (
     <div className="w-full flex flex-col min-h-dvh ">
@@ -41,7 +45,11 @@ export default function OnBoardingConfirmPage() {
           </div>
         </section>
       </section>
-      <Button labelName="인증번호 전송" className="mb-4" onClick={handleNext} />
+      <Button
+        labelName={emailAuth ? "다음" : "인증번호 전송"}
+        className="mb-4"
+        onClick={emailAuth ? handleNext : handleForm}
+      />
     </div>
   );
 }
