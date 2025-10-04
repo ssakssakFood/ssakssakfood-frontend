@@ -5,13 +5,11 @@ interface InputFieldProps extends InputHTMLAttributes<HTMLInputElement> {
   placeholder?: string;
   errorMsg?: string | undefined;
   className?: string;
-  InputLength?: number | null;
-  InputMaxLength?: number | null;
   onClick?: () => void;
   register?: UseFormRegister<FieldValues>;
   disabled?: boolean;
-  isTextArea?: boolean;
   icon?: boolean;
+  imgSrc?: string;
   type?: string;
 }
 
@@ -22,6 +20,7 @@ export default function InputField2({
   errorMsg,
   type = "text",
   icon = false,
+  // imgSrc = "",
   ...props
 }: InputFieldProps) {
   return (
@@ -37,7 +36,7 @@ export default function InputField2({
       />
       {errorMsg && <p className="body-r-14 text-main2">{errorMsg}</p>}
       {icon && (
-        <div className="absolute right-2 top-4">
+        <div className="absolute right-3 top-4">
           <img src="/icons/close-eye.svg" alt="" />
         </div>
       )}
