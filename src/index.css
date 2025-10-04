@@ -72,7 +72,6 @@
   }
 
   .head1 {
-    color: var(--used-black, #151515);
     font-family: var(--font-sans);
     font-size: 1.5rem;
     font-style: normal;
@@ -81,7 +80,6 @@
     letter-spacing: -0.03rem;
   }
   .head2 {
-    color: var(--used-black, #151515);
     font-family: var(--font-sans);
     font-size: 1.25rem;
     font-style: normal;
@@ -90,7 +88,6 @@
     letter-spacing: -0.0125rem;
   }
   .subtitle-b-18 {
-    color: var(--used-black, #151515);
     font-family: var(--font-sans);
     font-size: 1.125rem;
     font-style: normal;
@@ -98,7 +95,6 @@
     line-height: normal;
   }
   .subtitle-b-16 {
-    color: var(--used-black, #151515);
     font-family: var(--font-sans);
     font-size: 1rem;
     font-style: normal;
@@ -107,7 +103,6 @@
   }
   /*body*/
   .body-r-16 {
-    color: var(--used-black, #151515);
     font-family: var(--font-sans);
     font-size: 1rem;
     font-style: normal;
@@ -115,7 +110,6 @@
     line-height: normal;
   }
   .body-r-14 {
-    color: var(--used-black, #151515);
     font-family: var(--font-sans);
     font-size: 0.875rem;
     font-style: normal;
@@ -125,7 +119,6 @@
 
   /*etc*/
   .button-b-16 {
-    color: var(--used-black, #151515);
     font-family: var(--font-sans);
     font-size: 1rem;
     font-style: normal;
@@ -133,7 +126,6 @@
     line-height: normal;
   }
   .button-sb-14 {
-    color: var(--used-black, #151515);
     font-family: var(--font-sans);
     font-size: 0.875rem;
     font-style: normal;
@@ -141,7 +133,6 @@
     line-height: normal;
   }
   .caption-sb-12 {
-    color: var(--used-black, #151515);
     font-family: var(--font-sans);
     font-size: 0.75rem;
     font-style: normal;
@@ -149,7 +140,6 @@
     line-height: normal;
   }
   .caption-r-12 {
-    color: var(--used-black, #151515);
     font-family: var(--font-sans);
     font-size: 0.75rem;
     font-style: normal;

@@ -11,6 +11,8 @@ interface InputFieldProps extends InputHTMLAttributes<HTMLInputElement> {
   register?: UseFormRegister<FieldValues>;
   disabled?: boolean;
   isTextArea?: boolean;
+  icon?: boolean;
+  type?: string;
 }
 
 export default function InputField2({
@@ -18,13 +20,15 @@ export default function InputField2({
   placeholder = "",
   className,
   errorMsg,
+  type = "text",
+  icon = false,
   ...props
 }: InputFieldProps) {
   return (
     // <div className="text-left flex flex-col gap-2 relative  pb-5">
-    <div className={`${className}`}>
+    <div className={`relative ${className}`}>
       <input
-        type="text"
+        type={type}
         className={`w-full px-4 flex body-r-14 items-center py-4 border-1 rounded-xl  focus:border-main1
           bg-grey-5 border-grey-5 focus:outline-none`}
         {...register}
@@ -32,6 +36,11 @@ export default function InputField2({
         placeholder={placeholder}
       />
       {errorMsg && <p className="body-r-14 text-main2">{errorMsg}</p>}
+      {icon && (
+        <div className="absolute right-2 top-4">
+          <img src="/icons/close-eye.svg" alt="" />
+        </div>
+      )}
     </div>
     // </div>
   );

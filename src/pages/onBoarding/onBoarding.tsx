@@ -3,7 +3,7 @@ import Button from "../../components/Button";
 import InputField2 from "../../components/InputField2";
 import { ProgressBar } from "../../components/ProgressBar";
 
-export default function OnBoarding() {
+export default function OnBoardingPage() {
   //   const onSubmit = () => {};
 
   const navigate = useNavigate();
