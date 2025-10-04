@@ -7,7 +7,10 @@ import React from "react";
  */
 const Home: React.FC = () => {
   return (
-    <div className="p-4">
+    <div>
+      <nav className="flex space-x-6 py-4 border-b border-gray-200 bg-white sticky top-0 z-10">
+        헤더
+      </nav>
       <h2 className="text-3xl font-bold text-gray-800 mb-4">TEST!</h2>
       <p className="text-gray-600">TEST TEST.</p>
     </div>
