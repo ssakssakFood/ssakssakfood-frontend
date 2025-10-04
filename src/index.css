@@ -43,6 +43,21 @@
   --color-white-dark-hover: #999999;
   --color-white-dark-active: #737373;
   --color-white-darker: #595959;
+  /*main color*/
+  --color-main1: #fe7549;
+  --color-main2: #496ff8;
+
+  /*sub color*/
+  --color-sub1: #fff2ed;
+  --color-sub2: #edf1ff;
+
+  /*gray-scale*/
+  --color-grey-5: #f3f3f3;
+  --color-grey-4: #dfdfdf;
+  --color-grey-3: #a8a8a8;
+  --color-grey-2: #7f7f7f;
+  --color-grey-1: #3b3b3b;
+  --color-black: #252525;
 }
 
 @layer base {
@@ -54,5 +69,91 @@
 @layer utilities {
   .font-inter {
     font-family: var(--font-inter);
+  }
+
+  .head1 {
+    color: var(--used-black, #151515);
+    font-family: var(--font-sans);
+    font-size: 1.5rem;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 1.75rem; /* 116.667% */
+    letter-spacing: -0.03rem;
+  }
+  .head2 {
+    color: var(--used-black, #151515);
+    font-family: var(--font-sans);
+    font-size: 1.25rem;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 1.5rem; /* 120% */
+    letter-spacing: -0.0125rem;
+  }
+  .subtitle-b-18 {
+    color: var(--used-black, #151515);
+    font-family: var(--font-sans);
+    font-size: 1.125rem;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+  }
+  .subtitle-b-16 {
+    color: var(--used-black, #151515);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+  }
+  /*body*/
+  .body-r-16 {
+    color: var(--used-black, #151515);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+  }
+  .body-r-14 {
+    color: var(--used-black, #151515);
+    font-family: var(--font-sans);
+    font-size: 0.875rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+  }
+
+  /*etc*/
+  .button-b-16 {
+    color: var(--used-black, #151515);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+  }
+  .button-sb-14 {
+    color: var(--used-black, #151515);
+    font-family: var(--font-sans);
+    font-size: 0.875rem;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+  }
+  .caption-sb-12 {
+    color: var(--used-black, #151515);
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+  }
+  .caption-r-12 {
+    color: var(--used-black, #151515);
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
   }
 }
