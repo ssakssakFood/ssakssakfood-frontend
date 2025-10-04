@@ -39,7 +39,7 @@ export default function OnBoardingPage() {
       </section>
       <Button
         labelName="다음"
-        className="mb-4"
+        className="mb-8"
         onClick={() => navigate("/onBoardingConfirm")}
       />
     </div>

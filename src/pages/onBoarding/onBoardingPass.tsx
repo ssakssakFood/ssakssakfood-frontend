@@ -49,7 +49,7 @@ export default function OnBoardingPassPage() {
           />
         </section>
       </section>
-      <Button labelName="회원가입 완료" className="mb-4" />
+      <Button labelName="회원가입 완료" className="mb-8" />
     </div>
   );
 }

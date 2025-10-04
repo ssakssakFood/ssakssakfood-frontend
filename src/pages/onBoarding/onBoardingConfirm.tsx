@@ -47,7 +47,7 @@ export default function OnBoardingConfirmPage() {
       </section>
       <Button
         labelName={emailAuth ? "다음" : "인증번호 전송"}
-        className="mb-4"
+        className="mb-8"
         onClick={emailAuth ? handleNext : handleForm}
       />
     </div>
