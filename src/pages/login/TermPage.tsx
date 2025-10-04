@@ -1,7 +1,22 @@
+import { useState } from "react";
 import Button from "../../components/Button";
 import TermText from "./TermText";
 
 export default function TermPage() {
+  const [serviceAgree, setServiceAgree] = useState<boolean>(false);
+  const [privacyAgree, setPrivacyAgree] = useState<boolean>(false);
+  const [marketingAgree, setMarketingAgree] = useState<boolean>(false);
+
+  const allChecked = serviceAgree && privacyAgree && marketingAgree;
+
+  const allTermAgree = () => {
+    const next = !allChecked;
+    setServiceAgree(next);
+    setPrivacyAgree(next);
+    setMarketingAgree(next);
+  };
+
+  const isFormValid = serviceAgree && privacyAgree;
   return (
     <div className="w-full flex flex-col min-h-dvh ">
       <section className="flex-1 ">
@@ -19,20 +34,39 @@ export default function TermPage() {
         </div>
         <section className="flex flex-col items-center gap-6">
           <div className="bg-grey-5 rounded-lg flex gap-2 w-full p-4">
-            <img src="/icons/check-circle.svg" alt="" className="pr-2" />
+            <img
+              src={
+                allChecked ? "/icons/check-full.svg" : "/icons/check-circle.svg"
+              }
+              alt="약관 동의"
+              className="pr-2"
+              onClick={allTermAgree}
+            />
             <p>모든 약관에 동의합니다</p>
           </div>
           {/* 짜투리 */}
           <div className="w-full flex flex-col gap-4">
-            <TermText text="(필수) 서비스 이용약관 동의" />
-            <TermText text="(필수) 개인정보 처리방침 동의" />
-            <TermText text="(선택) 마케팅 정보 수신 동의" />
+            <TermText
+              text="(필수) 서비스 이용약관 동의"
+              onClick={() => setServiceAgree((pre) => !pre)}
+              checked={serviceAgree}
+            />
+            <TermText
+              text="(필수) 개인정보 처리방침 동의"
+              onClick={() => setPrivacyAgree((pre) => !pre)}
+              checked={privacyAgree}
+            />
+            <TermText
+              text="(선택) 마케팅 정보 수신 동의"
+              onClick={() => setMarketingAgree((pre) => !pre)}
+              checked={marketingAgree}
+            />
           </div>
         </section>
       </section>
       {/* 버튼 */}
       <div className="mb-8">
-        <Button labelName="다음" disabled />
+        <Button labelName="다음" disabled={!isFormValid ? true : false} />
       </div>
     </div>
   );
