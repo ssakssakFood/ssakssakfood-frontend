@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Button from "../../components/Button";
 import TermText from "./TermText";
+import { useNavigate } from "react-router-dom";
 
 export default function TermPage() {
   const [serviceAgree, setServiceAgree] = useState<boolean>(false);
@@ -15,6 +16,8 @@ export default function TermPage() {
     setPrivacyAgree(next);
     setMarketingAgree(next);
   };
+
+  const navigate = useNavigate();
 
   const isFormValid = serviceAgree && privacyAgree;
   return (
@@ -66,7 +69,12 @@ export default function TermPage() {
       </section>
       {/* 버튼 */}
       <div className="mb-8">
-        <Button labelName="다음" disabled={!isFormValid ? true : false} />
+        <Button
+          labelName="다음"
+          disabled={!isFormValid ? true : false}
+          onClick={() => navigate("/onboarding")}
+          className="w-full"
+        />
       </div>
     </div>
   );
