@@ -1,32 +1,26 @@
-// src/Router.tsx
-
-import React from "react";
-import { Routes, Route } from "react-router-dom";
+import { createBrowserRouter } from "react-router-dom";
+import LoginPage from "./pages/login/LoginPage";
 import Home from "./Home";
+import Layout from "./layout/HomePage";
+import ErrorPage from "./pages/ErrorPage";
+import TermPage from "./pages/login/TermPage";
+import OnBoardingConfirmPage from "./pages/onBoarding/onBoardingConfirm";
+import OnBoardingPage from "./pages/onBoarding/onBoarding";
+import OnBoardingPassPage from "./pages/onBoarding/onBoardingPass";
 
-// 페이지 컴포넌트 임포트
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Layout />,
+    children: [{ index: true, element: <Home /> }],
+  },
+  { path: "/login", element: <LoginPage /> },
+  { path: "/term", element: <TermPage /> },
+  { path: "*", element: <ErrorPage /> },
+  // 온보딩
+  { path: "/onBoarding", element: <OnBoardingPage /> },
+  { path: "/onBoardingConfirm", element: <OnBoardingConfirmPage /> },
+  { path: "/onBoardingPassPage", element: <OnBoardingPassPage /> },
+]);
 
-/**
- * 애플리케이션의 모든 라우팅 경로를 정의하는 컴포넌트
- */
-const Router: React.FC = () => {
-  return (
-    <Routes>
-      {/* 홈 페이지 */}
-      <Route path="/" element={<Home />} />
-
-      {/* 404 페이지 */}
-      <Route
-        path="*"
-        element={
-          <div className="p-4 text-center">
-            <h1 className="text-4xl font-bold text-red-500">404</h1>
-            <p className="text-gray-600 mt-2">페이지를 찾을 수 없습니다.</p>
-          </div>
-        }
-      />
-    </Routes>
-  );
-};
-
-export default Router;
+export default router;
