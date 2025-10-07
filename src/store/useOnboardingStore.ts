@@ -32,6 +32,7 @@ export const useOnboardingState = create<OnboardingState>((set) => ({
       //   birth: "",
       password: "",
       phone: "",
+      loginId: "",
       emailVerified: false,
       email: "",
       memberType: "",
