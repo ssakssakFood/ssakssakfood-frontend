@@ -36,7 +36,10 @@ export default function OnBoardingPassPage() {
   //회원가입 하기
   const handleSignupForm = useMutation({
     mutationFn: (body: UserSignUpRequestDto) => onBoardingSignup(body),
-    onSuccess: () => console.log("성공"),
+    onSuccess: () => {
+      console.log("성공");
+      navigate("/");
+    },
     onError: (err) => console.log(err),
   });
 
