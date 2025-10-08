@@ -1,11 +1,13 @@
-import { Outlet } from "react-router-dom";
+import { Outlet } from 'react-router-dom';
+import { LocationHeader, MenuHeader } from '../components/Headers';
 
 export default function Layout() {
   return (
-    //헤더
-    <main className="">
-      <Outlet />
-    </main>
-    //footer
+    <>
+      <LocationHeader location='서울특별시 동작구 상도동' />
+      <main className="">
+        <Outlet />
+      </main>
+    </>
   );
 }
