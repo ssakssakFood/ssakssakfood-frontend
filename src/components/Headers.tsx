@@ -33,11 +33,11 @@ export function MenuHeader({ title }: HeaderProps) {
 export function LocationHeader({ location }: LocationHeaderProps) {
   const navigate = useNavigate();
   return (
-    <header>
-      <div className='flex gap-[8px] items-center py-4 border-gray-200 bg-white sticky top-0 z-10"'>
-        <img src={locatoinImg} alt="위치" className="cursor-pointer m-0" />
+    <header className="">
+      <div className="flex items-center gap-[8px] py-4 px-[16px]">
+        <img src={locatoinImg} alt="위치" />
         <div className="text-[16px] font-bold">{location}</div>
-        <img src={chevronDownImg} alt="위치" className="cursor-pointer m-0" />
+        <img src={chevronDownImg} alt="지역 설정" className="ml-auto cursor-pointer" />
       </div>
     </header>
   );
