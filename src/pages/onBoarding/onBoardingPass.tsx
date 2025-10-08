@@ -54,7 +54,7 @@ export default function OnBoardingPassPage() {
         email,
         loginId,
         password: pw,
-        nickname: "안녕하",
+        nickname: nickname,
         phoneNumber: "010-1234-5678",
       });
     }
