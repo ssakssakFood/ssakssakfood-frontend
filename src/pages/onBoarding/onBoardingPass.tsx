@@ -2,14 +2,17 @@ import { useNavigate } from "react-router-dom";
 import { ProgressBar } from "../../components/ProgressBar";
 import InputField2 from "../../components/InputField2";
 import Button from "../../components/Button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useOnboardingState } from "../../store/useOnboardingStore";
 import { useForm } from "react-hook-form";
+import { useMutation } from "react-query";
+import type { UserSignUpRequestDto } from "../../types/onboarding";
+import { onBoardingSignup } from "../../api/mamber/onboarding";
 
 export default function OnBoardingPassPage() {
   const navigate = useNavigate();
 
-  const { setTemp } = useOnboardingState();
+  const { setTemp, email, loginId, password, nickname } = useOnboardingState();
   const [step, setStep] = useState(1);
   const [idValue, setIdValue] = useState<string>("");
   const [isInputValid, setIsInputValid] = useState(false);
@@ -21,25 +24,50 @@ export default function OnBoardingPassPage() {
     const id = e.target.value;
     setIdValue(id);
     setIsInputValid(IdRegex.test(id));
-    setTemp({ loginId: id });
   };
 
-  const { register, watch } = useForm({ mode: "onChange" });
-
-  const handleNext = () => {
-    if (step === 1) {
-      setStep(2);
-    }
-  };
-
-  //회원가입 하기
+  const { register, watch, reset } = useForm({ mode: "onChange" });
 
   const pw = watch("password");
   const noSpacePattern = /^[^\s]{8,20}$/.test(pw);
   const pattern2 = /(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*])/.test(pw);
   const pwCheck = watch("passwordCheck") === watch("password");
 
+  //회원가입 하기
+  const handleSignupForm = useMutation({
+    mutationFn: (body: UserSignUpRequestDto) => onBoardingSignup(body),
+    onSuccess: () => console.log("성공"),
+    onError: (err) => console.log(err),
+  });
+
+  const handleNext = () => {
+    if (step === 1) {
+      setStep(2);
+      setIdValue("");
+      setIsInputValid(false);
+      setTemp({ loginId: idValue });
+    } else {
+      handleSignupForm.mutate({
+        email,
+        loginId,
+        password: pw,
+        nickname: "안녕하",
+        phoneNumber: "010-1234-5678",
+      });
+    }
+  };
+
+  useEffect(() => {
+    if (step === 2) {
+      reset({ password: "", passwordCheck: "" });
+      setShowPwd(false);
+      setShowCheckPwd(false);
+    }
+  }, [step, reset]);
+
   const nextBtn = pwCheck && noSpacePattern && pattern2;
+
+  console.log(email, loginId, password, nickname);
   return (
     <div className="w-full flex flex-col min-h-dvh ">
       <section className="flex-1 ">
@@ -123,7 +151,7 @@ export default function OnBoardingPassPage() {
             <InputField2
               placeholder={"비밀번호 확인"}
               icon={true}
-              type={showPwd ? "text" : "password"}
+              type={showCheckPwd ? "text" : "password"}
               onClick={() => setShowCheckPwd((pre) => !pre)}
               showPwd={showCheckPwd}
               register={register("passwordCheck")}
@@ -135,7 +163,7 @@ export default function OnBoardingPassPage() {
       <Button
         labelName={step === 1 ? "다음" : "회원가입 완료"}
         className="mb-8"
-        disabled={!isInputValid || !nextBtn}
+        disabled={step === 1 ? !isInputValid : !nextBtn}
         onClick={handleNext}
       />
     </div>
