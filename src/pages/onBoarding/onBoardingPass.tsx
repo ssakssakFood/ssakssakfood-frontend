@@ -4,6 +4,7 @@ import InputField2 from "../../components/InputField2";
 import Button from "../../components/Button";
 import { useState } from "react";
 import { useOnboardingState } from "../../store/useOnboardingStore";
+import { useForm } from "react-hook-form";
 
 export default function OnBoardingPassPage() {
   const navigate = useNavigate();
@@ -12,7 +13,9 @@ export default function OnBoardingPassPage() {
   const [step, setStep] = useState(1);
   const [idValue, setIdValue] = useState<string>("");
   const [isInputValid, setIsInputValid] = useState(false);
-
+  //비번 볼래말래
+  const [showPwd, setShowPwd] = useState<boolean>(false);
+  const [showCheckPwd, setShowCheckPwd] = useState<boolean>(false);
   const IdRegex = /^.{4,}$/;
   const handleInputId = (e: React.ChangeEvent<HTMLInputElement>) => {
     const id = e.target.value;
@@ -21,12 +24,22 @@ export default function OnBoardingPassPage() {
     setTemp({ loginId: id });
   };
 
+  const { register, watch } = useForm({ mode: "onChange" });
+
   const handleNext = () => {
     if (step === 1) {
       setStep(2);
     }
   };
 
+  //회원가입 하기
+
+  const pw = watch("password");
+  const noSpacePattern = /^[^\s]{8,20}$/.test(pw);
+  const pattern2 = /(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*])/.test(pw);
+  const pwCheck = watch("passwordCheck") === watch("password");
+
+  const nextBtn = pwCheck && noSpacePattern && pattern2;
   return (
     <div className="w-full flex flex-col min-h-dvh ">
       <section className="flex-1 ">
@@ -66,18 +79,41 @@ export default function OnBoardingPassPage() {
               <InputField2
                 placeholder={"비밀번호 입력"}
                 className="mb-3"
-                type="password"
+                type={showPwd ? "text" : "password"}
                 icon={true}
+                onClick={() => setShowPwd((pre) => !pre)}
+                register={register("password")}
+                showPwd={showPwd}
               />
               <div className="flex gap-2 items-center">
-                <img src="/icons/check.svg" alt="" />
-                <p className="mb-1 caption-r-12 text-grey-3">
+                {
+                  <img
+                    src={
+                      noSpacePattern
+                        ? "/icons/check-full-blue.svg"
+                        : "/icons/check.svg"
+                    }
+                    alt=""
+                    className="mb-1"
+                  />
+                }
+                <p
+                  className={`mb-1 caption-r-12 ${noSpacePattern ? "text-main2" : "text-grey-3"} `}
+                >
                   공백없이 8자~20자
                 </p>
               </div>
               <div className="flex gap-2 items-center">
-                <img src="/icons/check.svg" alt="" />
-                <p className="mb-1 caption-r-12 text-grey-3">
+                <img
+                  src={
+                    pattern2 ? "/icons/check-full-blue.svg" : "/icons/check.svg"
+                  }
+                  alt=""
+                  className="mb-1"
+                />
+                <p
+                  className={`mb-1 caption-r-12 ${pattern2 ? "text-main2" : "text-grey-3"} `}
+                >
                   대소문자, 숫자, 특수문자 1개 이상 포함
                 </p>
               </div>
@@ -86,8 +122,11 @@ export default function OnBoardingPassPage() {
 
             <InputField2
               placeholder={"비밀번호 확인"}
-              type="password"
               icon={true}
+              type={showPwd ? "text" : "password"}
+              onClick={() => setShowCheckPwd((pre) => !pre)}
+              showPwd={showCheckPwd}
+              register={register("passwordCheck")}
             />
           </section>
         )}
@@ -96,7 +135,7 @@ export default function OnBoardingPassPage() {
       <Button
         labelName={step === 1 ? "다음" : "회원가입 완료"}
         className="mb-8"
-        disabled={!isInputValid}
+        disabled={!isInputValid || !nextBtn}
         onClick={handleNext}
       />
     </div>
