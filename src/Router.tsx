@@ -7,6 +7,7 @@ import TermPage from "./pages/login/TermPage";
 import OnBoardingConfirmPage from "./pages/onBoarding/onBoardingConfirm";
 import OnBoardingPage from "./pages/onBoarding/onBoarding";
 import OnBoardingPassPage from "./pages/onBoarding/onBoardingPass";
+import LocationEdit from "./pages/Location/LocationEdit";
 
 const router = createBrowserRouter([
   {
@@ -21,6 +22,7 @@ const router = createBrowserRouter([
   { path: "/onBoarding", element: <OnBoardingPage /> },
   { path: "/onBoardingConfirm", element: <OnBoardingConfirmPage /> },
   { path: "/onBoardingPassPage", element: <OnBoardingPassPage /> },
+  { path: "/edit/location", element: <LocationEdit /> },
 ]);
 
 export default router;
