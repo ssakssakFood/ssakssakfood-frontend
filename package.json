@@ -16,6 +16,8 @@
     "react-dom": "^19.1.1",
     "react-hook-form": "^7.64.0",
     "react-router-dom": "^7.9.3",
+    "react-slick": "^0.31.0",
+    "slick-carousel": "^1.8.1",
     "ssakssakfood": "link:"
   },
   "devDependencies": {
@@ -26,6 +28,7 @@
     "@types/node": "^24.7.0",
     "@types/react": "^19.1.13",
     "@types/react-dom": "^19.1.9",
+    "@types/react-slick": "^0.23.13",
     "@typescript-eslint/eslint-plugin": "^8.45.0",
     "@typescript-eslint/parser": "^8.45.0",
     "@vitejs/plugin-react": "^5.0.3",

@@ -8,7 +8,7 @@ function App() {
           - max-w-[401px]: 최대 너비를 401px로 제한합니다. (Tailwind Arbitrary Value)
           - 웹앱 프로젝트 이므로, iphone 16pro 기준 401px로 고정
       */}
-      <div className="w-full max-w-[401px] bg-white shadow-2xl px-6">
+      <div className="w-full max-w-[401px] bg-white shadow-2xl">
         <main className="min-h-[calc(100vh-60px)] ">
           <RouterProvider router={router} />
         </main>
