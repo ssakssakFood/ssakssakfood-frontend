@@ -32,8 +32,6 @@ export default function LocationEdit() {
           <button className="py-1 px-3 rounded-s-sm bg-grey-5 body-r-14">
             수정
           </button>
-
-          {/* <Location isMainAddr="그래" streetAddr="새솔동 화성시" /> */}
         </div>
         <Location roadAddress="서울시 동작구 상도동" buildingName="전선아 집" />
       </section>

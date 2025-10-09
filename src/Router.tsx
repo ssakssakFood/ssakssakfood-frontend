@@ -8,6 +8,7 @@ import OnBoardingConfirmPage from "./pages/onBoarding/onBoardingConfirm";
 import OnBoardingPage from "./pages/onBoarding/onBoarding";
 import OnBoardingPassPage from "./pages/onBoarding/onBoardingPass";
 import LocationEdit from "./pages/Location/LocationEdit";
+import LocationSearch from "./pages/Location/LocationSearch";
 
 const router = createBrowserRouter([
   {
@@ -22,7 +23,9 @@ const router = createBrowserRouter([
   { path: "/onBoarding", element: <OnBoardingPage /> },
   { path: "/onBoardingConfirm", element: <OnBoardingConfirmPage /> },
   { path: "/onBoardingPassPage", element: <OnBoardingPassPage /> },
+  //위치수정
   { path: "/edit/location", element: <LocationEdit /> },
+  { path: "/search/location", element: <LocationSearch /> },
 ]);
 
 export default router;
