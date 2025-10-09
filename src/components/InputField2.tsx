@@ -1,16 +1,17 @@
 import type { InputHTMLAttributes } from "react";
-import type { FieldValues, UseFormRegister } from "react-hook-form";
+import type { UseFormRegisterReturn } from "react-hook-form";
 
 interface InputFieldProps extends InputHTMLAttributes<HTMLInputElement> {
   placeholder?: string;
   errorMsg?: string | undefined;
   className?: string;
   onClick?: () => void;
-  register?: UseFormRegister<FieldValues>;
+  register?: UseFormRegisterReturn;
   disabled?: boolean;
   icon?: boolean;
-  imgSrc?: string;
+  // imgSrc?: string;
   type?: string;
+  showPwd?: boolean;
 }
 
 export default function InputField2({
@@ -21,6 +22,8 @@ export default function InputField2({
   type = "text",
   icon = false,
   // imgSrc = "",
+  showPwd,
+  onClick,
   ...props
 }: InputFieldProps) {
   return (
@@ -30,14 +33,18 @@ export default function InputField2({
         type={type}
         className={`w-full px-4 flex body-r-14 items-center py-4 border-1 rounded-xl  focus:border-main1
           bg-grey-5 border-grey-5 focus:outline-none`}
-        {...register}
+        {...(register ?? {})}
         {...props}
         placeholder={placeholder}
       />
       {errorMsg && <p className="body-r-14 text-main2">{errorMsg}</p>}
       {icon && (
         <div className="absolute right-3 top-4">
-          <img src="/icons/close-eye.svg" alt="" />
+          <img
+            src={showPwd ? "/icons/check.svg" : "/icons/close-eye.svg"}
+            alt=""
+            onClick={onClick}
+          />
         </div>
       )}
     </div>

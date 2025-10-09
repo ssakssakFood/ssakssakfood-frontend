@@ -146,4 +146,8 @@
     font-weight: 400;
     line-height: normal;
   }
+  .scrollbar-hide {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
 }
