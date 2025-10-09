@@ -2,7 +2,7 @@ import ChevronL from "@assets/icons/chevron-left.svg";
 import { useNavigate } from "react-router-dom";
 import { LocationField } from "../../components/Location/LocationField";
 import SearchLocationBtn from "../../components/Location/SearchLocationBtn";
-import Location from "./Location";
+import Location from "../../components/Location/Location";
 
 export default function LocationEdit() {
   const navigate = useNavigate();

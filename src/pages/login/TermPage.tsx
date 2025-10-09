@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Button from "../../components/Button";
-import TermText from "./TermText";
+import TermText from "../../components/Login/TermText";
 import { useNavigate } from "react-router-dom";
 import ChevronL from "@assets/icons/chevron-left.svg";
 import CheckFull from "@assets/icons/check-full.svg";
