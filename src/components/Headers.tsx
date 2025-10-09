@@ -9,7 +9,7 @@ interface HeaderProps {
 }
 
 interface LocationHeaderProps {
-  location?: string;
+  location?: string | null;
 }
 
 //Title 내용을 Props로 받아 화면에 따른 메뉴의 Header내용을 보여줍니다.
