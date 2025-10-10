@@ -1,8 +1,8 @@
 //Header Components
-import locatoinImg from '@/assets/location.svg';
-import chevronDownImg from '@/assets/chevron-down.svg';
-import { useNavigate } from 'react-router-dom';
-import SearchInput from './SearchInput';
+import locatoinImg from "@/assets/location.svg";
+import chevronDownImg from "@/assets/chevron-down.svg";
+import { useNavigate } from "react-router-dom";
+import SearchInput from "./SearchInput";
 
 interface HeaderProps {
   title?: string;
@@ -38,7 +38,11 @@ export function LocationHeader({ location }: LocationHeaderProps) {
       <div className="flex items-center gap-[8px] py-4 px-[16px]">
         <img src={locatoinImg} alt="위치" />
         <div className="text-[16px] font-bold">{location}</div>
-        <img src={chevronDownImg} alt="지역 설정" className="ml-auto cursor-pointer" />
+        <img
+          src={chevronDownImg}
+          alt="지역 설정"
+          className="ml-auto cursor-pointer"
+        />
       </div>
     </header>
   );

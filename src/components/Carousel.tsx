@@ -1,13 +1,13 @@
-import Slider from 'react-slick';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 export default function Carousel() {
   const settings = {
-    className: 'center',
+    className: "center",
     centerMode: true,
     infinite: true,
-    centerPadding: '14px',
+    centerPadding: "14px",
     slidesToShow: 1,
     speed: 500,
     dots: true,

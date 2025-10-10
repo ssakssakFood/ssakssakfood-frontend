@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
 interface GeoLocationResult {
   latitude: number;
   longitude: number;
-  address: string | null;      // 동만
-  fullAdress: string | null;   // 시/구/동까지
+  address: string | null; // 동만
+  fullAdress: string | null; // 시/구/동까지
   loading: boolean;
   error: string | null;
 }
@@ -19,7 +19,7 @@ const useGeolocation = (): GeoLocationResult => {
 
   useEffect(() => {
     if (!navigator.geolocation) {
-      setError('이 브라우저는 위치 정보를 지원하지 않습니다.');
+      setError("이 브라우저는 위치 정보를 지원하지 않습니다.");
       setLoading(false);
       return;
     }
@@ -36,34 +36,34 @@ const useGeolocation = (): GeoLocationResult => {
             Authorization: `KakaoAK ${import.meta.env.VITE_KAKAO_REST_API_KEY}`,
           };
 
-          const response = await fetch(url, { method: 'GET', headers });
+          const response = await fetch(url, { method: "GET", headers });
           if (!response.ok) {
-            throw new Error('주소 정보를 가져오지 못했습니다.');
+            throw new Error("주소 정보를 가져오지 못했습니다.");
           }
 
           const data = await response.json();
           const fullAddrRaw = data.documents?.[0]?.address?.address_name; // 전체 주소
           if (fullAddrRaw) {
-            const parts = fullAddrRaw.split(' ');
-            const dongPart = parts.slice(0, 3).join(' '); // 시/구/동까지
-            setFullAddress(dongPart);                     // fullAdress
-            setAddress(parts[2]);                         // 동만
+            const parts = fullAddrRaw.split(" ");
+            const dongPart = parts.slice(0, 3).join(" "); // 시/구/동까지
+            setFullAddress(dongPart); // fullAdress
+            setAddress(parts[2]); // 동만
           } else {
             setFullAddress(null);
             setAddress(null);
           }
         } catch (err) {
-          setError('주소 변환 중 오류가 발생했습니다.');
+          setError("주소 변환 중 오류가 발생했습니다.");
           console.log(err);
         }
 
         setLoading(false);
       },
       (err) => {
-        setError('위치 정보를 가져오는 데 실패했습니다.');
+        setError("위치 정보를 가져오는 데 실패했습니다.");
         setLoading(false);
         console.log(err);
-      }
+      },
     );
   }, []);
 

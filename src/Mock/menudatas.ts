@@ -161,7 +161,7 @@ export const MENUS = [
     slug: "convenience",
   },
   {
-    title: "삼각김밥 3종 세트",
+    title: "삼각김밥 3종",
     storeName: "GS25 강서점",
     pickupTime: "07:00 ~ 09:00",
     originalPrice: 3900,
@@ -173,7 +173,7 @@ export const MENUS = [
 
   // 🤝 sharing
   {
-    title: "남은 피자 조각 2개",
+    title: "포테이토 피자 R",
     storeName: "피자마루",
     pickupTime: "21:00 ~ 22:00",
     originalPrice: 8000,

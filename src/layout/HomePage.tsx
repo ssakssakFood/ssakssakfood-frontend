@@ -1,17 +1,17 @@
-import { Outlet } from 'react-router-dom';
-import { LocationHeader } from '../components/Headers';
-import FooterNav from './FooterNav';
-import SearchInput from '@/components/SearchInput';
-import useGeolocation from '@/hooks/useGeolocation';
+import { Outlet } from "react-router-dom";
+import { LocationHeader } from "../components/Headers";
+import FooterNav from "./FooterNav";
+import SearchInput from "@/components/SearchInput";
+import useGeolocation from "@/hooks/useGeolocation";
 
 export default function Layout() {
   const { fullAdress, loading, error } = useGeolocation();
   //Layout 분리 예정
   const displayLocation = loading
-    ? '위치 정보를 불러오는 중...'
+    ? "위치 정보를 불러오는 중..."
     : error
-    ? '위치 정보를 가져올 수 없습니다.'
-    : fullAdress || '위치를 확인할 수 없음';
+      ? "위치 정보를 가져올 수 없습니다."
+      : fullAdress || "위치를 확인할 수 없음";
 
   return (
     <>

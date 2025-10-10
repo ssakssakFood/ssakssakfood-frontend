@@ -1,14 +1,14 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import SearchIcon from '@/assets/search-md.svg';
-import Xcircle from '@/assets/x-circle.svg';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import SearchIcon from "@/assets/search-md.svg";
+import Xcircle from "@/assets/x-circle.svg";
 
 interface SearchInputProps {
   className?: string;
 }
 
 export default function SearchInput({ className }: SearchInputProps) {
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState("");
   const navigate = useNavigate();
 
   const handleSearch = () => {
@@ -19,7 +19,7 @@ export default function SearchInput({ className }: SearchInputProps) {
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       handleSearch();
     }
   };
@@ -44,7 +44,7 @@ export default function SearchInput({ className }: SearchInputProps) {
       />
       {value && (
         <button
-          onClick={() => setValue('')}
+          onClick={() => setValue("")}
           className="flex-shrink-0 focus:outline-none"
         >
           <img

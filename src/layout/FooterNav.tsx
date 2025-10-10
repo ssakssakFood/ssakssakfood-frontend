@@ -1,35 +1,60 @@
-import { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
-import home from '@/assets/home-line.svg';
-import homeActive from '@/assets/home-line-active.svg';
-import location from '@/assets/location-nav.svg';
-import locationActive from '@/assets/location-active.svg';
-import receipt from '@/assets/receipt.svg';
-import receiptActive from '@/assets/receipt-active.svg';
-import mypage from '@/assets/user.svg';
-import mypageActive from '@/assets/user-active.svg';
+import { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import home from "@/assets/home-line.svg";
+import homeActive from "@/assets/home-line-active.svg";
+import location from "@/assets/location-nav.svg";
+import locationActive from "@/assets/location-active.svg";
+import receipt from "@/assets/receipt.svg";
+import receiptActive from "@/assets/receipt-active.svg";
+import mypage from "@/assets/user.svg";
+import mypageActive from "@/assets/user-active.svg";
 
 export default function FooterNav() {
   const navigate = useNavigate();
   const routerLocation = useLocation(); // ✅ 이름 변경
 
-  const [activeTab, setActiveTab] = useState<'home' | 'nearby' | 'orders' | 'mypage'>('home');
+  const [activeTab, setActiveTab] = useState<
+    "home" | "nearby" | "orders" | "mypage"
+  >("home");
 
   useEffect(() => {
-    if (routerLocation.pathname.startsWith('/nearby')) setActiveTab('nearby');
-    else if (routerLocation.pathname.startsWith('/orders')) setActiveTab('orders');
-    else if (routerLocation.pathname.startsWith('/mypage')) setActiveTab('mypage');
-    else setActiveTab('home');
+    if (routerLocation.pathname.startsWith("/nearby")) setActiveTab("nearby");
+    else if (routerLocation.pathname.startsWith("/orders"))
+      setActiveTab("orders");
+    else if (routerLocation.pathname.startsWith("/mypage"))
+      setActiveTab("mypage");
+    else setActiveTab("home");
   }, [routerLocation.pathname]);
 
   const navItems = [
-    { id: 'home', label: '홈', icon: home, activeIcon: homeActive, path: '/' },
-    { id: 'nearby', label: '내 주변', icon: location, activeIcon: locationActive, path: '/nearby' },
-    { id: 'orders', label: '주문 내역', icon: receipt, activeIcon: receiptActive, path: '/orders' },
-    { id: 'mypage', label: '마이페이지', icon: mypage, activeIcon: mypageActive, path: '/mypage' },
+    { id: "home", label: "홈", icon: home, activeIcon: homeActive, path: "/" },
+    {
+      id: "nearby",
+      label: "내 주변",
+      icon: location,
+      activeIcon: locationActive,
+      path: "/nearby",
+    },
+    {
+      id: "orders",
+      label: "주문 내역",
+      icon: receipt,
+      activeIcon: receiptActive,
+      path: "/orders",
+    },
+    {
+      id: "mypage",
+      label: "마이페이지",
+      icon: mypage,
+      activeIcon: mypageActive,
+      path: "/mypage",
+    },
   ] as const;
 
-  const handleNavClick = (id: typeof navItems[number]['id'], path: string) => {
+  const handleNavClick = (
+    id: (typeof navItems)[number]["id"],
+    path: string,
+  ) => {
     setActiveTab(id);
     navigate(path);
   };
@@ -48,7 +73,11 @@ export default function FooterNav() {
               alt={item.label}
               className="w-6 h-6 mb-1"
             />
-            <span className={activeTab === item.id ? 'text-[#FE7549] font-semibold' : ''}>
+            <span
+              className={
+                activeTab === item.id ? "text-[#FE7549] font-semibold" : ""
+              }
+            >
               {item.label}
             </span>
           </button>

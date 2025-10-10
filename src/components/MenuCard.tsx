@@ -1,6 +1,6 @@
 //메뉴 리스트에 보이는 메뉴 카드 컴포넌트
-import mockImg from '@/assets/bread.svg';
-import StockBadge from './StockBadge';
+import mockImg from "@/assets/bread.svg";
+import StockBadge from "./StockBadge";
 
 interface MenuCardprops {
   title: string;

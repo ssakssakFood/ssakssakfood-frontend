@@ -13,7 +13,7 @@ export default function SearchResultPage() {
     return MENUS.filter(
       (menu) =>
         menu.title.toLowerCase().includes(query) ||
-        menu.storeName.toLowerCase().includes(query)
+        menu.storeName.toLowerCase().includes(query),
     );
   }, [query]);
 
@@ -39,9 +39,7 @@ export default function SearchResultPage() {
           ))}
         </div>
       ) : (
-        <p className="text-gray-500 mt-10 text-center">
-          검색 결과가 없습니다.
-        </p>
+        <p className="text-gray-500 mt-10 text-center">검색 결과가 없습니다.</p>
       )}
     </div>
   );
