@@ -185,7 +185,7 @@ export default function LocationSearch() {
     setSelectedId((prev) => (prev === id ? null : id));
   };
   return (
-    <div className="w-full flex flex-col">
+    <div className="w-full flex flex-col ">
       <header className="h-12 relative flex items-center self-stretch justify-center mb-8">
         <img
           src={ChevronL}
@@ -221,6 +221,7 @@ export default function LocationSearch() {
           <div
             onClick={() => handleSelect(item.id)}
             ref={isLast ? lastResultRef : null}
+            className="scrollbar-hide"
           >
             <LocationList
               roadAddress={item.address_name}
