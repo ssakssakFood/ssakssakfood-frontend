@@ -44,8 +44,11 @@ export default function LocationSearch() {
   const road = searchParams.get("road");
 
   const mode = location.state?.mode ?? "fill-only";
+
+  const isFetchingRef = useRef(false);
   const fetchPlaces = async (newPage = 1, isNewSearch = false) => {
     try {
+      isFetchingRef.current = true;
       setIsLoading(true);
       const res = await axios.get(
         "https://dapi.kakao.com/v2/local/search/keyword.json",
@@ -60,7 +63,7 @@ export default function LocationSearch() {
           },
         }
       );
-      console.log(res);
+      // console.log(res);
 
       const newResults = res.data.documents;
       const totalCount = res.data.meta.total_count;
@@ -70,12 +73,15 @@ export default function LocationSearch() {
       );
       setHasMore(newPage * 15 < totalCount);
       setPage(newPage);
-      setSelectedId(null);
+      if (isNewSearch) {
+        setSelectedId(null);
+      }
       console.log(newResults);
     } catch (err) {
       console.error("Erorr fetching places", err);
     } finally {
       setIsLoading(false);
+      isFetchingRef.current = false;
     }
   };
   useEffect(() => {
@@ -174,8 +180,6 @@ export default function LocationSearch() {
       alert("위치 등록에 실패했습니다.");
     }
   };
-
-  console.log(results);
 
   const handleSelect = (id: number) => {
     setSelectedId((prev) => (prev === id ? null : id));
