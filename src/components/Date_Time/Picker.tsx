@@ -23,7 +23,7 @@ export default function Picker({
     const container = containerRef.current;
     if (!container) return;
 
-    const resizeObserver = new ResizeObserver(entries => {
+    const resizeObserver = new ResizeObserver((entries) => {
       for (const entry of entries) {
         const newHeight = entry.contentRect.height;
         if (newHeight !== containerHeight) {
@@ -44,7 +44,9 @@ export default function Picker({
     const container = containerRef.current;
     if (!container) return;
 
-    const selectedIndex = options.findIndex(option => option === selectedValue);
+    const selectedIndex = options.findIndex(
+      (option) => option === selectedValue,
+    );
     if (selectedIndex === -1) return;
 
     isScrollingProgrammatically.current = true;
@@ -75,7 +77,7 @@ export default function Picker({
       {/* 위 패딩 */}
       <div style={{ height: `${paddingHeight}px` }} className="flex-shrink-0" />
 
-      {options.map(option => (
+      {options.map((option) => (
         <div
           key={option}
           onClick={() => onChange(option)}

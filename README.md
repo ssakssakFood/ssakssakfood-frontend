@@ -34,6 +34,7 @@ pnpm dev
 ```
 
 ## 📂 File Structure
+
 ```bash
 src/
 ├── assets/             # 이미지, 폰트 등 정적 자원
@@ -54,6 +55,7 @@ src/
 ```
 
 ## 🎨 Layout Rule
+
 - 모바일 웹 앱 형태 최적화
 - 메인 컨테이너는 max-w-[401px]으로 제한 → PC에서도 모바일 사이즈 유지
 - 작은 화면(401px 이하)에서는 w-full 적용 → 전체 너비 활용
