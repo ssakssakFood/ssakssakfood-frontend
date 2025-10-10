@@ -144,23 +144,22 @@ export default function LocationSearch() {
       }
     });
   };
-  console.log(String(results[0].address_name.split(" ").slice(0, 1)));
 
   const handleRegister = async () => {
     if (selectedId === null) return;
     const p = results.find((item) => item.id === selectedId);
     console.log(p);
     const payload = {
-      kakaoPlaceId: p?.id,
-      bcode: p?.place_name,
-      sido: String(p?.address_name.split(" ").slice(0, 1)), //시 "만"
-      sigungu: String(p?.address_name.split(" ").slice(1, 2)), //구 "만"
-      dong: String(p?.address_name.split(" ").slice(2, 3)), //"동"
-      roadAddress: p?.road_address_name,
-      jibunAddress: p?.address_name, //지번
-      buildingName: p?.place_name,
-      longitude: Number(p?.x),
-      latitude: Number(p?.y),
+      kakaoPlaceId: p?.id.toString() ?? "",
+      bcode: p?.place_name ?? "",
+      sido: String(p?.address_name?.split(" ")?.[0] ?? ""), //시 "만"
+      sigungu: String(p?.address_name?.split(" ")?.[1] ?? ""), //구 "만"
+      dong: String(p?.address_name?.split(" ")?.[2] ?? ""), //"동"
+      roadAddress: p?.road_address_name ?? "",
+      jibunAddress: p?.address_name ?? "", //지번
+      buildingName: p?.place_name ?? "",
+      longitude: Number(p?.x ?? 0),
+      latitude: Number(p?.y ?? 0),
     };
 
     try {
@@ -210,7 +209,7 @@ export default function LocationSearch() {
       </div>
       <span className=" h-1 bg-grey-5 mb-4"></span>
       {/* 현재위치불러오기 */}
-      <SearchLocationBtn className="mb-4" />
+      <SearchLocationBtn className="mb-4" onClick={onClickCurrent} />
       {/* 리스트 */}
       {results.map((item, idx) => {
         const isLast = idx === results.length - 1;
@@ -220,7 +219,7 @@ export default function LocationSearch() {
             ref={isLast ? lastResultRef : null}
           >
             <LocationList
-              roadAddress={item.road_address_name}
+              roadAddress={item.address_name}
               buildingName={item.place_name}
               isSelected={selectedId === item.id}
             />

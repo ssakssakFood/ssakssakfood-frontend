@@ -22,7 +22,7 @@ export const LocationField = ({
   const isTrigger = mode === "call-api"; //이동
   const handleClick = () => {
     if (isTrigger) {
-      navigate("/search/location", { state: { mode } });
+      navigate("/location/search", { state: { mode } });
     }
   };
 
