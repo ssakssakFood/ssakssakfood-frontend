@@ -12,6 +12,7 @@ import Carousel from './components/Carousel';
  * 프로젝트의 메인 홈 페이지 컴포넌트
  */
 const Home: React.FC = () => {
+
   return (
     <div>
 

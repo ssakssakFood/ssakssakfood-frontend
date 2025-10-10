@@ -146,6 +146,10 @@
     font-weight: 400;
     line-height: normal;
   }
+  .scrollbar-hide {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
 }
 /* dots를 안쪽으로 겹치게 */
 .slick-dots {
