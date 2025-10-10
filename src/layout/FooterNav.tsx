@@ -61,12 +61,12 @@ export default function FooterNav() {
 
   return (
     <nav className="w-full bg-white border-t border-[#DFDFDF] z-50">
-      <div className="flex justify-center gap-[42px] py-2">
+      <div className="flex justify-center gap-[32px] py-2">
         {navItems.map((item) => (
           <button
             key={item.id}
             onClick={() => handleNavClick(item.id, item.path)}
-            className="flex flex-col items-center text-[12px] font-medium text-[#7F7F7F] cursor-pointer"
+            className="flex flex-col items-center text-[12px] font-medium text-[#7F7F7F] cursor-pointer w-[60px]"
           >
             <img
               src={activeTab === item.id ? item.activeIcon : item.icon}
