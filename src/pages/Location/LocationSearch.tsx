@@ -232,7 +232,7 @@ export default function LocationSearch() {
         );
       })}
       <div
-        className=" fixed  w-full max-w-[353px] flex justify-center bottom-6  z-50 "
+        className=" fixed  w-full max-w-[353px] flex justify-center bottom-0 pb-6  z-50 bg-white "
         // onClick={() => handleSelectLocation(results[selectedId])}
       >
         <Button
