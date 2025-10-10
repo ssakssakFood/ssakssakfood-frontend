@@ -1,23 +1,185 @@
 import ChevronL from "@assets/icons/chevron-left.svg";
-import { LocationField } from "../../components/Location/LocationField";
 import SearchLocationBtn from "../../components/Location/SearchLocationBtn";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import LocationList from "../../components/Location/LocationListItem";
 import Button from "../../components/Button";
-import { useState } from "react";
-//api연결
+import { useCallback, useEffect, useRef, useState } from "react";
+import { useDebounce } from "../../hooks/useDebounce";
+import axios from "axios";
+import { postLocation } from "../../api/location/location";
+import SearchIcon from "@/assets/icons/search.svg?url";
+
+export interface Place {
+  place_name: string;
+  address_name: string;
+  road_address_name: string;
+  x: string;
+  y: string;
+  id: number;
+}
+
 export default function LocationSearch() {
   const navigate = useNavigate();
-  const data = [
-    { roadAddress: "서울시 동작구 상도동", buildingName: "전선아집", id: 1 },
-    { roadAddress: "서울시 동작구 상도동", buildingName: "전선아집", id: 2 },
-    { roadAddress: "서울시 동작구 상도동", buildingName: "전선아집", id: 3 },
-    { roadAddress: "서울시 동작구 상도동", buildingName: "전선아집", id: 4 },
-  ];
+  const [searchParams] = useSearchParams();
+  const location = useLocation();
 
-  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+  const initialQuery = searchParams.get("query") ?? "";
+  const [input, setInput] = useState(initialQuery);
+  const debouncedInput = useDebounce(input, 200);
+
+  //검색결과
+  const [results, setResults] = useState<Place[]>([]);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [selectedId, setSelectedId] = useState<number | null>(null);
+  //무한스크롤 옵저버
+  const observer = useRef<IntersectionObserver | null>(null);
+
+  //현재위치좌표
+  const x = searchParams.get("x");
+  const y = searchParams.get("y");
+  const place = searchParams.get("place");
+  const address = searchParams.get("address");
+  const road = searchParams.get("road");
+
+  const mode = location.state?.mode ?? "fill-only";
+  const fetchPlaces = async (newPage = 1, isNewSearch = false) => {
+    try {
+      setIsLoading(true);
+      const res = await axios.get(
+        "https://dapi.kakao.com/v2/local/search/keyword.json",
+        {
+          headers: {
+            Authorization: `KakaoAK ${import.meta.env.VITE_APP_KAKAO_SEARCH_KEY}`,
+          },
+          params: {
+            query: debouncedInput,
+            page: newPage,
+            size: 15,
+          },
+        }
+      );
+      console.log(res);
+
+      const newResults = res.data.documents;
+      const totalCount = res.data.meta.total_count;
+
+      setResults((prev) =>
+        isNewSearch ? newResults : [...prev, ...newResults]
+      );
+      setHasMore(newPage * 15 < totalCount);
+      setPage(newPage);
+      setSelectedId(null);
+      console.log(newResults);
+    } catch (err) {
+      console.error("Erorr fetching places", err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  useEffect(() => {
+    if (!debouncedInput.trim()) {
+      setResults([]);
+      setPage(1);
+      setHasMore(false);
+      return;
+    }
+    fetchPlaces(1, true);
+  }, [debouncedInput]);
+
+  const lastResultRef = useCallback(
+    (node: HTMLDivElement | null) => {
+      if (isLoading) return;
+      if (observer.current) observer.current.disconnect();
+
+      observer.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && hasMore) {
+          fetchPlaces(page + 1);
+        }
+      });
+      if (node) observer.current.observe(node);
+    },
+    [isLoading, hasMore, page, debouncedInput]
+  );
+
+  const onClickCurrent = () => {
+    if (!navigator.geolocation) {
+      alert("위치 정보를 사용할 수 없습니다.");
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(async (position) => {
+      const { latitude, longitude } = position.coords;
+      try {
+        const res = await axios.get(
+          "https://dapi.kakao.com/v2/local/geo/coord2address.json",
+          {
+            headers: {
+              Authorization: `KakaoAK ${import.meta.env.VITE_APP_KAKAO_SEARCH_KEY}`,
+            },
+            params: {
+              x: longitude,
+              y: latitude,
+            },
+          }
+        );
+
+        const addressInfo = res.data.documents?.[0]?.address;
+        const roadAddressInfo = res.data.documents?.[0]?.road_address;
+
+        const place = roadAddressInfo?.building_name || "현재 위치";
+        const address =
+          roadAddressInfo?.address_name || addressInfo.address_name || "";
+
+        navigate(
+          `/location/map?x=${longitude}&y=${latitude}&place=${encodeURIComponent(place)}&address=${encodeURIComponent(address)}&query=${encodeURIComponent(input ?? "")}`,
+          {
+            state: { mode },
+          }
+        );
+      } catch (err) {
+        console.error("주소 정보 가져오기 실패", err);
+        alert("주소 정보를 불러올 수 없습니다.");
+      }
+    });
+  };
+  console.log(String(results[0].address_name.split(" ").slice(0, 1)));
+
+  const handleRegister = async () => {
+    if (selectedId === null) return;
+    const p = results.find((item) => item.id === selectedId);
+    console.log(p);
+    const payload = {
+      kakaoPlaceId: p?.id,
+      bcode: p?.place_name,
+      sido: String(p?.address_name.split(" ").slice(0, 1)), //시 "만"
+      sigungu: String(p?.address_name.split(" ").slice(1, 2)), //구 "만"
+      dong: String(p?.address_name.split(" ").slice(2, 3)), //"동"
+      roadAddress: p?.road_address_name,
+      jibunAddress: p?.address_name, //지번
+      buildingName: p?.place_name,
+      longitude: Number(p?.x),
+      latitude: Number(p?.y),
+    };
+
+    try {
+      if (mode === "call-api") {
+        await postLocation(payload);
+        navigate(-1);
+      } else {
+        navigate(-1, { state: { selectedPlace: p } });
+      }
+    } catch (e) {
+      console.error(e);
+      alert("위치 등록에 실패했습니다.");
+    }
+  };
+
+  console.log(results);
+
   const handleSelect = (id: number) => {
-    setSelectedIndex((prev) => (prev === id ? null : id));
+    setSelectedId((prev) => (prev === id ? null : id));
   };
   return (
     <div className="w-full flex flex-col">
@@ -30,21 +192,50 @@ export default function LocationSearch() {
         />
         <p className="subtitle-b-18 text-center">위치관리</p>
       </header>
-      <LocationField mode="fill-only" />
+
+      <div className="flex ">
+        <button className="cursor-pointer">
+          <img src={SearchIcon} alt="검색" className="size-6 mr-3" />
+        </button>
+        <input
+          type="text"
+          className={`w-full rounded-xl   py-[0.625rem] px-3 focus:outline-none  placeholder:text-grey-3 `}
+          placeholder="도로명 또는 지번으로 검색해보세요"
+          value={input}
+          onChange={(e) => {
+            setInput(e.target.value);
+            setSelectedId(null);
+          }}
+        />
+      </div>
       <span className=" h-1 bg-grey-5 mb-4"></span>
+      {/* 현재위치불러오기 */}
       <SearchLocationBtn className="mb-4" />
       {/* 리스트 */}
-      {data.map((item) => (
-        <div onClick={() => handleSelect(item.id)}>
-          <LocationList
-            roadAddress={item.roadAddress}
-            buildingName={item.buildingName}
-            isSelected={selectedIndex === item.id}
-          />
-        </div>
-      ))}
-      <div className=" fixed  w-full max-w-[353px] flex justify-center bottom-6  z-50 ">
-        <Button labelName="위치등록" />
+      {results.map((item, idx) => {
+        const isLast = idx === results.length - 1;
+        return (
+          <div
+            onClick={() => handleSelect(item.id)}
+            ref={isLast ? lastResultRef : null}
+          >
+            <LocationList
+              roadAddress={item.road_address_name}
+              buildingName={item.place_name}
+              isSelected={selectedId === item.id}
+            />
+          </div>
+        );
+      })}
+      <div
+        className=" fixed  w-full max-w-[353px] flex justify-center bottom-6  z-50 "
+        // onClick={() => handleSelectLocation(results[selectedId])}
+      >
+        <Button
+          labelName="위치등록"
+          disabled={selectedId === null}
+          onClick={handleRegister}
+        />
       </div>
     </div>
   );

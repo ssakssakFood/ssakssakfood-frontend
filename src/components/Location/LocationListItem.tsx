@@ -15,10 +15,12 @@ export default function LocationList({
     <div
       className={`px-4 py-6 rounded-lg ${isSelected ? "bg-sub1" : "bg-white"} `}
     >
-      <p className="">{roadAddress}</p>
-      <p className="">{buildingName}</p>
+      <p className="subtitle-b-16 mb-2">{roadAddress}</p>
+      <p className="body-r-14 text-grey-2">{buildingName}</p>
       <div className="flex justify-end">
-        <p className="body-r-14 text-grey-2 mr-1">지도에서 보기</p>
+        <p className="body-r-14 text-grey-2 mr-1 cursor-pointer">
+          지도에서 보기
+        </p>
         <ChevronR />
       </div>
     </div>

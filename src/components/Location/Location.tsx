@@ -15,8 +15,8 @@ export default function Location({
   return (
     <div className=" p-4 flex items-center rounded-lg border border-grey-4 justify-between">
       <div className="body-r-16">
-        <p>{roadAddress}</p>
-        <p>{buildingName}</p>
+        <p className="subtitle-b-16 mb-2">{buildingName}</p>
+        <p className="body-r-14 text-grey-2">{roadAddress}</p>
       </div>
       {editMode && <Dismiss />}
     </div>
