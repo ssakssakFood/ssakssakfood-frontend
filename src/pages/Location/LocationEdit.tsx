@@ -3,9 +3,12 @@ import { useNavigate } from "react-router-dom";
 import { LocationField } from "../../components/Location/LocationField";
 import SearchLocationBtn from "../../components/Location/SearchLocationBtn";
 import Location from "../../components/Location/Location";
+import { useState } from "react";
 
 export default function LocationEdit() {
   const navigate = useNavigate();
+  const [isEdit, setIsEdit] = useState<boolean>();
+
   return (
     <div className="w-full flex flex-col">
       <header className="h-12 relative flex items-center self-stretch justify-center mb-8">
@@ -29,11 +32,18 @@ export default function LocationEdit() {
         </div>
         <div className="flex  items-center mb-4">
           <p className="subtitle-b-16 mr-auto">등록된 위치</p>
-          <button className="py-1 px-3 rounded-s-sm bg-grey-5 body-r-14">
-            수정
+          <button
+            className="py-1 px-3 rounded-s-sm bg-grey-5 body-r-14"
+            onClick={() => setIsEdit((pre) => !pre)}
+          >
+            {isEdit ? "수정" : "저장"}
           </button>
         </div>
-        <Location roadAddress="서울시 동작구 상도동" buildingName="전선아 집" />
+        <Location
+          roadAddress="서울시 동작구 상도동"
+          buildingName="전선아 집"
+          editMode={!isEdit}
+        />
       </section>
     </div>
   );
