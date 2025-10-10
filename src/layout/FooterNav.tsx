@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import home from '@/assets/home-line.svg';
 import homeActive from '@/assets/home-line-active.svg';
 import location from '@/assets/location-nav.svg';
@@ -9,14 +10,29 @@ import mypage from '@/assets/user.svg';
 import mypageActive from '@/assets/user-active.svg';
 
 export default function FooterNav() {
+  const navigate = useNavigate();
+  const routerLocation = useLocation(); // ✅ 이름 변경
+
   const [activeTab, setActiveTab] = useState<'home' | 'nearby' | 'orders' | 'mypage'>('home');
 
+  useEffect(() => {
+    if (routerLocation.pathname.startsWith('/nearby')) setActiveTab('nearby');
+    else if (routerLocation.pathname.startsWith('/orders')) setActiveTab('orders');
+    else if (routerLocation.pathname.startsWith('/mypage')) setActiveTab('mypage');
+    else setActiveTab('home');
+  }, [routerLocation.pathname]);
+
   const navItems = [
-    { id: 'home', label: '홈', icon: home, activeIcon: homeActive },
-    { id: 'nearby', label: '내 주변', icon: location, activeIcon: locationActive },
-    { id: 'orders', label: '주문 내역', icon: receipt, activeIcon: receiptActive },
-    { id: 'mypage', label: '마이페이지', icon: mypage, activeIcon: mypageActive },
+    { id: 'home', label: '홈', icon: home, activeIcon: homeActive, path: '/' },
+    { id: 'nearby', label: '내 주변', icon: location, activeIcon: locationActive, path: '/nearby' },
+    { id: 'orders', label: '주문 내역', icon: receipt, activeIcon: receiptActive, path: '/orders' },
+    { id: 'mypage', label: '마이페이지', icon: mypage, activeIcon: mypageActive, path: '/mypage' },
   ] as const;
+
+  const handleNavClick = (id: typeof navItems[number]['id'], path: string) => {
+    setActiveTab(id);
+    navigate(path);
+  };
 
   return (
     <nav className="w-full bg-white border-t border-[#DFDFDF] z-50">
@@ -24,7 +40,7 @@ export default function FooterNav() {
         {navItems.map((item) => (
           <button
             key={item.id}
-            onClick={() => setActiveTab(item.id)}
+            onClick={() => handleNavClick(item.id, item.path)}
             className="flex flex-col items-center text-[12px] font-medium text-[#7F7F7F] cursor-pointer"
           >
             <img

@@ -7,12 +7,16 @@ import TermPage from "./pages/login/TermPage";
 import OnBoardingConfirmPage from "./pages/onBoarding/onBoardingConfirm";
 import OnBoardingPage from "./pages/onBoarding/onBoarding";
 import OnBoardingPassPage from "./pages/onBoarding/onBoardingPass";
+import SearchResultPage from './pages/SearchResult/SearchResultPage';
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Layout />,
-    children: [{ index: true, element: <Home /> }],
+    children: [
+      { index: true, element: <Home /> },
+      { path: "search", element: <SearchResultPage /> },
+    ],
   },
   { path: "/login", element: <LoginPage /> },
   { path: "/term", element: <TermPage /> },
