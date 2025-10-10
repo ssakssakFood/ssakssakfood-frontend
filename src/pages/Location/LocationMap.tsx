@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { postGpsLocation, postLocation } from "../../api/location/location";
+import { postGpsLocation } from "../../api/location/location";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import Button from "../../components/Button";
 import type { gpsLocationSavedRequest } from "../../types/location";
@@ -23,7 +23,7 @@ export default function LocationMap() {
   const place = searchParams.get("place");
   const address = searchParams.get("address");
   const road = searchParams.get("road");
-  const query = searchParams.get("query");
+  // const query = searchParams.get("query");
 
   const location = useLocation();
   const returnPath = location.state?.returnPath ?? "/";
@@ -32,12 +32,11 @@ export default function LocationMap() {
   const handleSelect = async (place: gpsLocationSavedRequest) => {
     if (mode === "call-api") {
       await postGpsLocation(payload);
-      navigate(returnPath);
+      navigate(-1);
     } else {
       navigate(returnPath, {
         state: { selectedPlace: place },
       });
-      console.log(returnPath);
     }
   };
 
@@ -54,7 +53,7 @@ export default function LocationMap() {
         center: centerPos,
         level: 2,
         draggable: true,
-        srcollwheel: true,
+        scrollwheel: true,
       };
 
       const map = new kakao.maps.Map(mapRef.current, mapOption);
@@ -69,6 +68,14 @@ export default function LocationMap() {
     });
   }, [x, y]);
 
+  const payload: gpsLocationSavedRequest = {
+    place_name: place ?? "",
+    address_name: address ?? "",
+    road_address_name: road ?? "",
+    latitude: Number(y ?? 0),
+    longitude: Number(x ?? 0),
+  };
+
   return (
     <div className="flex flex-col h-dvh max-w-[401px] overflow-y-hidden relative">
       <header className="h-12 relative flex items-center self-stretch justify-center">
@@ -81,7 +88,11 @@ export default function LocationMap() {
         <p className="subtitle-b-18 text-center">위치관리</p>
       </header>
 
-      <div ref={mapRef} className="w-full flex-1 relative  ">
+      <div
+        ref={mapRef}
+        className="flex-1 relative  max-w-[401px] bg-red-400"
+        style={{ maxWidth: "444px" }}
+      >
         <div
           className="absolute  flex items-center gap-2 top-0 left-1/2 -translate-x-1/2 w-full h-11 pr-3 py-4  bg-white z-50 cursor-pointer "
           onClick={() => navigate(-1)}
@@ -90,22 +101,15 @@ export default function LocationMap() {
           <span className="flex-1 text-left">{place}</span>
         </div>
       </div>
-      <div className="absolute bottom-0 w-full max-w-[353px] pt-5 pb-6 flex flex-col items-center gap-5 bg-white z-20 rounded-t-2xl text-left">
+      <div className="absolute bottom-0 w-full max-w-[353px] pt-5 pb-6 flex flex-col items-center gap-5 bg-white z-20 rounded-t-2xl ">
         <div className="flex flex-col px-2  w-full items-start gap-1 ">
           <span className="subtitle-b-16">{place}</span>
           <span className="body-r-14">{address}</span>
         </div>
         <Button
-          labelName="이 위치로 이동"
-          onClick={() =>
-            handleSelect({
-              place_name: place ?? "",
-              address_name: address ?? "",
-              road_address_name: road ?? "",
-              latitude: Number(x ?? 0),
-              longitude: Number(y ?? 0),
-            })
-          }
+          labelName="위치 등록하기"
+          disabled={false}
+          onClick={() => handleSelect(payload)}
         />
       </div>
     </div>
