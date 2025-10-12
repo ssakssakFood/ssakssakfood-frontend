@@ -58,6 +58,7 @@ export const useDeleteLocation = () => {
       queryClient.invalidateQueries({
         queryKey: ["myLocation"],
       });
+      queryClient.invalidateQueries({ queryKey: ["primaryLocation"] });
     },
     onError: (err) => console.log(err),
   });

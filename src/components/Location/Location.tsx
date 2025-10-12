@@ -24,14 +24,22 @@ export default function Location({
   return (
     <div
       className=" p-4 flex items-center rounded-lg border border-grey-4 justify-between"
-      onClick={onClick}
+      onClick={() => {
+        if (editMode) return;
+        onClick?.();
+      }}
     >
       <div className="body-r-16">
         <p className="subtitle-b-16 mb-2">{buildingName}</p>
         <p className="body-r-14 text-grey-2">{jibunAddress}</p>
       </div>
       {editMode && (
-        <div onClick={locationDelete}>
+        <div
+          onClick={(e) => {
+            e.stopPropagation();
+            locationDelete();
+          }}
+        >
           <Dismiss />
         </div>
       )}
