@@ -11,7 +11,7 @@ interface LocationListProps {
   place: string;
   address: string;
   // road: string;
-  input: string;
+  input?: string;
   // mode?: "fill-only" | "call-api";
 }
 export default function LocationList({

@@ -36,13 +36,6 @@ export default function LocationSearch() {
   //무한스크롤 옵저버
   const observer = useRef<IntersectionObserver | null>(null);
 
-  //현재위치좌표
-  const x = searchParams.get("x");
-  const y = searchParams.get("y");
-  const place = searchParams.get("place");
-  const address = searchParams.get("address");
-  // const road = searchParams.get("road");
-
   const mode = location.state?.mode ?? "fill-only";
 
   const isFetchingRef = useRef(false);
@@ -173,7 +166,7 @@ export default function LocationSearch() {
         await postLocation(payload);
         navigate(-1);
       } else {
-        navigate(-1, { state: { selectedPlace: p } });
+        navigate(-1);
       }
     } catch (e) {
       console.error(e);
@@ -217,6 +210,7 @@ export default function LocationSearch() {
       {/* 리스트 */}
       {results.map((item, idx) => {
         const isLast = idx === results.length - 1;
+        console.log(item);
         return (
           <div
             onClick={() => handleSelect(item.id)}
@@ -227,10 +221,10 @@ export default function LocationSearch() {
               roadAddress={item.address_name}
               buildingName={item.place_name}
               isSelected={selectedId === item.id}
-              x={x}
-              y={y}
-              place={place}
-              address={address}
+              x={Number(item.x)}
+              y={Number(item.y)}
+              place={item.place_name ?? ""}
+              address={item.address_name ?? ""}
             />
           </div>
         );
