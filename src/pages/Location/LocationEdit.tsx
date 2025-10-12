@@ -4,6 +4,11 @@ import { LocationField } from "../../components/Location/LocationField";
 import SearchLocationBtn from "../../components/Location/SearchLocationBtn";
 import Location from "../../components/Location/Location";
 import { useState } from "react";
+import {
+  useGetMyLocation,
+  useGetMyPrimaryLocation,
+} from "../../api/location/location";
+import type { myLocationResponseDto } from "../../types/location";
 
 export default function LocationEdit() {
   const navigate = useNavigate();
@@ -12,6 +17,26 @@ export default function LocationEdit() {
   // const location = useLocation();
   const handleClick = () => {
     navigate("/location/search");
+  };
+
+  const { data: primaryData, isLoading, isError } = useGetMyPrimaryLocation();
+  console.log(primaryData);
+
+  const {
+    data: myLocationData,
+    isLoading: isLocationLoading,
+    isError: isLocationError,
+  } = useGetMyLocation();
+  console.log(myLocationData);
+
+  const handleClik = () => {
+    if (isEdit) {
+      //수정일때
+
+      setIsEdit(true);
+    } else {
+      setIsEdit(false);
+    }
   };
 
   return (
@@ -41,16 +66,21 @@ export default function LocationEdit() {
           <p className="subtitle-b-16 mr-auto">등록된 위치</p>
           <button
             className="py-1 px-3 rounded-s-sm bg-grey-5 body-r-14"
-            onClick={() => setIsEdit((pre) => !pre)}
+            onClick={handleClik}
           >
             {isEdit ? "수정" : "저장"}
           </button>
         </div>
-        <Location
-          roadAddress="서울시 동작구 상도동"
-          buildingName="전선아 집"
-          editMode={!isEdit}
-        />
+        {myLocationData?.map((item: myLocationResponseDto) => {
+          return (
+            <Location
+              roadAddress={item.jibunAddress}
+              buildingName={item?.buildingName}
+              editMode={!isEdit}
+              userLocationId={Number(item?.userLocationId)}
+            />
+          );
+        })}
       </section>
     </div>
   );

@@ -37,11 +37,11 @@ export default function LocationSearch() {
   const observer = useRef<IntersectionObserver | null>(null);
 
   //현재위치좌표
-  const x = searchParams.get("x");
-  const y = searchParams.get("y");
-  const place = searchParams.get("place");
-  const address = searchParams.get("address");
-  const road = searchParams.get("road");
+  // const x = searchParams.get("x");
+  // const y = searchParams.get("y");
+  // const place = searchParams.get("place");
+  // const address = searchParams.get("address");
+  // const road = searchParams.get("road");
 
   const mode = location.state?.mode ?? "fill-only";
 

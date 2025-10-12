@@ -1,3 +1,4 @@
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import type {
   gpsLocationSavedRequest,
   locationSavedRequest,
@@ -14,4 +15,51 @@ export const postLocation = async (payload: locationSavedRequest) => {
 export const postGpsLocation = async (payload: gpsLocationSavedRequest) => {
   const res = await api.post("/locations/current", payload);
   return res.data.data;
+};
+
+//대표 위치 조회 (홈 상단)
+export const getMyPrimaryLocation = async () => {
+  const { data } = await api.get("/locations/saved");
+  return data;
+};
+
+export const useGetMyPrimaryLocation = () => {
+  return useQuery({
+    queryFn: getMyPrimaryLocation,
+    queryKey: ["primaryLocation"],
+    select: (res) => res.data,
+  });
+};
+
+//내 저장 위치 5개 조회
+export const getMyLocation = async () => {
+  const { data } = await api.get("/locations/saved");
+  return data;
+};
+
+export const useGetMyLocation = () => {
+  return useQuery({
+    queryFn: getMyLocation,
+    queryKey: ["myLocation"],
+  });
+};
+
+//위치 삭제
+export const deleteLocation = async (userLocationId: number) => {
+  const { data } = await api.delete(`/locations/saved/${userLocationId}`);
+  return data;
+};
+
+export const useDeleteLocation = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (id: number) => deleteLocation(id),
+    onSuccess: () => {
+      console.log("성공");
+      queryClient.invalidateQueries({
+        queryKey: ["myLocation"],
+      });
+    },
+    onError: (err) => console.log(err),
+  });
 };

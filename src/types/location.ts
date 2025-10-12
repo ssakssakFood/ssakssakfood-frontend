@@ -21,3 +21,17 @@ export type gpsLocationSavedRequest = {
   address_name: string;
   road_address_name: string;
 };
+
+//
+export type myLocationResponseDto = {
+  userLocationId: number;
+  isPrimary: true;
+  orderIndex: 0;
+  displayName: string;
+  roadAddress: string;
+  jibunAddress: string;
+  buildingName: string;
+  latitude: number;
+  longitude: number;
+  locationId: number;
+};
