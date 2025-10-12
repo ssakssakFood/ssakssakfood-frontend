@@ -9,6 +9,11 @@ export default function LocationEdit() {
   const navigate = useNavigate();
   const [isEdit, setIsEdit] = useState<boolean>();
 
+  // const location = useLocation();
+  const handleClick = () => {
+    navigate("/location/search");
+  };
+
   return (
     <div className="w-full flex flex-col">
       <header className="h-12 relative flex items-center self-stretch justify-center mb-8">
@@ -20,9 +25,11 @@ export default function LocationEdit() {
         />
         <p className="subtitle-b-18 text-center">위치관리</p>
       </header>
-      <LocationField />
-      <span className=" h-1 bg-grey-5 mb-4"></span>
-      <SearchLocationBtn className="mb-6" />
+      <div onClick={handleClick} className="cursor-pointer">
+        <LocationField />
+        <div className=" h-1 bg-grey-5 mb-4"></div>
+        <SearchLocationBtn className="mb-6" />
+      </div>
       <section className=" flex flex-col">
         <div className="flex flex-col gap-4 ">
           <p className="subtitle-b-16">선택된 위치</p>
