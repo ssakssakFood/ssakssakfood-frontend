@@ -164,7 +164,7 @@ export default function LocationSearch() {
     try {
       if (mode === "call-api") {
         await postLocation(payload);
-        navigate(-1);
+        navigate("/location/edit");
       } else {
         navigate(-1);
       }
