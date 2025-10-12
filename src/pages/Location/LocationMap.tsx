@@ -22,21 +22,18 @@ export default function LocationMap() {
   const y = searchParams.get("y");
   const place = searchParams.get("place");
   const address = searchParams.get("address");
-  const road = searchParams.get("road");
+  // const road = searchParams.get("road");
   // const query = searchParams.get("query");
 
   const location = useLocation();
   const returnPath = location.state?.returnPath ?? "/";
-  const mode = location.state?.mode ?? "fill-only";
-
+  const mode = location.state?.mode ?? "call-api";
   const handleSelect = async (place: gpsLocationSavedRequest) => {
     if (mode === "call-api") {
       await postGpsLocation(payload);
       navigate(-1);
     } else {
-      navigate(returnPath, {
-        state: { selectedPlace: place },
-      });
+      navigate(returnPath, { state: { selectedPlace: place } });
     }
   };
 
@@ -69,9 +66,8 @@ export default function LocationMap() {
   }, [x, y]);
 
   const payload: gpsLocationSavedRequest = {
-    place_name: place ?? "",
-    address_name: address ?? "",
-    road_address_name: road ?? "",
+    buildingName: place ?? "",
+    jibunAddress: address ?? "",
     latitude: Number(y ?? 0),
     longitude: Number(x ?? 0),
   };
@@ -88,11 +84,7 @@ export default function LocationMap() {
         <p className="subtitle-b-18 text-center">위치관리</p>
       </header>
 
-      <div
-        ref={mapRef}
-        className="flex-1 relative  max-w-[401px] bg-red-400"
-        style={{ maxWidth: "444px" }}
-      >
+      <div ref={mapRef} className="flex-1 relative  max-w-[401px] bg-red-400">
         <div
           className="absolute  flex items-center gap-2 top-0 left-1/2 -translate-x-1/2 w-full h-11 pr-3 py-4  bg-white z-50 cursor-pointer "
           onClick={() => navigate(-1)}

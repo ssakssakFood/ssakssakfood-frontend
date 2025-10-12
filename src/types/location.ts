@@ -17,9 +17,10 @@ export type locationSavedRequest = {
 export type gpsLocationSavedRequest = {
   latitude: number;
   longitude: number;
-  place_name: string;
-  address_name: string;
-  road_address_name: string;
+  buildingName: string;
+  jibunAddress: string;
+  capturedA?: string;
+  accuracyMeters?: number;
 };
 
 //

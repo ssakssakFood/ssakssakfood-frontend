@@ -27,7 +27,6 @@ export const useGetMyPrimaryLocation = () => {
   return useQuery({
     queryFn: getMyPrimaryLocation,
     queryKey: ["primaryLocation"],
-    select: (res) => res.data,
   });
 };
 
