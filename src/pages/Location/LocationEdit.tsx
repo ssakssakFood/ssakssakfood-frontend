@@ -17,7 +17,12 @@ export default function LocationEdit() {
 
   // const location = useLocation();
   const handleClick = () => {
-    navigate("/location/search", { state: { mode: "call-api" } });
+    const fullLocation = (myLocationData?.length ?? 0) >= 5;
+    if (fullLocation) {
+      alert("주소지는 최대 5개만 등록 가능합니다");
+    } else {
+      navigate("/location/search", { state: { mode: "call-api" } });
+    }
   };
 
   const {
@@ -40,6 +45,7 @@ export default function LocationEdit() {
     patchLocation.mutate(id);
   };
   console.log(myLocationData, "겟");
+
   // const primary = myLocationData?.find(
   //   (item: myLocationResponseDto) => item.isPrimary
   // );
@@ -67,7 +73,7 @@ export default function LocationEdit() {
         />
         <p className="subtitle-b-18 text-center">위치관리</p>
       </header>
-      <div onClick={handleClick} className="cursor-pointer">
+      <div onClick={handleClick}>
         <LocationField />
         <div className=" h-1 bg-grey-5 mb-4"></div>
         <SearchLocationBtn className="mb-6" />
