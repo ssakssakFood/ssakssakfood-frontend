@@ -9,6 +9,8 @@ import OnBoardingPage from "./pages/onBoarding/onBoarding";
 import OnBoardingPassPage from "./pages/onBoarding/onBoardingPass";
 import SearchResultPage from "./pages/SearchResult/SearchResultPage";
 import NearByPage from "./pages/NearBy/NearByPage";
+import CategoryPage from './pages/Category/CategoryPage';
+import MenuDetailPage from './pages/Menu/MenuDetailPage';
 
 const router = createBrowserRouter([
   {
@@ -18,8 +20,12 @@ const router = createBrowserRouter([
       { index: true, element: <Home /> },
       { path: "search", element: <SearchResultPage /> },
       { path: "nearby", element: <NearByPage /> },
+      { path: "category/:slug", element: <CategoryPage /> },
     ],
   },
+  //메뉴 상세 페이지
+  { path: "menu/:id", element: <MenuDetailPage /> },
+
   { path: "/login", element: <LoginPage /> },
   { path: "/term", element: <TermPage /> },
   { path: "*", element: <ErrorPage /> },

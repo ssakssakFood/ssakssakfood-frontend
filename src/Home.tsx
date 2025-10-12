@@ -1,12 +1,12 @@
-import React, { useMemo } from "react";
-import { MENUS } from "@/Mock/menudatas"; // 최대 할인율로 가져올 메뉴 더미 데이터
-import { CATEGORY } from "./constants/Category";
-import MenuCard from "./components/MenuCard";
-import { MenuHeader } from "./components/Headers";
-import StockBadge from "./components/StockBadge";
-import Carousel from "./components/Carousel";
+import React, { useMemo } from 'react';
+import { MENUS } from '@/Mock/menudatas'; // 최대 할인율로 가져올 메뉴 더미 데이터
+import { CATEGORY } from './constants/Category';
+import MenuCard from './components/MenuCard';
+import Carousel from './components/Carousel';
+import { useNavigate } from 'react-router-dom';
 
 const Home: React.FC = () => {
+  const navigate = useNavigate();
   // 할인율 높은 메뉴 상위 6개
   const topDiscountMenus = useMemo(() => {
     return [...MENUS]
@@ -22,7 +22,11 @@ const Home: React.FC = () => {
 
       <div className="grid grid-cols-4 gap-x-[16px] gap-y-[16px] mt-[16px]">
         {CATEGORY.map((category) => (
-          <div key={category.slug} className="w-[72px]">
+          <div
+            key={category.slug}
+            onClick={() => navigate(`/category/${category.slug}`)}
+            className="w-[72px] cursor-pointer"
+          >
             <div className="w-[72px] h-[72px] bg-[#D9D9D9]"></div>
             <span className="text-[14px] font-[500] flex justify-center mt-[8px]">
               {category.label}
@@ -34,9 +38,10 @@ const Home: React.FC = () => {
       <div className="flex flex-col gap-[24px] mt-[32px] mb-[84px]">
         <span className="text-[20px] font-bold">할인율 높은 음식</span>
         <div className="flex flex-col gap-[24px]">
-          {topDiscountMenus.map((menu, idx) => (
+          {topDiscountMenus.map((menu) => (
             <MenuCard
-              key={idx}
+              key={menu.id}
+              id={menu.id}
               title={menu.title}
               storeName={menu.storeName}
               pickupTime={menu.pickupTime}
