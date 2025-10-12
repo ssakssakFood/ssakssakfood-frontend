@@ -37,10 +37,10 @@ export default function LocationSearch() {
   const observer = useRef<IntersectionObserver | null>(null);
 
   //현재위치좌표
-  // const x = searchParams.get("x");
-  // const y = searchParams.get("y");
-  // const place = searchParams.get("place");
-  // const address = searchParams.get("address");
+  const x = searchParams.get("x");
+  const y = searchParams.get("y");
+  const place = searchParams.get("place");
+  const address = searchParams.get("address");
   // const road = searchParams.get("road");
 
   const mode = location.state?.mode ?? "fill-only";
@@ -141,7 +141,7 @@ export default function LocationSearch() {
         navigate(
           `/location/map?x=${longitude}&y=${latitude}&place=${encodeURIComponent(place)}&address=${encodeURIComponent(address)}&query=${encodeURIComponent(input ?? "")}`,
           {
-            state: { mode },
+            state: { mode: "call-api" },
           }
         );
       } catch (err) {
@@ -227,6 +227,10 @@ export default function LocationSearch() {
               roadAddress={item.address_name}
               buildingName={item.place_name}
               isSelected={selectedId === item.id}
+              x={x}
+              y={y}
+              place={place}
+              address={address}
             />
           </div>
         );

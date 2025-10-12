@@ -18,17 +18,17 @@ export const postGpsLocation = async (payload: gpsLocationSavedRequest) => {
 };
 
 //대표 위치 조회 (홈 상단)
-export const getMyPrimaryLocation = async () => {
-  const { data } = await api.get("/locations/saved");
-  return data;
-};
+// export const getMyPrimaryLocation = async () => {
+//   const { data } = await api.get("/locations/primary");
+//   return data;
+// };
 
-export const useGetMyPrimaryLocation = () => {
-  return useQuery({
-    queryFn: getMyPrimaryLocation,
-    queryKey: ["primaryLocation"],
-  });
-};
+// export const useGetMyPrimaryLocation = () => {
+//   return useQuery({
+//     queryFn: getMyPrimaryLocation,
+//     queryKey: ["primaryLocation"],
+//   });
+// };
 
 //내 저장 위치 5개 조회
 export const getMyLocation = async () => {
@@ -53,6 +53,26 @@ export const useDeleteLocation = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (id: number) => deleteLocation(id),
+    onSuccess: () => {
+      console.log("성공");
+      queryClient.invalidateQueries({
+        queryKey: ["myLocation"],
+      });
+    },
+    onError: (err) => console.log(err),
+  });
+};
+
+//대표위치 조정
+export const PatchPrimaryLocation = async (id: number) => {
+  const { data } = await api.patch(`/locations/saved/${id}/primary`);
+  return data;
+};
+
+export const usePatchLocation = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (id: number) => PatchPrimaryLocation(id),
     onSuccess: () => {
       console.log("성공");
       queryClient.invalidateQueries({

@@ -6,41 +6,50 @@ import Location from "../../components/Location/Location";
 import { useState } from "react";
 import {
   useGetMyLocation,
-  useGetMyPrimaryLocation,
+  usePatchLocation,
 } from "../../api/location/location";
 import type { myLocationResponseDto } from "../../types/location";
 
 export default function LocationEdit() {
   const navigate = useNavigate();
-  const [isEdit, setIsEdit] = useState<boolean>();
+  const [isEdit, setIsEdit] = useState<boolean>(true);
 
   // const location = useLocation();
   const handleClick = () => {
     navigate("/location/search");
   };
 
-  const { data: primaryData, isLoading, isError } = useGetMyPrimaryLocation();
-  console.log(primaryData);
-
   const {
     data: myLocationData,
-    isLoading: isLocationLoading,
-    isError: isLocationError,
+    isLoading: isLoading,
+    isError: isError,
   } = useGetMyLocation();
-  console.log(myLocationData);
+  // console.log(myLocationData);
 
-  const handleClik = () => {
-    if (isEdit) {
-      //수정일때
-
-      setIsEdit(true);
-    } else {
-      setIsEdit(false);
-    }
+  const patchLocation = usePatchLocation();
+  const handlePatchLocation = (id: number) => {
+    console.log("안녕");
+    patchLocation.mutate(id);
   };
+  console.log(myLocationData, "겟");
+  const primary = myLocationData?.find(
+    (item: myLocationResponseDto) => item.isPrimary
+  );
+  const notPrimary = myLocationData?.filter(
+    (item: myLocationResponseDto) => !item.isPrimary
+  );
+  console.log(notPrimary, "p아닌거");
+
+  if (isLoading) {
+    return <div>로딩중</div>;
+  }
+
+  if (isError) {
+    return <p className="body-rg-500">오류 발생</p>;
+  }
 
   return (
-    <div className="w-full flex flex-col">
+    <div className="w-full flex flex-col mb-8">
       <header className="h-12 relative flex items-center self-stretch justify-center mb-8">
         <img
           src={ChevronL}
@@ -59,25 +68,33 @@ export default function LocationEdit() {
         <div className="flex flex-col gap-4 ">
           <p className="subtitle-b-16">선택된 위치</p>
           <div className="bg-sub1 body-r-16 rounded-lg p-4 mb-6">
-            서울 동작구 상도동
+            {primary && (
+              <>
+                <p className="subtitle-b-16 mb-2">{primary.buildingName}</p>
+                <p className="body-r-14 text-grey-2">{primary.jibunAddress}</p>
+              </>
+            )}
           </div>
         </div>
         <div className="flex  items-center mb-4">
           <p className="subtitle-b-16 mr-auto">등록된 위치</p>
           <button
             className="py-1 px-3 rounded-s-sm bg-grey-5 body-r-14"
-            onClick={handleClik}
+            onClick={() => setIsEdit((pre) => !pre)}
           >
             {isEdit ? "수정" : "저장"}
           </button>
         </div>
-        {myLocationData?.map((item: myLocationResponseDto) => {
+        {notPrimary?.map((item: myLocationResponseDto) => {
+          const responseBulidingName =
+            item?.buildingName === null ? "현재 위치" : item?.buildingName;
           return (
             <Location
-              roadAddress={item.jibunAddress}
-              buildingName={item?.buildingName}
+              jibunAddress={item.jibunAddress}
+              buildingName={responseBulidingName}
               editMode={!isEdit}
               userLocationId={Number(item?.userLocationId)}
+              onClick={() => handlePatchLocation(item.userLocationId)}
             />
           );
         })}
