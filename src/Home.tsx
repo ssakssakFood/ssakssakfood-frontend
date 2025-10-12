@@ -1,55 +1,53 @@
-// src/pages/Home.tsx
+import React, { useMemo } from "react";
+import { MENUS } from "@/Mock/menudatas"; // 최대 할인율로 가져올 메뉴 더미 데이터
+import { CATEGORY } from "./constants/Category";
+import MenuCard from "./components/MenuCard";
+import { MenuHeader } from "./components/Headers";
+import StockBadge from "./components/StockBadge";
+import Carousel from "./components/Carousel";
 
-import React, { useRef, useState } from "react";
-import DateAndTimePicker, {
-  type DateAndTimePickerHandle,
-} from "./components/Date_Time/DateAndPicker";
-import InputField from "./components/InputField";
-
-/**
- * 프로젝트의 메인 홈 페이지 컴포넌트
- */
 const Home: React.FC = () => {
-  const [selectedDate, setSelectedDate] = useState("");
-  const [openModal, setOpenModal] = useState(false);
-  const pickerRef = useRef<DateAndTimePickerHandle>(null);
-
-  const handleCloseOverlay = () => {
-    if (pickerRef.current) {
-      const date = pickerRef.current.getDueString();
-      setSelectedDate(date);
-    }
-    setOpenModal(false);
-  };
+  // 할인율 높은 메뉴 상위 6개
+  const topDiscountMenus = useMemo(() => {
+    return [...MENUS]
+      .sort((a, b) => b.discountRate - a.discountRate)
+      .slice(0, 6);
+  }, []);
 
   return (
     <div>
-      <nav className="flex space-x-6 py-4 border-b border-gray-200 bg-white sticky top-0 z-10">
-        헤더
-      </nav>
-      <h2 className="text-3xl font-bold text-gray-800 mb-4">TEST!</h2>
-      <p className="text-gray-600">TEST TEST.</p>
-      <InputField
-        onClick={() => setOpenModal(true)}
-        readOnly
-        value={selectedDate}
-      />
-      {openModal && (
-        <div
-          id="date-picker-overlay"
-          className="fixed inset-0 bg-black/50 z-40 flex items-center justify-center"
-          onClick={(e) => {
-            const target = e.target as HTMLElement;
-            if (target.id === "date-picker-overlay") {
-              handleCloseOverlay();
-            }
-          }}
-        >
-          <div onClick={(e) => e.stopPropagation()}>
-            <DateAndTimePicker ref={pickerRef} showTime={true} />
+      <div className="mx-[-24px]">
+        <Carousel />
+      </div>
+
+      <div className="grid grid-cols-4 gap-x-[16px] gap-y-[16px] mt-[16px]">
+        {CATEGORY.map((category) => (
+          <div key={category.slug} className="w-[72px]">
+            <div className="w-[72px] h-[72px] bg-[#D9D9D9]"></div>
+            <span className="text-[14px] font-[500] flex justify-center mt-[8px]">
+              {category.label}
+            </span>
           </div>
+        ))}
+      </div>
+
+      <div className="flex flex-col gap-[24px] mt-[32px] mb-[84px]">
+        <span className="text-[20px] font-bold">할인율 높은 음식</span>
+        <div className="flex flex-col gap-[24px]">
+          {topDiscountMenus.map((menu, idx) => (
+            <MenuCard
+              key={idx}
+              title={menu.title}
+              storeName={menu.storeName}
+              pickupTime={menu.pickupTime}
+              originalPrice={menu.originalPrice}
+              salePrice={menu.salePrice}
+              discountRate={menu.discountRate}
+              stockCount={menu.stockCount}
+            />
+          ))}
         </div>
-      )}
+      </div>
     </div>
   );
 };
