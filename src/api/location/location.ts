@@ -17,18 +17,18 @@ export const postGpsLocation = async (payload: gpsLocationSavedRequest) => {
   return res.data.data;
 };
 
-//대표 위치 조회 (홈 상단)
-// export const getMyPrimaryLocation = async () => {
-//   const { data } = await api.get("/locations/primary");
-//   return data;
-// };
+// 대표 위치 조회 (홈 상단)
+export const getMyPrimaryLocation = async () => {
+  const { data } = await api.get("/locations/primary");
+  return data;
+};
 
-// export const useGetMyPrimaryLocation = () => {
-//   return useQuery({
-//     queryFn: getMyPrimaryLocation,
-//     queryKey: ["primaryLocation"],
-//   });
-// };
+export const useGetMyPrimaryLocation = () => {
+  return useQuery({
+    queryFn: getMyPrimaryLocation,
+    queryKey: ["primaryLocation"],
+  });
+};
 
 //내 저장 위치 5개 조회
 export const getMyLocation = async () => {
@@ -78,6 +78,7 @@ export const usePatchLocation = () => {
       queryClient.invalidateQueries({
         queryKey: ["myLocation"],
       });
+      queryClient.invalidateQueries({ queryKey: ["primaryLocation"] });
     },
     onError: (err) => console.log(err),
   });

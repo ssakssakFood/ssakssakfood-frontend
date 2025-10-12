@@ -6,6 +6,7 @@ import Location from "../../components/Location/Location";
 import { useState } from "react";
 import {
   useGetMyLocation,
+  useGetMyPrimaryLocation,
   usePatchLocation,
 } from "../../api/location/location";
 import type { myLocationResponseDto } from "../../types/location";
@@ -16,7 +17,7 @@ export default function LocationEdit() {
 
   // const location = useLocation();
   const handleClick = () => {
-    navigate("/location/search");
+    navigate("/location/search", { state: { mode: "call-api" } });
   };
 
   const {
@@ -26,15 +27,22 @@ export default function LocationEdit() {
   } = useGetMyLocation();
   // console.log(myLocationData);
 
+  const {
+    data: primaryData,
+    // isLoading: LocationData,
+    // isError: LocationError,
+  } = useGetMyPrimaryLocation();
+  console.log(primaryData, "프라이머리");
+
   const patchLocation = usePatchLocation();
   const handlePatchLocation = (id: number) => {
     console.log("안녕");
     patchLocation.mutate(id);
   };
   console.log(myLocationData, "겟");
-  const primary = myLocationData?.find(
-    (item: myLocationResponseDto) => item.isPrimary
-  );
+  // const primary = myLocationData?.find(
+  //   (item: myLocationResponseDto) => item.isPrimary
+  // );
   const notPrimary = myLocationData?.filter(
     (item: myLocationResponseDto) => !item.isPrimary
   );
@@ -68,12 +76,12 @@ export default function LocationEdit() {
         <div className="flex flex-col gap-4 ">
           <p className="subtitle-b-16">선택된 위치</p>
           <div className="bg-sub1 body-r-16 rounded-lg p-4 mb-6">
-            {primary && (
-              <>
-                <p className="subtitle-b-16 mb-2">{primary.buildingName}</p>
-                <p className="body-r-14 text-grey-2">{primary.jibunAddress}</p>
-              </>
-            )}
+            <>
+              <p className="subtitle-b-16 mb-2">{primaryData?.buildingName}</p>
+              <p className="body-r-14 text-grey-2">
+                {primaryData?.jibunAddress}
+              </p>
+            </>
           </div>
         </div>
         <div className="flex  items-center mb-4">
@@ -90,11 +98,14 @@ export default function LocationEdit() {
             item?.buildingName === null ? "현재 위치" : item?.buildingName;
           return (
             <Location
+              key={item.userLocationId}
               jibunAddress={item.jibunAddress}
               buildingName={responseBulidingName}
               editMode={!isEdit}
               userLocationId={Number(item?.userLocationId)}
-              onClick={() => handlePatchLocation(item.userLocationId)}
+              onClick={() => {
+                handlePatchLocation(item.userLocationId);
+              }}
             />
           );
         })}

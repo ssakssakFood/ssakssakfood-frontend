@@ -216,6 +216,7 @@ export default function LocationSearch() {
             onClick={() => handleSelect(item.id)}
             ref={isLast ? lastResultRef : null}
             className="scrollbar-hide"
+            key={item.id}
           >
             <LocationList
               roadAddress={item.address_name}
