@@ -15,14 +15,8 @@ export default function LocationEdit() {
   const navigate = useNavigate();
   const [isEdit, setIsEdit] = useState<boolean>(true);
 
-  // const location = useLocation();
   const handleClick = () => {
-    const fullLocation = (myLocationData?.length ?? 0) >= 5;
-    if (fullLocation) {
-      alert("주소지는 최대 5개만 등록 가능합니다");
-    } else {
-      navigate("/location/search", { state: { mode: "call-api" } });
-    }
+    navigate("/location/search", { state: { mode: "call-api" } });
   };
 
   const {
@@ -34,8 +28,8 @@ export default function LocationEdit() {
 
   const {
     data: primaryData,
-    // isLoading: LocationData,
-    // isError: LocationError,
+    isLoading: LocationData,
+    isError: LocationError,
   } = useGetMyPrimaryLocation();
   console.log(primaryData, "프라이머리");
 
@@ -46,22 +40,19 @@ export default function LocationEdit() {
   };
   console.log(myLocationData, "겟");
 
-  // const primary = myLocationData?.find(
-  //   (item: myLocationResponseDto) => item.isPrimary
-  // );
   const notPrimary = myLocationData?.filter(
     (item: myLocationResponseDto) => !item.isPrimary
   );
   console.log(notPrimary, "p아닌거");
 
-  if (isLoading) {
+  if (isLoading || LocationData) {
     return <div>로딩중</div>;
   }
 
-  if (isError) {
+  if (isError || LocationError) {
     return <p className="body-rg-500">오류 발생</p>;
   }
-
+  const fullLocation = myLocationData?.length === 5;
   return (
     <div className="w-full flex flex-col mb-8">
       <header className="h-12 relative flex items-center self-stretch justify-center mb-8">
@@ -73,8 +64,16 @@ export default function LocationEdit() {
         />
         <p className="subtitle-b-18 text-center">위치관리</p>
       </header>
-      <div onClick={handleClick}>
-        <LocationField />
+      <div
+        onClick={handleClick}
+        onClickCapture={(e) => {
+          if (fullLocation) {
+            e.stopPropagation();
+            alert("주소지는 최대 5개만 등록 가능합니다");
+          }
+        }}
+      >
+        <LocationField mode={fullLocation ? "fill-only" : "call-api"} />
         <div className=" h-1 bg-grey-5 mb-4"></div>
         <SearchLocationBtn className="mb-6" />
       </div>
