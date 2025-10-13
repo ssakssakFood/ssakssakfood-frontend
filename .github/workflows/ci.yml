@@ -1,53 +1,36 @@
 name: CI Check (Lint + Build)
 
-# 워크플로우가 실행될 조건 설정
 on:
   pull_request:
-    # main 또는 develop 브랜치로 PR이 들어올 때 실행
     branches: [main, develop]
   push:
-    # main 또는 develop 브랜치에 코드가 푸시될 때 실행
     branches: [main, develop]
 
 jobs:
   lint-and-build:
-    # 이 Job이 실행될 환경 설정
     runs-on: ubuntu-latest
 
     steps:
-      # ✅ 1. 코드 체크아웃: 레포지토리 코드를 워크플로우 환경으로 가져옵니다.
+      # ✅ 1. 코드 체크아웃
       - name: Checkout code
         uses: actions/checkout@v4
-
-      # ✅ 2. Node.js + pnpm 환경 설정
-      - name: Setup Node.js
+      - name: Setup Node.js and pnpm
         uses: actions/setup-node@v4
         with:
-          # package.json에 적합한 Node.js 버전을 명시합니다.
           node-version: 24
-          # pnpm을 패키지 매니저로 사용하여 의존성 캐싱을 활성화합니다.
           cache: 'pnpm'
-
-      # pnpm의 특정 버전을 보장하기 위해 명시적으로 설치합니다.
-      - name: Install pnpm
-        run: |
-          npm install -g pnpm@10.13.1
-          pnpm -v # 설치된 버전 확인
+          cache-dependency-path: pnpm-lock.yaml 
 
       # ✅ 3. 의존성 설치
       - name: Install dependencies
-        # frozen-lockfile은 CI 환경에서 lockfile이 변경되지 않도록 강제하여 안정성을 높입니다.
         run: pnpm install --frozen-lockfile
 
       # ✅ 4. Lint 및 Prettier 검사
       - name: Run ESLint and Prettier check
         run: |
-          # package.json의 "lint" 스크립트 실행 (ESLint)
           pnpm lint
-          # package.json의 포매팅 스크립트와 동일하게 파일 검사 (수정 없이 오류만 보고)
           pnpm prettier --check "**/*.{ts,tsx,js,jsx,json,css,scss,md}"
 
       # ✅ 5. Build 테스트
       - name: Build
-        # package.json의 "build" 스크립트 실행 (TypeScript 컴파일 및 Vite 빌드)
         run: pnpm build
