@@ -35,7 +35,7 @@ export default function MenuDetailPage() {
 
   return (
     <div className="relative w-full max-w-[401px] mx-auto">
-      <div className="absolute top-6 left-3 z-20">
+      <div className="absolute top-6 left-3 z-20" onClick={() => window.history.back()}>
         <img
           src={chevronLeft}
           alt="뒤로가기"
@@ -107,23 +107,26 @@ export default function MenuDetailPage() {
             </div>
           )}
         </div>
-
-        {/* ✅ 하단 고정 버튼 */}
         <footer className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[401px] bg-white border-t border-gray-100 z-50">
           <div className="p-4">
             <Button
               className="w-full text-lg py-6 cursor-pointer"
               labelName="예약하기"
               disabled={menu.stockCount === 0}
-              onClick={() => setIsSheetOpen(true)} // 🟢 버튼 클릭 시 시트 오픈
+              onClick={() => setIsSheetOpen(true)}
             />
           </div>
         </footer>
 
-        {/* ✅ 주문 바텀시트 (드래그 가능, 외부 제어 가능) */}
+        {/* 예약 바텀 시트*/}
         <OrderBottomSheet
           isOpen={isSheetOpen}
           onClose={() => setIsSheetOpen(false)}
+          title={menu.title}
+          storeName={menu.storeName}
+          pickupTime={menu.pickupTime}
+          salePrice={menu.salePrice}
+          stockCount={menu.stockCount}
         />
       </div>
     </div>

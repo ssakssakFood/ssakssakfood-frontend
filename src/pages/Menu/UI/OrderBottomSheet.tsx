@@ -1,21 +1,32 @@
 import { useRef, useState, useEffect, useCallback } from "react";
+import Minus from "@/assets/minus.svg";
+import Plus from "@/assets/plus.svg";
 
 interface OrderBottomSheetProps {
   isOpen: boolean;
   onClose: () => void;
+  title: string;
+  stockCount: number;
+  storeName: string;
+  pickupTime: string;
+  salePrice: number;
 }
 
-export default function OrderBottomSheet({ isOpen, onClose }: OrderBottomSheetProps) {
+export default function OrderBottomSheet({ isOpen, onClose, title, stockCount, storeName, pickupTime, salePrice }: OrderBottomSheetProps) {
   const sheetRef = useRef<HTMLDivElement>(null);
   const startY = useRef(0);
   const currentY = useRef(0);
   const [translateY, setTranslateY] = useState(292); 
   const [isDragging, setIsDragging] = useState(false);
+  const [buyQuantity, setBuyQuantity] = useState(1);
+
   
   const ANIMATION_DURATION = 300; 
   const MAX_HEIGHT = 292; 
   const MIN_HEIGHT = 0; 
   const CLOSE_THRESHOLD = 100; 
+
+  const totalPrice = salePrice * buyQuantity;
 
   // --- 스크롤 막기 로직 추가 ---
   useEffect(() => {
@@ -143,37 +154,41 @@ export default function OrderBottomSheet({ isOpen, onClose }: OrderBottomSheetPr
             </div>
             <div className="flex flex-col justify-center">
               <div className="flex items-center gap-2">
-                <span className="text-[18px] font-bold">식빵</span>
-                <span className="text-[14px] font-semibold">파리바게트</span>
+                <span className="text-[18px] font-bold">{title}</span>
+                <span className="text-[14px] font-semibold">{storeName}</span>
               </div>
               <div className="flex items-center gap-2 text-[14px] text-[#7F7F7F]">
-                픽업 가능 시간 <span>14:00 ~ 15:00</span>
+                픽업 가능 시간 <span>{pickupTime}</span>
               </div>
             </div>
           </div>
 
           <div className="flex flex-col w-full bg-[#F3F3F3] rounded-2xl p-4 gap-2">
-            <div>구매 수량</div>
+            <div className="text-[16px] font-semibold">구매 수량</div>
             <div className="flex justify-between">
-              <div>
-                <button>-</button>
-                <span>1</span>
-                <button>+</button>
+              <div className="flex items-center gap-4">
+                <button onClick={() => setBuyQuantity((prev) => Math.max(prev - 1, 1))} disabled={buyQuantity <= 1 || stockCount === 0} className="disabled:opacity-50 cursor-pointer">
+                  <img src={Minus} alt="minus" />
+                </button>
+                <span>{buyQuantity}</span>
+                <button onClick={() => setBuyQuantity((prev) => Math.min(prev + 1, stockCount))} disabled={buyQuantity >= stockCount} className="disabled:opacity-50 cursor-pointer">
+                  <img src={Plus} alt="plus" />
+                </button>
               </div>
-              <div>
-                <span>10000원</span>
+              <div className="text-[16px] font-[400]">
+                <span>{salePrice.toLocaleString()}</span>원
               </div>
             </div>
           </div>
 
-          <div className="flex justify-between">
-            <div>총 상품 금액</div>
-            <div className="flex gap-4">
-              <div>
-                총 수량<span> n </span>개
+          <div className="flex justify-between items-center">
+            <div className="text-[16px] font-semibold">총 상품 금액</div>
+            <div className="flex gap-4 items-center justify-end">
+              <div className="text-[14px] text-[#7F7F7F]">
+                총 수량<span>{buyQuantity}</span>개
               </div>
-              <div>
-                <span>10000</span>원
+              <div className="text-[18px] font-bold">
+                <span>{totalPrice.toLocaleString()}</span>원
               </div>
             </div>
           </div>
