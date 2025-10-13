@@ -31,7 +31,7 @@ export default function LocationMap() {
   const handleSelect = async (place: gpsLocationSavedRequest) => {
     if (mode === "call-api") {
       await postGpsLocation(payload);
-      navigate(-1);
+      navigate("/location/edit");
     } else {
       navigate(returnPath, { state: { selectedPlace: place } });
     }
