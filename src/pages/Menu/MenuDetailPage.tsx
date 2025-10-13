@@ -5,7 +5,7 @@ import StockBadge from "@/components/StockBadge";
 import StoreInfoCard from "@/components/StoreInfoCard";
 import MenuCard from "@/components/MenuCard";
 import Button from "@/components/Button";
-import chevronLeft from "@/assets/floating-checvron-left.svg";
+import chevronLeft from "@/assets/icons/floating-checvron-left.svg";
 import OrderBottomSheet from "./UI/OrderBottomSheet";
 
 const CATEGORY_LABEL_MAP = {
@@ -31,7 +31,7 @@ export default function MenuDetailPage() {
   const getAccessToken = () => {
     const cookies = document.cookie.split("; ");
     const tokenCookie = cookies.find((cookie) =>
-      cookie.startsWith("AccessToken="),
+      cookie.startsWith("AccessToken=")
     );
     return tokenCookie ? tokenCookie.split("=")[1] : null;
   };
@@ -58,7 +58,7 @@ export default function MenuDetailPage() {
     CATEGORY_LABEL_MAP[menu.slug as keyof typeof CATEGORY_LABEL_MAP];
 
   const otherMenus = MENUS.filter(
-    (m) => m.storeName === menu.storeName && m.id !== menu.id,
+    (m) => m.storeName === menu.storeName && m.id !== menu.id
   );
 
   return (
