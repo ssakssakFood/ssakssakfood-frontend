@@ -12,19 +12,26 @@ interface OrderBottomSheetProps {
   salePrice: number;
 }
 
-export default function OrderBottomSheet({ isOpen, onClose, title, stockCount, storeName, pickupTime, salePrice }: OrderBottomSheetProps) {
+export default function OrderBottomSheet({
+  isOpen,
+  onClose,
+  title,
+  stockCount,
+  storeName,
+  pickupTime,
+  salePrice,
+}: OrderBottomSheetProps) {
   const sheetRef = useRef<HTMLDivElement>(null);
   const startY = useRef(0);
   const currentY = useRef(0);
-  const [translateY, setTranslateY] = useState(292); 
+  const [translateY, setTranslateY] = useState(292);
   const [isDragging, setIsDragging] = useState(false);
   const [buyQuantity, setBuyQuantity] = useState(1);
 
-  
-  const ANIMATION_DURATION = 300; 
-  const MAX_HEIGHT = 292; 
-  const MIN_HEIGHT = 0; 
-  const CLOSE_THRESHOLD = 100; 
+  const ANIMATION_DURATION = 300;
+  const MAX_HEIGHT = 292;
+  const MIN_HEIGHT = 0;
+  const CLOSE_THRESHOLD = 100;
 
   const totalPrice = salePrice * buyQuantity;
 
@@ -32,34 +39,34 @@ export default function OrderBottomSheet({ isOpen, onClose, title, stockCount, s
   useEffect(() => {
     if (isOpen) {
       // 바텀 시트가 열릴 때 body의 스크롤을 막습니다.
-      document.body.style.overflow = 'hidden';
-      document.body.style.touchAction = 'none'; // 터치 스크롤 방지
+      document.body.style.overflow = "hidden";
+      document.body.style.touchAction = "none"; // 터치 스크롤 방지
     } else {
       // 바텀 시트가 닫힐 때 body의 스크롤을 다시 허용합니다.
       // 이 로직은 부모 컴포넌트에서 isOpen이 false로 변경될 때 실행됩니다.
-      document.body.style.overflow = '';
-      document.body.style.touchAction = '';
+      document.body.style.overflow = "";
+      document.body.style.touchAction = "";
     }
-    
+
     // 컴포넌트가 언마운트되거나 isOpen이 false가 될 때 정리(cleanup) 함수
     return () => {
-      document.body.style.overflow = '';
-      document.body.style.touchAction = '';
+      document.body.style.overflow = "";
+      document.body.style.touchAction = "";
     };
   }, [isOpen]);
   // -------------------------
 
   const animateClose = useCallback(() => {
     setTranslateY(MAX_HEIGHT);
-    
+
     // 애니메이션 시간 후에 실제 onClose 콜백 호출
     setTimeout(() => {
-        onClose();
+      onClose();
     }, ANIMATION_DURATION);
   }, [onClose]);
 
   useEffect(() => {
-    if (isDragging) return; 
+    if (isDragging) return;
 
     if (isOpen) {
       setTranslateY(MIN_HEIGHT);
@@ -86,7 +93,7 @@ export default function OrderBottomSheet({ isOpen, onClose, title, stockCount, s
 
   const handleEnd = () => {
     if (!isDragging) return;
-    setIsDragging(false); 
+    setIsDragging(false);
     if (translateY > CLOSE_THRESHOLD) {
       animateClose();
     } else {
@@ -97,14 +104,16 @@ export default function OrderBottomSheet({ isOpen, onClose, title, stockCount, s
   // transition 적용 로직은 변경 없음
   useEffect(() => {
     if (sheetRef.current) {
-      sheetRef.current.style.transition = isDragging ? "none" : `transform ${ANIMATION_DURATION}ms ease-out`;
+      sheetRef.current.style.transition = isDragging
+        ? "none"
+        : `transform ${ANIMATION_DURATION}ms ease-out`;
       sheetRef.current.style.transform = `translateY(${translateY}px)`;
     }
   }, [translateY, isDragging]);
 
   const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget && isOpen) {
-        animateClose();
+      animateClose();
     }
   };
 
@@ -112,8 +121,8 @@ export default function OrderBottomSheet({ isOpen, onClose, title, stockCount, s
   if (isFullyClosed) {
     return null;
   }
-  
-  const overlayOpacity = 1 - (translateY / MAX_HEIGHT);
+
+  const overlayOpacity = 1 - translateY / MAX_HEIGHT;
 
   return (
     // 1. 다크 오버레이 역할
@@ -122,10 +131,10 @@ export default function OrderBottomSheet({ isOpen, onClose, title, stockCount, s
         fixed inset-0 bg-black/50 z-20 
         transition-opacity duration-300
       `}
-      onClick={handleOverlayClick} 
-      style={{ 
-          pointerEvents: isFullyClosed ? 'none' : 'auto', 
-          opacity: overlayOpacity
+      onClick={handleOverlayClick}
+      style={{
+        pointerEvents: isFullyClosed ? "none" : "auto",
+        opacity: overlayOpacity,
       }}
     >
       {/* 바텀 시트 본체 */}
@@ -143,7 +152,7 @@ export default function OrderBottomSheet({ isOpen, onClose, title, stockCount, s
         onTouchStart={handleStart}
         onTouchMove={handleMove}
         onTouchEnd={handleEnd}
-        onClick={(e) => e.stopPropagation()} 
+        onClick={(e) => e.stopPropagation()}
       >
         <div className="w-[40px] h-[4px] bg-gray-200 rounded-3xl mx-auto mt-2 cursor-grab"></div>
 
@@ -167,11 +176,23 @@ export default function OrderBottomSheet({ isOpen, onClose, title, stockCount, s
             <div className="text-[16px] font-semibold">구매 수량</div>
             <div className="flex justify-between">
               <div className="flex items-center gap-4">
-                <button onClick={() => setBuyQuantity((prev) => Math.max(prev - 1, 1))} disabled={buyQuantity <= 1 || stockCount === 0} className="disabled:opacity-50 cursor-pointer">
+                <button
+                  onClick={() =>
+                    setBuyQuantity((prev) => Math.max(prev - 1, 1))
+                  }
+                  disabled={buyQuantity <= 1 || stockCount === 0}
+                  className="disabled:opacity-50 cursor-pointer"
+                >
                   <img src={Minus} alt="minus" />
                 </button>
                 <span>{buyQuantity}</span>
-                <button onClick={() => setBuyQuantity((prev) => Math.min(prev + 1, stockCount))} disabled={buyQuantity >= stockCount} className="disabled:opacity-50 cursor-pointer">
+                <button
+                  onClick={() =>
+                    setBuyQuantity((prev) => Math.min(prev + 1, stockCount))
+                  }
+                  disabled={buyQuantity >= stockCount}
+                  className="disabled:opacity-50 cursor-pointer"
+                >
                   <img src={Plus} alt="plus" />
                 </button>
               </div>

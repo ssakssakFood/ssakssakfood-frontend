@@ -1,5 +1,5 @@
 // CategoryBadge.tsx
-import { forwardRef } from 'react';
+import { forwardRef } from "react";
 
 interface CategoryBadgeProps {
   label: string;
@@ -14,13 +14,15 @@ const CategoryBadge = forwardRef<HTMLButtonElement, CategoryBadgeProps>(
         ref={ref}
         onClick={onClick}
         className={`px-4 py-2 rounded-full border border-gray-300 whitespace-nowrap ${
-          active ? 'bg-[#FE7549] text-white' : 'bg-white text-black'
+          active ? "bg-[#FE7549] text-white" : "bg-white text-black"
         }`}
       >
         {label}
       </button>
     );
-  }
+  },
 );
+
+CategoryBadge.displayName = "CategoryBadge";
 
 export default CategoryBadge;

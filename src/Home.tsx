@@ -1,9 +1,9 @@
-import React, { useMemo } from 'react';
-import { MENUS } from '@/Mock/menudatas'; // 최대 할인율로 가져올 메뉴 더미 데이터
-import { CATEGORY } from './constants/Category';
-import MenuCard from './components/MenuCard';
-import Carousel from './components/Carousel';
-import { useNavigate } from 'react-router-dom';
+import React, { useMemo } from "react";
+import { MENUS } from "@/Mock/menudatas"; // 최대 할인율로 가져올 메뉴 더미 데이터
+import { CATEGORY } from "./constants/Category";
+import MenuCard from "./components/MenuCard";
+import Carousel from "./components/Carousel";
+import { useNavigate } from "react-router-dom";
 
 const Home: React.FC = () => {
   const navigate = useNavigate();

@@ -1,22 +1,22 @@
-import { useParams, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
-import { MENUS } from '@/Mock/menudatas';
-import StockBadge from '@/components/StockBadge';
-import StoreInfoCard from '@/components/StoreInfoCard';
-import MenuCard from '@/components/MenuCard';
-import Button from '@/components/Button';
-import chevronLeft from '@/assets/floating-checvron-left.svg';
-import OrderBottomSheet from './UI/OrderBottomSheet';
+import { useParams, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { MENUS } from "@/Mock/menudatas";
+import StockBadge from "@/components/StockBadge";
+import StoreInfoCard from "@/components/StoreInfoCard";
+import MenuCard from "@/components/MenuCard";
+import Button from "@/components/Button";
+import chevronLeft from "@/assets/floating-checvron-left.svg";
+import OrderBottomSheet from "./UI/OrderBottomSheet";
 
 const CATEGORY_LABEL_MAP = {
-  breads: '빵/디저트',
-  packedmeal: '도시락/반찬',
-  ingredients: '식자재',
-  restaurant: '식당/조리',
-  market: '시장',
-  convenience: '편의점',
-  sharing: '나눔',
-  ssakssakstore: '착한가게',
+  breads: "빵/디저트",
+  packedmeal: "도시락/반찬",
+  ingredients: "식자재",
+  restaurant: "식당/조리",
+  market: "시장",
+  convenience: "편의점",
+  sharing: "나눔",
+  ssakssakstore: "착한가게",
 } as const;
 
 export default function MenuDetailPage() {
@@ -29,9 +29,11 @@ export default function MenuDetailPage() {
 
   // 쿠키에서 AccessToken 확인 함수
   const getAccessToken = () => {
-    const cookies = document.cookie.split('; ');
-    const tokenCookie = cookies.find(cookie => cookie.startsWith('AccessToken='));
-    return tokenCookie ? tokenCookie.split('=')[1] : null;
+    const cookies = document.cookie.split("; ");
+    const tokenCookie = cookies.find((cookie) =>
+      cookie.startsWith("AccessToken="),
+    );
+    return tokenCookie ? tokenCookie.split("=")[1] : null;
   };
 
   // 예약하기 버튼 클릭 핸들러
@@ -40,28 +42,31 @@ export default function MenuDetailPage() {
       setIsSheetOpen(true);
       return;
     }
-    
+
     //토큰 체크 -> 테스트입니다.
     const accessToken = getAccessToken();
-    
+
     if (!accessToken) {
-      alert('로그인 후 이용해주세요');
-      navigate('/login');
+      alert("로그인 후 이용해주세요");
+      navigate("/login");
       return;
     }
-    console.log('예약 진행');
+    console.log("예약 진행");
   };
 
   const categoryLabel =
     CATEGORY_LABEL_MAP[menu.slug as keyof typeof CATEGORY_LABEL_MAP];
 
   const otherMenus = MENUS.filter(
-    (m) => m.storeName === menu.storeName && m.id !== menu.id
+    (m) => m.storeName === menu.storeName && m.id !== menu.id,
   );
 
   return (
     <div className="relative w-full max-w-[401px] mx-auto">
-      <div className="absolute top-6 left-3 z-20" onClick={() => window.history.back()}>
+      <div
+        className="absolute top-6 left-3 z-20"
+        onClick={() => window.history.back()}
+      >
         <img
           src={chevronLeft}
           alt="뒤로가기"
@@ -83,11 +88,11 @@ export default function MenuDetailPage() {
           <div className="flex justify-between items-center mt-[16px] my-[24px]">
             <div className="flex flex-col gap-[8px] text-[14px] text-[#7F7F7F] font-semibold">
               <p>
-                카테고리{' '}
+                카테고리{" "}
                 <span className="font-[400] ml-[8px]">{categoryLabel}</span>
               </p>
               <p>
-                픽업 가능시간{' '}
+                픽업 가능시간{" "}
                 <span className="font-[400] ml-[8px]">{menu.pickupTime}</span>
               </p>
             </div>

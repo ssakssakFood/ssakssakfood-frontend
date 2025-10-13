@@ -1,18 +1,18 @@
-import { useEffect, useRef, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { MENUS } from '@/Mock/menudatas';
-import MenuCard from '@/components/MenuCard';
-import { CATEGORY } from '@/constants/Category';
-import type { CategorySlugType } from '@/constants/Category';
-import CategoryBadge from '@/components/CategoryBadge';
+import { useEffect, useRef, useState } from "react";
+import { useParams } from "react-router-dom";
+import { MENUS } from "@/Mock/menudatas";
+import MenuCard from "@/components/MenuCard";
+import { CATEGORY } from "@/constants/Category";
+import type { CategorySlugType } from "@/constants/Category";
+import CategoryBadge from "@/components/CategoryBadge";
 
 //category/:slug 페이지 입니다.
 //각 선택된 카테고리의 메뉴 리스트를 보여줍니다.
 
 export default function CategoryPage() {
   const { slug } = useParams<{ slug: CategorySlugType }>();
-  const [selectedSlug, setSelectedSlug] = useState<CategorySlugType | 'all'>(
-    slug ?? 'all'
+  const [selectedSlug, setSelectedSlug] = useState<CategorySlugType | "all">(
+    slug ?? "all",
   );
   const scrollRef = useRef<HTMLDivElement>(null);
   const badgeRefs = useRef<Record<string, HTMLButtonElement>>({});
@@ -21,12 +21,12 @@ export default function CategoryPage() {
   useEffect(() => {
     const currentBadge = badgeRefs.current[selectedSlug];
     if (currentBadge && scrollRef.current) {
-      currentBadge.scrollIntoView({ behavior: 'smooth', inline: 'center' });
+      currentBadge.scrollIntoView({ behavior: "smooth", inline: "center" });
     }
   }, [selectedSlug]);
 
   const filteredMenus =
-    selectedSlug === 'all'
+    selectedSlug === "all"
       ? MENUS
       : MENUS.filter((menu) => menu.slug === selectedSlug);
 
@@ -38,11 +38,11 @@ export default function CategoryPage() {
       >
         <CategoryBadge
           ref={(el) => {
-            if (el) badgeRefs.current['all'] = el;
+            if (el) badgeRefs.current["all"] = el;
           }}
           label="전체"
-          active={selectedSlug === 'all'}
-          onClick={() => setSelectedSlug('all')}
+          active={selectedSlug === "all"}
+          onClick={() => setSelectedSlug("all")}
         />
         {CATEGORY.map((category) => (
           <CategoryBadge
@@ -59,7 +59,7 @@ export default function CategoryPage() {
 
       {filteredMenus.length > 0 ? (
         <div className="flex flex-col gap-6 mt-4">
-          {filteredMenus.map((menu, idx) => (
+          {filteredMenus.map((menu) => (
             <MenuCard
               key={menu.id}
               id={menu.id}

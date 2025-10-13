@@ -2,7 +2,6 @@
 import locatoinImg from "@/assets/location.svg";
 import chevronDownImg from "@/assets/chevron-down.svg";
 import { useNavigate } from "react-router-dom";
-import SearchInput from "./SearchInput";
 
 interface HeaderProps {
   title?: string;
