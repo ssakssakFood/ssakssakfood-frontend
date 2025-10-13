@@ -2,9 +2,9 @@ name: CI Check (Lint + Build)
 
 on:
   pull_request:
-    branches: [main, develop]
+    branches: [develop]
   push:
-    branches: [main, develop]
+    branches: [develop]
 
 jobs:
   lint-and-build:
@@ -14,13 +14,20 @@ jobs:
       # ✅ 1. 코드 체크아웃
       - name: Checkout code
         uses: actions/checkout@v4
-      - name: Setup Node.js and pnpm
+
+      # ➡️ 2. Node.js 환경 설정
+      - name: Setup Node.js (v24)
         uses: actions/setup-node@v4
         with:
           node-version: 24
           cache: 'pnpm'
-          cache-dependency-path: pnpm-lock.yaml 
 
+      # ➡️ 2-1. pnpm 특정 버전 설치 및 PATH 보장
+      - name: Install pnpm (v10.13.1) and Verify PATH
+        run: |
+          npm install -g pnpm@10.13.1
+          pnpm -v # 설치 확인
+          
       # ✅ 3. 의존성 설치
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
