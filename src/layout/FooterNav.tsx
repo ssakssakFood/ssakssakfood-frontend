@@ -53,7 +53,7 @@ export default function FooterNav() {
 
   const handleNavClick = (
     id: (typeof navItems)[number]["id"],
-    path: string
+    path: string,
   ) => {
     setActiveTab(id);
     navigate(path);
