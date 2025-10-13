@@ -20,15 +20,14 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 24
-          cache: 'pnpm'
 
       # ➡️ 2-1. pnpm 특정 버전 설치 및 PATH 보장
       - name: Install pnpm (v10.13.1) and Verify PATH
         run: |
           npm install -g pnpm@10.13.1
           pnpm -v # 설치 확인
-          
-      # ✅ 3. 의존성 설치
+
+      # ➡️ 3. 의존성 설치 (캐시 수동 처리)
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
