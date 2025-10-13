@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { MENUS } from '@/Mock/menudatas';
 import StockBadge from '@/components/StockBadge';
@@ -21,10 +21,36 @@ const CATEGORY_LABEL_MAP = {
 
 export default function MenuDetailPage() {
   const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
   const [isSheetOpen, setIsSheetOpen] = useState(false);
 
   const menu = MENUS.find((m) => m.id === Number(id));
   if (!menu) return <p>메뉴를 찾을 수 없습니다.</p>;
+
+  // 쿠키에서 AccessToken 확인 함수
+  const getAccessToken = () => {
+    const cookies = document.cookie.split('; ');
+    const tokenCookie = cookies.find(cookie => cookie.startsWith('AccessToken='));
+    return tokenCookie ? tokenCookie.split('=')[1] : null;
+  };
+
+  // 예약하기 버튼 클릭 핸들러
+  const handleReservationClick = () => {
+    if (!isSheetOpen) {
+      setIsSheetOpen(true);
+      return;
+    }
+    
+    //토큰 체크 -> 테스트입니다.
+    const accessToken = getAccessToken();
+    
+    if (!accessToken) {
+      alert('로그인 후 이용해주세요');
+      navigate('/login');
+      return;
+    }
+    console.log('예약 진행');
+  };
 
   const categoryLabel =
     CATEGORY_LABEL_MAP[menu.slug as keyof typeof CATEGORY_LABEL_MAP];
@@ -43,7 +69,6 @@ export default function MenuDetailPage() {
         />
       </div>
 
-      {/* ✅ 콘텐츠 */}
       <div>
         <div className="w-full h-[240px] bg-gray-400 text-center">
           이미지 자리
@@ -113,7 +138,7 @@ export default function MenuDetailPage() {
               className="w-full text-lg py-6 cursor-pointer"
               labelName="예약하기"
               disabled={menu.stockCount === 0}
-              onClick={() => setIsSheetOpen(true)}
+              onClick={handleReservationClick}
             />
           </div>
         </footer>
