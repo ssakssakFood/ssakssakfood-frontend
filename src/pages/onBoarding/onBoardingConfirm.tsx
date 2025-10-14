@@ -12,6 +12,7 @@ import {
   onBoardingEmailCode,
 } from "../../api/mamber/onboarding";
 import { useOnboardingState } from "../../store/useOnboardingStore";
+import EmailSentModal from "@/components/onBoarding/Modal";
 
 export default function OnBoardingConfirmPage() {
   const navigate = useNavigate();
@@ -25,16 +26,16 @@ export default function OnBoardingConfirmPage() {
   const codeRegex = /^\d{6}$/;
   //이메일 전후
   const [isVerify, setIsVerify] = useState<boolean>(false);
-  //이메일 전후
-  // const [isInputValid, setIsInputValid] = useState(false);
 
-  //버튼
   const isValid =
     emailRegex.test(emailValue.trim()) && codeRegex.test(codeValue.trim());
 
   //이메일전송
   const sendEmail = useMutation({
     mutationFn: (body: EmailSend) => onBoardingEmail(body),
+    onMutate: () => {
+      setModal(true);
+    },
     onSuccess: () => {
       setTemp({ email: emailValue });
       setIsVerify(true);
@@ -63,6 +64,12 @@ export default function OnBoardingConfirmPage() {
       const code = codeValue.trim();
       sendCode.mutate({ email, code });
     }
+  };
+
+  const [modal, setModal] = useState<boolean>(false);
+
+  const closeModal = () => {
+    setModal(false);
   };
 
   return (
@@ -123,6 +130,7 @@ export default function OnBoardingConfirmPage() {
         onClick={handleNext}
         disabled={!isValid || sendEmail.isLoading || sendCode.isLoading}
       />
+      {modal && <EmailSentModal closeModal={closeModal} />}
     </div>
   );
 }
