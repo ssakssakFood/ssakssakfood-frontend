@@ -71,9 +71,11 @@ export default function OnBoardingPage() {
           </div>
         </section>
         {data && (
-          <p className="body-r-14 text-main2 p">
+          <p
+            className={`body-r-14 ${nicknameCheck ? "text-red" : "text-main2"} p`}
+          >
             {nicknameCheck
-              ? "이미 사용중인 닉네임이 있습니다."
+              ? "이미 사용중인 닉네임입니다."
               : "사용 가능한 닉네임입니다."}
           </p>
         )}

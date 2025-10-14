@@ -58,6 +58,7 @@
   --color-grey-2: #7f7f7f;
   --color-grey-1: #3b3b3b;
   --color-black: #252525;
+  --color-red: #f30000;
 }
 
 @layer base {
