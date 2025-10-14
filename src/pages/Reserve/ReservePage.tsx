@@ -34,9 +34,22 @@ export default function ReservePage() {
   return (
     <div>
       <MenuHeader title="예약하기" />
+      <div className="flex">
+        <div className="w-[72px] h-[72px] bg-gray-400 rounded-2xl"></div>
+        <div>
+          <div className="flex gap-4">
+            <span>{title}</span>
+            <span>{storeName}</span>
+          </div>
+          <div>
+            <div>수량 <span>{quantity}</span></div>
+            <div>픽업 가능 시간 <span>{pickupTime}</span></div>
+          </div>
+        </div>
+      </div>
 
       {/* 예약하기 버튼 */}
-      <Button labelName="예약하기" disabled={false}/>
+      {/* <Button labelName="예약하기" disabled={false} /> */}
     </div>
   );
 }
