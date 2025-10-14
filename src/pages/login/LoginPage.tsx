@@ -1,20 +1,37 @@
 import Button from "../../components/Button";
 import InputField from "../../components/InputField";
-
+import LogoImg from "@assets/images/logo.png";
+import Login from "@assets/images/login.png";
 export default function LoginPage() {
   return (
-    <div className="w-full flex flex-col min-h-dvh ">
-      <section className="mb-60 mt-auto">
-        <InputField placeholder="이메일 입력" className="mb-2" />
+    <div className="flex flex-col min-h-dvh -mx-6 ">
+      <div className="bg-main1">
+        <img src={LogoImg} alt="" className="size-40 mx-auto my-25" />
+      </div>
+      <div className="relative flex justify-center">
+        <div className="absolute -bottom-12 w-full h-[100px] bg-white rounded-full flex items-center justify-center ">
+          <img src={Login} alt="" className="-mt-6" />
+        </div>
+      </div>
+      <section className="bg-white flex-1 px-6 ">
+        <InputField placeholder="이메일 입력" className="mb-2 pt-4" />
         <InputField placeholder="비밀번호입력" icon={true} className="mb-3" />
         <Button labelName="로그인" className="mb-4" />
 
-        <div className="flex items-center justify-center body-r-14 text-grey-2">
+        <div className="flex items-center justify-center body-r-14 text-grey-2 mb-5">
           <p className="pr-1">이메일 찾기 |</p>
           <p className="pr-1"> 비밀번호 찾기 |</p>
           <p className="pr-1">회원가입</p>
         </div>
+        <div className="flex items-center w-full">
+          <div className="flex-1 h-px bg-grey-3" />
+          <p className="mx-2 text-grey-3 body-r-14">사장님이신가요?</p>
+          <div className="flex-1 h-px bg-grey-3" />
+        </div>
       </section>
+      <button className="mx-6 text-main1 bg-sub1 flex h-12  py-4 px-5.32rem rounded-lg items-center justify-center subtitle-b-16 mb-6">
+        사장님으로 로그인
+      </button>
     </div>
   );
 }
