@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { MENUS } from "@/Mock/menudatas";
 import StockBadge from "@/components/StockBadge";
 import StoreInfoCard from "@/components/StoreInfoCard";
@@ -25,19 +25,13 @@ export default function MenuDetailPage() {
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [buyQuantity, setBuyQuantity] = useState<number>(1);
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const menu = MENUS.find((m) => m.id === Number(id));
   if (!menu) return <p>메뉴를 찾을 수 없습니다.</p>;
 
-  // 쿠키에서 AccessToken 확인 함수
-  // const getAccessToken = () => {
-  //   const cookies = document.cookie.split("; ");
-  //   const tokenCookie = cookies.find((cookie) =>
-  //     cookie.startsWith("AccessToken="),
-  //   );
-  //   return tokenCookie ? tokenCookie.split("=")[1] : null;
-  // };
-
-  // 예약하기 버튼 클릭 핸들러
   const handleReservationClick = () => {
     if (!isSheetOpen) {
       setIsSheetOpen(true);
@@ -48,9 +42,9 @@ export default function MenuDetailPage() {
     // const accessToken = getAccessToken();
 
     // if (!accessToken) {
-    //   alert("로그인 후 이용해주세요");
-    //   navigate("/login");
-    //   return;
+    // alert("로그인 후 이용해주세요");
+    //navigate("/login");
+    // return;
     // }
 
     // 예약 페이지로 이동하면서 데이터 전달
