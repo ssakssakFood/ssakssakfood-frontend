@@ -15,6 +15,7 @@ import LocationMap from "./pages/Location/LocationMap";
 import PxLayout from "./layout/PxLayoyt";
 import CategoryPage from "./pages/Category/CategoryPage";
 import MenuDetailPage from "./pages/Menu/MenuDetailPage";
+import OnboardingNumber from "@/pages/onBoarding/onBoardingNumber";
 
 const router = createBrowserRouter([
   {
@@ -36,8 +37,9 @@ const router = createBrowserRouter([
       { path: "*", element: <ErrorPage /> },
       // 온보딩
       { path: "/onBoarding", element: <OnBoardingPage /> },
-      { path: "/onBoardingConfirm", element: <OnBoardingConfirmPage /> },
-      { path: "/onBoardingPassPage", element: <OnBoardingPassPage /> },
+      { path: "/onBoarding/confirm", element: <OnBoardingConfirmPage /> },
+      { path: "/onBoarding/number", element: <OnboardingNumber /> },
+      { path: "/onBoarding/pass", element: <OnBoardingPassPage /> },
       //위치수정
       { path: "/location/edit", element: <LocationEdit /> },
       { path: "/location/search", element: <LocationSearch /> },

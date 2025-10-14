@@ -13,7 +13,7 @@ export default function OnBoardingPage() {
 
   const handleNext = () => {
     setTemp({ nickname: nicknameValue });
-    navigate("/onBoardingConfirm");
+    navigate("/onBoarding/confirm");
   };
 
   const { setTemp } = useOnboardingState();
