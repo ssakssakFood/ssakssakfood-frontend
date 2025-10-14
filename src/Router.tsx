@@ -15,6 +15,7 @@ import LocationMap from "./pages/Location/LocationMap";
 import PxLayout from "./layout/PxLayoyt";
 import CategoryPage from "./pages/Category/CategoryPage";
 import MenuDetailPage from "./pages/Menu/MenuDetailPage";
+import StorePage from "./pages/Store/StorePage";
 
 const router = createBrowserRouter([
   {
@@ -42,6 +43,8 @@ const router = createBrowserRouter([
       { path: "/location/edit", element: <LocationEdit /> },
       { path: "/location/search", element: <LocationSearch /> },
       { path: "/location/map", element: <LocationMap /> },
+      //매장별 식품
+      { path: "/store/:id", element: <StorePage /> },
     ],
   },
   //메뉴 상세 페이지
