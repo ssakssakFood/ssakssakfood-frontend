@@ -51,7 +51,7 @@ export default function OnBoardingConfirmPage() {
     mutationFn: (body: EmailRequestDTO) => onBoardingEmailCode(body),
     onSuccess: () => {
       console.log("성공");
-      navigate("/onBoardingPassPage");
+      navigate("/onBoarding/number");
     },
     onError: (err) => console.log(err),
   });

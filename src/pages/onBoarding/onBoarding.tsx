@@ -11,12 +11,11 @@ export default function OnBoardingPage() {
   const [nicknameValue, setNickname] = useState<string>("");
   const navigate = useNavigate();
 
+  const { setTemp } = useOnboardingState();
   const handleNext = () => {
     setTemp({ nickname: nicknameValue });
     navigate("/onBoarding/confirm");
   };
-
-  const { setTemp } = useOnboardingState();
 
   const handleInputId = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value

@@ -11,23 +11,22 @@ export default function OnboardingNumber() {
   const [isValid, setIsValid] = useState(false);
   const navigate = useNavigate();
 
+  const { setTemp } = useOnboardingState();
   const handleNext = () => {
-    setTemp({ nickname: phone });
+    setTemp({ phone: phone });
     navigate("/onBoarding/pass");
   };
 
-  const { setTemp } = useOnboardingState();
-  const phoneRegex = /^(?:\d{3}-\d{3}-\d{4}|\d{3}-\d{4}-\d{4})$/;
+  const phoneRegex = /^01[0-9]-[0-9]{4}-[0-9]{4}$/;
   const handleInputPhone = (e: React.ChangeEvent<HTMLInputElement>) => {
     const phoneNum = e.target.value.replace(/\D/g, "").slice(0, 11); // 숫자만, 최대 11자리
     let formatted = "";
-    if (phoneNum.length <= 3) {
+    if (phoneNum.length < 4) {
       formatted = phoneNum;
-    } else if (phoneNum.length <= 7) {
+    } else if (phoneNum.length < 8) {
       formatted = `${phoneNum.slice(0, 3)}-${phoneNum.slice(3)}`;
     } else {
-      const mid = phoneNum.length === 10 ? 6 : 7;
-      formatted = `${phoneNum.slice(0, 3)}-${phoneNum.slice(3, mid)}-${phoneNum.slice(mid)}`;
+      formatted = `${phoneNum.slice(0, 3)}-${phoneNum.slice(3, 7)}-${phoneNum.slice(7)}`;
     }
     setPhone(formatted);
     setIsValid(phoneRegex.test(formatted));

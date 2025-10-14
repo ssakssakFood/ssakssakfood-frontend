@@ -64,3 +64,9 @@ export const useUserLogin = () => {
     onError: (error) => console.log(error),
   });
 };
+
+//이미지  업로드
+export const upLoadImg = async (memberId: string) => {
+  const { data } = await api.post(`/images/child-meal-card/${memberId}`);
+  return data;
+};

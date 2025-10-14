@@ -9,15 +9,19 @@ import { useForm } from "react-hook-form";
 import ChevronL from "@assets/icons/chevron-left.svg";
 import CheckFullB from "@assets/icons/check-full-blue.svg";
 import Check from "@assets/icons/check.svg";
+import { useMutation } from "react-query";
+import { UserSignUpRequestDto } from "@/types/onboarding";
+import { onBoardingSignup } from "@/api/mamber/onboarding";
 export default function OnBoardingPassPage() {
   const navigate = useNavigate();
 
-  const { setTemp } = useOnboardingState();
   //비번 볼래말래
   const [showPwd, setShowPwd] = useState<boolean>(false);
   const [showCheckPwd, setShowCheckPwd] = useState<boolean>(false);
-
   const { register, watch } = useForm({ mode: "onChange" });
+
+  //회원가입
+  const { email, nickname, phone } = useOnboardingState();
 
   const pw = watch("password") || "";
   const pwChecked = watch("passwordCheck") || "";
@@ -27,12 +31,27 @@ export default function OnBoardingPassPage() {
   const hasConfirm = pwChecked?.length > 0;
   const isMatch = pw === pwChecked;
 
+  //회원가입 하기
+  const handleSignupForm = useMutation({
+    mutationFn: (body: UserSignUpRequestDto) => onBoardingSignup(body),
+    onSuccess: () => {
+      console.log("성공");
+      navigate("/onBoarding/card");
+    },
+    onError: (err) => console.log(err),
+  });
+
   const handleNext = () => {
-    setTemp({ loginId: id, password: pw });
-    navigate("/onBoarding/card");
+    handleSignupForm.mutate({
+      email,
+      loginId: id,
+      password: pw,
+      nickname,
+      phoneNumber: phone,
+    });
   };
 
-  const idValid = id.length >= 4;
+  const idValid = /^[a-zA-Z0-9]+$/.test(id);
   const nextBtn = idValid && noSpacePattern && pattern2 && isMatch;
 
   return (
@@ -69,7 +88,7 @@ export default function OnBoardingPassPage() {
               <p
                 className={`caption-r-12 ${idValid ? "text-main2" : "text-grey-3"} `}
               >
-                아이디는 4글자 이상입니다.
+                아이디는 영어와 숫자로만 구성
               </p>
             </div>
           </div>
