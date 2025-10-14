@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, SetStateAction, Dispatch } from "react";
 import Minus from "@/assets/icons/minus.svg";
 import Plus from "@/assets/icons/plus.svg";
 
@@ -10,6 +10,8 @@ interface OrderBottomSheetProps {
   storeName: string;
   pickupTime: string;
   salePrice: number;
+  buyQuantity: number;
+  setBuyQuantity?: Dispatch<SetStateAction<number>>;
 }
 
 export default function OrderBottomSheet({
@@ -20,13 +22,14 @@ export default function OrderBottomSheet({
   storeName,
   pickupTime,
   salePrice,
+  buyQuantity = 1,
+  setBuyQuantity,
 }: OrderBottomSheetProps) {
   const sheetRef = useRef<HTMLDivElement>(null);
   const startY = useRef(0);
   const startTranslateY = useRef(0);
   const [translateY, setTranslateY] = useState(292);
   const [isDragging, setIsDragging] = useState(false);
-  const [buyQuantity, setBuyQuantity] = useState(1);
 
   const ANIMATION_DURATION = 300;
   const MAX_HEIGHT = 292;
@@ -163,7 +166,7 @@ export default function OrderBottomSheet({
               <div className="flex items-center gap-4">
                 <button
                   onClick={() =>
-                    setBuyQuantity((prev) => Math.max(prev - 1, 1))
+                    setBuyQuantity?.((prev) => Math.max(prev - 1, 1))
                   }
                   disabled={buyQuantity <= 1 || stockCount === 0}
                   className="disabled:opacity-50 cursor-pointer"
@@ -173,7 +176,7 @@ export default function OrderBottomSheet({
                 <span>{buyQuantity}</span>
                 <button
                   onClick={() =>
-                    setBuyQuantity((prev) => Math.min(prev + 1, stockCount))
+                    setBuyQuantity?.((prev) => Math.min(prev + 1, stockCount))
                   }
                   disabled={buyQuantity >= stockCount}
                   className="disabled:opacity-50 cursor-pointer"

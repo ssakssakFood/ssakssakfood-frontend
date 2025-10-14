@@ -16,6 +16,7 @@ import PxLayout from "./layout/PxLayoyt";
 import CategoryPage from "./pages/Category/CategoryPage";
 import MenuDetailPage from "./pages/Menu/MenuDetailPage";
 import StorePage from "./pages/Store/StorePage";
+import ReservePage from "./pages/Reserve/ReservePage";
 
 const router = createBrowserRouter([
   {
@@ -45,6 +46,8 @@ const router = createBrowserRouter([
       { path: "/location/map", element: <LocationMap /> },
       //매장별 식품
       { path: "/store/:id", element: <StorePage /> },
+      //예약
+      { path: "/menu/:id/reserve", element: <ReservePage /> }
     ],
   },
   //메뉴 상세 페이지
