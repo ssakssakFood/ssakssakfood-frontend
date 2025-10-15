@@ -2,7 +2,6 @@ import { useNavigate } from "react-router-dom";
 import Button from "../../components/Button";
 import InputField2 from "../../components/InputField2";
 import { ProgressBar } from "../../components/ProgressBar";
-import ChevronL from "@assets/icons/chevron-left.svg";
 import { useOnboardingState } from "../../store/useOnboardingStore";
 import { useState } from "react";
 import PageHeader from "@/components/PageHeader";

@@ -3,7 +3,6 @@ import { postGpsLocation } from "../../api/location/location";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import Button from "../../components/Button";
 import type { gpsLocationSavedRequest } from "../../types/location";
-import ChevronL from "@assets/icons/chevron-left.svg";
 import Search from "@assets/icons/search.svg?react";
 import Marker from "@/assets/icons/map-marker.svg?url";
 import PageHeader from "@/components/PageHeader";

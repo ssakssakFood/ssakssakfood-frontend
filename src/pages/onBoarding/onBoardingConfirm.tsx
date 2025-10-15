@@ -4,7 +4,6 @@ import InputField2 from "../../components/InputField2";
 import { ProgressBar } from "../../components/ProgressBar";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "react-query";
-import ChevronL from "@assets/icons/chevron-left.svg";
 
 import type { EmailRequestDTO, EmailSend } from "../../types/onboarding";
 import {

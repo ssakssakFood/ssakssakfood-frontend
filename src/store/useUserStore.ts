@@ -25,7 +25,7 @@ const useUserStore = create<UserStoreType>()(
   persist(UserStore, {
     name: "user",
     storage: createJSONStorage(() => localStorage),
-  })
+  }),
 );
 
 export default useUserStore;

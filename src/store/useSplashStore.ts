@@ -21,7 +21,7 @@ const useSplashStore = create(
   persist(SplashStore, {
     name: "isShown",
     storage: createJSONStorage(() => sessionStorage),
-  })
+  }),
 );
 
 export default useSplashStore;

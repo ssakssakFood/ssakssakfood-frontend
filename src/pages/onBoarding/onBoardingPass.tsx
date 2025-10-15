@@ -11,6 +11,8 @@ import { useMutation } from "react-query";
 import { UserSignUpRequestDto } from "@/types/onboarding";
 import { onBoardingSignup } from "@/api/mamber/onboarding";
 import PageHeader from "@/components/PageHeader";
+import axiosLib from "axios";
+
 export default function OnBoardingPassPage() {
   const navigate = useNavigate();
 
@@ -38,9 +40,11 @@ export default function OnBoardingPassPage() {
       const memberId = data.data.memberId;
       navigate("/onBoarding/card", { state: { memberId: memberId } });
     },
-    onError: (err: any) => {
-      if (err.response.data.code === "BAD_REQUEST") {
-        alert(err.response.data.message);
+    onError: (err) => {
+      if (axiosLib.isAxiosError(err)) {
+        if (err.response?.data.code === "BAD_REQUEST") {
+          alert(err.response.data.message);
+        }
       }
     },
   });

@@ -1,4 +1,3 @@
-import ChevronL from "@assets/icons/chevron-left.svg";
 import { useNavigate } from "react-router-dom";
 import { LocationField } from "../../components/Location/LocationField";
 import SearchLocationBtn from "../../components/Location/SearchLocationBtn";
@@ -42,7 +41,7 @@ export default function LocationEdit() {
   console.log(myLocationData, "겟");
 
   const notPrimary = myLocationData?.filter(
-    (item: myLocationResponseDto) => !item.isPrimary
+    (item: myLocationResponseDto) => !item.isPrimary,
   );
   console.log(notPrimary, "p아닌거");
 
