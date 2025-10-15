@@ -6,6 +6,7 @@ import ChevronL from "@assets/icons/chevron-left.svg";
 import { useOnboardingState } from "../../store/useOnboardingStore";
 import { useState } from "react";
 import { useNicknameCheck } from "../../api/mamber/onboarding";
+import PageHeader from "@/components/PageHeader";
 
 export default function OnBoardingPage() {
   const [nicknameValue, setNickname] = useState<string>("");
@@ -39,16 +40,8 @@ export default function OnBoardingPage() {
   return (
     <div className="w-full flex flex-col min-h-dvh ">
       <section className="flex-1 ">
-        <header className="h-12 relative flex items-center self-stretch justify-center mb-8">
-          <img
-            src={ChevronL}
-            alt="뒤로가기"
-            className=" absolute left-0 cursor-pointer"
-            onClick={() => navigate(-1)}
-          />
-          <p className="subtitle-b-18 text-center">회원가입</p>
-        </header>
-        <ProgressBar width="88" className="mb-8" />
+        <PageHeader title="회원가입" />
+        <ProgressBar width="88" className="my-8" />
         <section className="flex flex-col gap-6">
           <p className="text-2xl font-bold ">닉네임을 입력해주세요</p>
           <div className="flex items-center gap-2 mb-3">

@@ -12,6 +12,7 @@ import Check from "@assets/icons/check.svg";
 import { useMutation } from "react-query";
 import { UserSignUpRequestDto } from "@/types/onboarding";
 import { onBoardingSignup } from "@/api/mamber/onboarding";
+import PageHeader from "@/components/PageHeader";
 export default function OnBoardingPassPage() {
   const navigate = useNavigate();
 
@@ -57,16 +58,8 @@ export default function OnBoardingPassPage() {
   return (
     <div className="w-full flex flex-col min-h-dvh ">
       <section className="flex-1 ">
-        <header className="h-12 relative flex items-center self-stretch justify-center mb-8">
-          <img
-            src={ChevronL}
-            alt="뒤로가기"
-            className=" absolute left-0 cursor-pointer"
-            onClick={() => navigate(-1)}
-          />
-          <p className="subtitle-b-18 text-center">회원가입</p>
-        </header>
-        <ProgressBar width={"354"} className="mb-8" />
+        <PageHeader title="회원가입" />
+        <ProgressBar width={"354"} className="my-8" />
         {/* 아디 */}
         <div className="flex flex-col gap-6">
           <div>

@@ -8,6 +8,7 @@ import { useDebounce } from "../../hooks/useDebounce";
 import axios from "axios";
 import { postLocation } from "../../api/location/location";
 import SearchIcon from "@/assets/icons/search.svg?url";
+import PageHeader from "@/components/PageHeader";
 
 export interface Place {
   place_name: string;
@@ -56,14 +57,14 @@ export default function LocationSearch() {
               page: newPage,
               size: 15,
             },
-          },
+          }
         );
 
         const newResults = res.data.documents;
         const totalCount = res.data.meta.total_count;
 
         setResults((prev) =>
-          isNewSearch ? newResults : [...prev, ...newResults],
+          isNewSearch ? newResults : [...prev, ...newResults]
         );
         setHasMore(newPage * 15 < totalCount);
         setPage(newPage);
@@ -80,7 +81,7 @@ export default function LocationSearch() {
         isFetchingRef.current = false;
       }
     },
-    [debouncedInput],
+    [debouncedInput]
   );
 
   useEffect(() => {
@@ -106,7 +107,7 @@ export default function LocationSearch() {
 
       if (node) observer.current.observe(node);
     },
-    [isLoading, hasMore, page, fetchPlaces],
+    [isLoading, hasMore, page, fetchPlaces]
   );
 
   const onClickCurrent = () => {
@@ -128,7 +129,7 @@ export default function LocationSearch() {
               x: longitude,
               y: latitude,
             },
-          },
+          }
         );
 
         const addressInfo = res.data.documents?.[0]?.address;
@@ -142,7 +143,7 @@ export default function LocationSearch() {
           `/location/map?x=${longitude}&y=${latitude}&place=${encodeURIComponent(place)}&address=${encodeURIComponent(address)}&query=${encodeURIComponent(input ?? "")}`,
           {
             state: { mode: "call-api" },
-          },
+          }
         );
       } catch (err) {
         console.error("주소 정보 가져오기 실패", err);
@@ -186,15 +187,7 @@ export default function LocationSearch() {
   };
   return (
     <div className="w-full flex flex-col ">
-      <header className="h-12 relative flex items-center self-stretch justify-center mb-8">
-        <img
-          src={ChevronL}
-          alt="뒤로가기"
-          className=" absolute left-0 cursor-pointer"
-          onClick={() => navigate(-1)}
-        />
-        <p className="subtitle-b-18 text-center">위치관리</p>
-      </header>
+      <PageHeader title="위치관리" />
 
       <div className="flex ">
         <button className="cursor-pointer">

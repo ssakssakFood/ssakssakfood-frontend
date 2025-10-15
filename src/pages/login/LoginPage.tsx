@@ -77,7 +77,7 @@ export default function LoginPage() {
         </div>
         <div className={manager ? "hidden" : "flex items-center w-full"}>
           <div className="flex-1 h-px bg-grey-3" />
-          <p className="mx-2 text-grey-3 body-r-14">사장님이신가요?</p>
+          <p className="mx-2 text-grey-3 body-r-14 mb-2">사장님이신가요?</p>
           <div className="flex-1 h-px bg-grey-3" />
         </div>
       </section>

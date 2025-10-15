@@ -13,6 +13,7 @@ import {
 } from "../../api/mamber/onboarding";
 import { useOnboardingState } from "../../store/useOnboardingStore";
 import EmailSentModal from "@/components/onBoarding/Modal";
+import PageHeader from "@/components/PageHeader";
 
 export default function OnBoardingConfirmPage() {
   const navigate = useNavigate();
@@ -75,16 +76,8 @@ export default function OnBoardingConfirmPage() {
   return (
     <div className="w-full flex flex-col min-h-dvh ">
       <section className="flex-1 ">
-        <header className="h-12 relative flex items-center self-stretch justify-center mb-8">
-          <img
-            src={ChevronL}
-            alt="뒤로가기"
-            className=" absolute left-0 cursor-pointer"
-            onClick={() => navigate(-1)}
-          />
-          <p className="subtitle-b-18 text-center">회원가입</p>
-        </header>
-        <ProgressBar width={isVerify ? "264" : "176"} className="mb-8" />
+        <PageHeader title={"회원가입"} />
+        <ProgressBar width={isVerify ? "264" : "176"} className="my-8" />
         <section className="flex flex-col gap-6">
           <div>
             <p className="text-2xl font-bold mb-2">이메일을 입력해주세요</p>
