@@ -33,15 +33,15 @@ export default function LoginPage() {
 
   return (
     <div className="flex flex-col min-h-dvh -mx-6 ">
-      <div className="bg-main1">
-        <img src={LogoImg} alt="" className="size-40 mx-auto my-25" />
+      <div className="bg-main1 py-5 xxs:py-7 h-[335px] xxs:h-[295px] ">
+        <img src={LogoImg} alt="" className="size-40 mx-auto my-3 xxs:my-8 " />
       </div>
-      <div className="relative flex justify-center">
+      <div className="relative flex justify-center ">
         <div className="absolute -bottom-12 w-full h-[100px] bg-white rounded-full flex items-center justify-center ">
           <img src={manager ? managerLogin : Login} alt="" className="-mt-6" />
         </div>
       </div>
-      <section className="bg-white px-6 flex-1">
+      <section className=" px-6  flex-1">
         <div>
           <InputField
             placeholder="아이디 입력"
@@ -75,22 +75,22 @@ export default function LoginPage() {
             </p>
           </div>
         </div>
-        <div className={manager ? "hidden" : "flex items-center w-full"}>
-          <div className="flex-1 h-px bg-grey-3" />
-          <p className="mx-2 text-grey-3 body-r-14 mb-2">사장님이신가요?</p>
-          <div className="flex-1 h-px bg-grey-3" />
-        </div>
       </section>
-      <button
-        className={
-          manager
-            ? "hidden"
-            : "mx-6 text-main1 bg-sub1 flex h-12  py-4 px-5.32rem rounded-lg items-center justify-center subtitle-b-16 mb-6"
-        }
-        onClick={revertManager}
-      >
-        사장님으로 로그인
-      </button>
+      {!manager && (
+        <>
+          <div className="flex items-center w-full px-6 mt-2">
+            <div className="flex-1 h-px bg-grey-3" />
+            <p className="mx-2 text-grey-3 body-r-14">사장님으로 로그인</p>
+            <div className="flex-1 h-px bg-grey-3" />
+          </div>
+          <button
+            className="mx-6 mt-3 mb-6 text-main1 bg-sub1 flex h-12 rounded-lg items-center justify-center subtitle-b-16"
+            onClick={revertManager}
+          >
+            사장님이신가요?
+          </button>
+        </>
+      )}
     </div>
   );
 }
