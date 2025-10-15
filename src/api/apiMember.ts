@@ -10,8 +10,7 @@ const accessToken = getAccessToken();
 console.log(accessToken, "ㅌㅌ");
 
 const api = axios.create({
-  baseURL:
-    "http://saksakfood-api-gateway-s-da7e9-110329723-31b4b99c070a.kr.lb.naverncp.com/api",
+  baseURL: import.meta.env.VITE_MEMBER_SERVER_URL,
 });
 api.interceptors.request.use(
   (config) => {
