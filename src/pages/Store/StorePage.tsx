@@ -1,9 +1,8 @@
-import { useParams } from "react-router-dom";
-import { MenuHeader } from "@/components/Headers";
-import { MENUS } from "@/Mock/menudatas";
-import { STORES } from "@/Mock/storedatas";
-import StoreInfoCard from "@/components/StoreInfoCard";
-import MenuCard from "@/components/MenuCard";
+import { useParams } from 'react-router-dom';
+import { MenuHeader } from '@/components/Headers';
+import { MENUS } from '@/Mock/menudatas';
+import { STORES } from '@/Mock/storedatas';
+import MenuCard from '@/components/MenuCard';
 
 export default function StorePage() {
   const { id } = useParams<{ id: string }>();
@@ -11,14 +10,19 @@ export default function StorePage() {
 
   if (!store) return <p>매장을 찾을 수 없습니다.</p>;
 
-  // ✅ 해당 매장의 메뉴 목록 불러오기
   const storeMenus = MENUS.filter((m) => m.storeId === store.id);
 
   return (
     <div>
       <MenuHeader title="매장별 식품" />
       <div className="flex flex-col gap-[24px]">
-        <StoreInfoCard id={store.id} name={store.name} address={store.address} />
+        <div className="flex gap-[16px] items-center border-b border-gray-200 pb-[16px] mx-[-24px] px-[24px] py-[16px]">
+          <div className="w-[80px] h-[80px] bg-gray-300 rounded-full"></div>
+          <div className="flex flex-col">
+            <span className="text-[20px] font-bold">{store.name}</span>
+            <span className="text-[14px] text-gray-600">{store.address}</span>
+          </div>
+        </div>
 
         <div className="flex flex-col gap-[24px]">
           {storeMenus.length > 0 ? (
