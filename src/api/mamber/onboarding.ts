@@ -65,8 +65,20 @@ export const useUserLogin = () => {
   });
 };
 
-//이미지  업로드
-export const upLoadImg = async (memberId: string) => {
-  const { data } = await api.post(`/images/child-meal-card/${memberId}`);
+//카드 이미지  업로드
+export const upLoadImg = async (memberId: number, body: string) => {
+  const { data } = await api.post(`/images/child-meal-card/${memberId}`, body, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
   return data;
+};
+
+export const useUploadImg = (memberId: number) => {
+  return useMutation({
+    mutationFn: (formData: FormData) => upLoadImg(memberId, formData),
+    onSuccess: () => {
+      console.log("성공");
+    },
+    onError: (err) => console.log(err),
+  });
 };

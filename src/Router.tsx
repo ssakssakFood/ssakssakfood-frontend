@@ -17,6 +17,7 @@ import CategoryPage from "./pages/Category/CategoryPage";
 import MenuDetailPage from "./pages/Menu/MenuDetailPage";
 import OnboardingNumber from "@/pages/onBoarding/onBoardingNumber";
 import OnBoardingCardPage from "@/pages/onBoarding/onBoardingCard";
+import OnBoardingComplete from "@/pages/onBoarding/onBoardingComplete";
 
 const router = createBrowserRouter([
   {
@@ -42,6 +43,8 @@ const router = createBrowserRouter([
       { path: "/onBoarding/number", element: <OnboardingNumber /> },
       { path: "/onBoarding/pass", element: <OnBoardingPassPage /> },
       { path: "/onBoarding/card", element: <OnBoardingCardPage /> },
+      { path: "/onBoarding/card", element: <OnBoardingCardPage /> },
+      { path: "/onBoarding/complete", element: <OnBoardingComplete /> },
       //위치수정
       { path: "/location/edit", element: <LocationEdit /> },
       { path: "/location/search", element: <LocationSearch /> },

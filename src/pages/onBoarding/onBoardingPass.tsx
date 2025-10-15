@@ -5,8 +5,6 @@ import Button from "../../components/Button";
 import { useState } from "react";
 import { useOnboardingState } from "../../store/useOnboardingStore";
 import { useForm } from "react-hook-form";
-
-import ChevronL from "@assets/icons/chevron-left.svg";
 import CheckFullB from "@assets/icons/check-full-blue.svg";
 import Check from "@assets/icons/check.svg";
 import { useMutation } from "react-query";
@@ -35,11 +33,16 @@ export default function OnBoardingPassPage() {
   //회원가입 하기
   const handleSignupForm = useMutation({
     mutationFn: (body: UserSignUpRequestDto) => onBoardingSignup(body),
-    onSuccess: () => {
-      console.log("성공");
-      navigate("/onBoarding/card");
+    onSuccess: (data) => {
+      console.log(data);
+      const memberId = data.data.memberId;
+      navigate("/onBoarding/card", { state: { memberId: memberId } });
     },
-    onError: (err) => console.log(err),
+    onError: (err: any) => {
+      if (err.response.data.code === "BAD_REQUEST") {
+        alert(err.response.data.message);
+      }
+    },
   });
 
   const handleNext = () => {
