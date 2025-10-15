@@ -41,7 +41,7 @@ export default function OnBoardingPage() {
     <div className="w-full flex flex-col min-h-dvh ">
       <section className="flex-1 ">
         <PageHeader title="회원가입" />
-        <ProgressBar width="88" className="my-8" />
+        <ProgressBar step={1} className="my-8" />
         <section className="flex flex-col gap-6">
           <p className="text-2xl font-bold ">닉네임을 입력해주세요</p>
           <div className="flex items-center gap-2 mb-3">

@@ -37,7 +37,7 @@ export default function OnboardingNumber() {
     <div className="w-full flex flex-col min-h-dvh ">
       <section className="flex-1 ">
         <PageHeader title="회원가입" />
-        <ProgressBar width="88" className="my-8" />
+        <ProgressBar step={3} className="my-8" />
         <section className="flex flex-col gap-6">
           <p className="text-2xl font-bold ">전화번호를 입력해주세요</p>
           <div className="flex items-center gap-2 mb-2">

@@ -59,7 +59,7 @@ export default function OnBoardingPassPage() {
     <div className="w-full flex flex-col min-h-dvh ">
       <section className="flex-1 ">
         <PageHeader title="회원가입" />
-        <ProgressBar width={"354"} className="my-8" />
+        <ProgressBar className="my-8" step={4} />
         {/* 아디 */}
         <div className="flex flex-col gap-6">
           <div>
