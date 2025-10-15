@@ -123,7 +123,7 @@ export default function OnBoardingPassPage() {
           <div className="flex gap-2 items-center">
             <img src={pattern2 ? CheckFullB : Check} alt="" className="mb-1" />
             <p
-              className={`mb-1 caption-r-12 ${pattern2 ? "text-main2" : "text-grey-3"} `}
+              className={`mb-4 caption-r-12 ${pattern2 ? "text-main2" : "text-grey-3"} `}
             >
               대소문자, 숫자, 특수문자 1개 이상 포함
             </p>
