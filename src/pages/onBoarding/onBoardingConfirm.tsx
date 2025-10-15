@@ -11,8 +11,8 @@ import {
   onBoardingEmailCode,
 } from "../../api/mamber/onboarding";
 import { useOnboardingState } from "../../store/useOnboardingStore";
-import EmailSentModal from "@/components/onBoarding/Modal";
 import PageHeader from "@/components/PageHeader";
+import Modal from "@/components/onBoarding/Modal";
 
 export default function OnBoardingConfirmPage() {
   const navigate = useNavigate();
@@ -122,7 +122,13 @@ export default function OnBoardingConfirmPage() {
         onClick={handleNext}
         disabled={!isValid || sendEmail.isLoading || sendCode.isLoading}
       />
-      {modal && <EmailSentModal closeModal={closeModal} />}
+      {modal && (
+        <Modal
+          closeModal={closeModal}
+          title="인증번호가 전송되었어요!"
+          subTitle="이메일함을 확인해보세요"
+        />
+      )}
     </div>
   );
 }
