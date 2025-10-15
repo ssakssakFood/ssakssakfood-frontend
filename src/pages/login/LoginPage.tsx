@@ -32,16 +32,16 @@ export default function LoginPage() {
   const password = watch("password");
 
   return (
-    <div className="flex flex-col min-h-dvh -mx-6 ">
-      <div className="bg-main1 py-5 xxs:py-7 h-[335px] xxs:h-[295px] ">
+    <div className="flex flex-col min-h-dvh -mx-6 bg-main1 relative">
+      <div className="bg-main1 py-5 xxs:py-7 h-[335px] xxs:h-[272px] ">
         <img src={LogoImg} alt="" className="size-40 mx-auto my-3 xxs:my-8 " />
       </div>
-      <div className="relative flex justify-center ">
-        <div className="absolute -bottom-12 w-full h-[100px] bg-white rounded-full flex items-center justify-center ">
-          <img src={manager ? managerLogin : Login} alt="" className="-mt-6" />
+      <div className="relative flex justify-center">
+        <div className="absolute -bottom-18 bg-white w-full h-[80px] rounded-[402px] flex items-center justify-center ">
+          <img src={manager ? managerLogin : Login} alt="" />
         </div>
       </div>
-      <section className=" px-6  flex-1">
+      <section className=" px-6  flex-1 mt-10  pt-2 bg-white ">
         <div>
           <InputField
             placeholder="아이디 입력"
@@ -78,17 +78,21 @@ export default function LoginPage() {
       </section>
       {!manager && (
         <>
-          <div className="flex items-center w-full px-6 mt-2">
-            <div className="flex-1 h-px bg-grey-3" />
-            <p className="mx-2 text-grey-3 body-r-14">사장님으로 로그인</p>
-            <div className="flex-1 h-px bg-grey-3" />
+          <div className="absolute bottom-0 left-0 right-0 w-full ">
+            <div className="flex items-center w-full px-6 mt-2">
+              <div className="flex-1 h-px bg-grey-3" />
+              <p className="mx-2 text-grey-3 body-r-14">사장님으로 로그인</p>
+              <div className="flex-1 h-px bg-grey-3" />
+            </div>
+            <div className="flex items-center justify-center mx-6">
+              <button
+                className="w-full  mt-3 mb-6 text-main1 bg-sub1 flex h-12 rounded-lg items-center justify-center subtitle-b-16"
+                onClick={revertManager}
+              >
+                사장님이신가요?
+              </button>
+            </div>
           </div>
-          <button
-            className="mx-6 mt-3 mb-6 text-main1 bg-sub1 flex h-12 rounded-lg items-center justify-center subtitle-b-16"
-            onClick={revertManager}
-          >
-            사장님이신가요?
-          </button>
         </>
       )}
     </div>
