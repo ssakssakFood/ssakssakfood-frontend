@@ -66,7 +66,7 @@ export const useUserLogin = () => {
 };
 
 //카드 이미지  업로드
-export const upLoadImg = async (memberId: number, body: string) => {
+export const upLoadImg = async (memberId: number, body: FormData) => {
   const { data } = await api.post(`/images/child-meal-card/${memberId}`, body, {
     headers: { "Content-Type": "multipart/form-data" },
   });
