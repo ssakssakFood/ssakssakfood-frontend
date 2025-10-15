@@ -1,8 +1,8 @@
-import { useParams } from 'react-router-dom';
-import { MenuHeader } from '@/components/Headers';
-import { MENUS } from '@/Mock/menudatas';
-import { STORES } from '@/Mock/storedatas';
-import MenuCard from '@/components/MenuCard';
+import { useParams } from "react-router-dom";
+import { MenuHeader } from "@/components/Headers";
+import { MENUS } from "@/Mock/menudatas";
+import { STORES } from "@/Mock/storedatas";
+import MenuCard from "@/components/MenuCard";
 
 export default function StorePage() {
   const { id } = useParams<{ id: string }>();

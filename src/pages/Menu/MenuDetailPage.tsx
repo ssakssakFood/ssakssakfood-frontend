@@ -55,7 +55,7 @@ export default function MenuDetailPage() {
         salePrice: menu.salePrice,
         storeName: menu.storeName,
         pickupTime: menu.pickupTime,
-      }
+      },
     });
   };
 
@@ -117,7 +117,11 @@ export default function MenuDetailPage() {
             </div>
           </div>
 
-          <StoreInfoCard id={menu.storeId} name={menu.storeName} address={menu.location} />
+          <StoreInfoCard
+            id={menu.storeId}
+            name={menu.storeName}
+            address={menu.location}
+          />
 
           {otherMenus.length > 0 && (
             <div className="mt-[32px] flex flex-col">

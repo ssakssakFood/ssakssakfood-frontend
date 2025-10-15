@@ -47,7 +47,7 @@ const router = createBrowserRouter([
       //매장별 식품
       { path: "/store/:id", element: <StorePage /> },
       //예약
-      { path: "/menu/:id/reserve", element: <ReservePage /> }
+      { path: "/menu/:id/reserve", element: <ReservePage /> },
     ],
   },
   //메뉴 상세 페이지

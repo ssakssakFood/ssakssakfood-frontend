@@ -72,7 +72,7 @@ export default function OrderBottomSheet({
     const currentY = "touches" in e ? e.touches[0].clientY : e.clientY;
     const diff = currentY - startY.current;
     const newTranslateY = startTranslateY.current + diff;
-    
+
     setTranslateY(Math.max(MIN_HEIGHT, Math.min(newTranslateY, MAX_HEIGHT)));
   };
 

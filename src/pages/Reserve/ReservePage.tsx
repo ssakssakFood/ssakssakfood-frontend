@@ -1,9 +1,9 @@
-import { useParams, useLocation, useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-import { MenuHeader } from '@/components/Headers';
-import chevronDownImg from '@/assets/icons/chevron-down.svg';
-import Button from '@/components/Button';
-import DialPicker from '@/components/DialPicker';
+import { useParams, useLocation, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { MenuHeader } from "@/components/Headers";
+import chevronDownImg from "@/assets/icons/chevron-down.svg";
+import Button from "@/components/Button";
+import DialPicker from "@/components/DialPicker";
 
 interface ReserveState {
   quantity: number;
@@ -13,10 +13,10 @@ interface ReserveState {
   pickupTime?: string;
 }
 
-const formatToTwoDigits = (num: number) => String(num).padStart(2, '0');
+const formatToTwoDigits = (num: number) => String(num).padStart(2, "0");
 
 const getDayOfWeek = (date: Date) => {
-  const days = ['일', '월', '화', '수', '목', '금', '토'];
+  const days = ["일", "월", "화", "수", "목", "금", "토"];
   return days[date.getDay()];
 };
 
@@ -28,8 +28,8 @@ const todayDay = getDayOfWeek(today);
 const tomorrowDay = getDayOfWeek(tomorrow);
 
 const dateItems = [
-  { value: 'today', label: `오늘(${todayDay})` },
-  { value: 'tomorrow', label: `내일(${tomorrowDay})` },
+  { value: "today", label: `오늘(${todayDay})` },
+  { value: "tomorrow", label: `내일(${tomorrowDay})` },
 ];
 
 const generateTimeItems = (start: number, end: number, step: number = 1) => {
@@ -53,7 +53,7 @@ export default function ReservePage() {
   const state = location.state as ReserveState | null;
 
   const pickupTimeRange = state?.pickupTime?.match(
-    /(\d{2}):\d{2}\s*~\s*(\d{2}):\d{2}/
+    /(\d{2}):\d{2}\s*~\s*(\d{2}):\d{2}/,
   );
 
   // 파싱 실패시 기본값
@@ -62,14 +62,14 @@ export default function ReservePage() {
 
   const hourItems = generateTimeItems(startHour, endHour);
   const [isPickerOpen, setIsPickerOpen] = useState(false);
-  const [selectedDate, setSelectedDate] = useState<'today' | 'tomorrow'>(
-    dateItems[0].value as 'today' | 'tomorrow'
+  const [selectedDate, setSelectedDate] = useState<"today" | "tomorrow">(
+    dateItems[0].value as "today" | "tomorrow",
   );
   const [selectedHour, setSelectedHour] = useState<number>(
-    hourItems[0].value as number
+    hourItems[0].value as number,
   );
   const [selectedMinute, setSelectedMinute] = useState<number>(
-    minuteItems[0].value as number
+    minuteItems[0].value as number,
   );
 
   useEffect(() => {
@@ -86,7 +86,7 @@ export default function ReservePage() {
   const totalPrice = (salePrice || 0) * quantity;
 
   const selectedDateLabel =
-    dateItems.find((item) => item.value === selectedDate)?.label || '';
+    dateItems.find((item) => item.value === selectedDate)?.label || "";
   const formattedHour = formatToTwoDigits(selectedHour);
   const formattedMinute = formatToTwoDigits(selectedMinute);
 
@@ -125,13 +125,13 @@ export default function ReservePage() {
           </div>
           <div className="flex items-center text-[18px] font-bold cursor-pointer">
             <span
-              className={isPickerOpen ? 'text-[#FE7549]' : 'text-black'}
+              className={isPickerOpen ? "text-[#FE7549]" : "text-black"}
             >{`${selectedDateLabel} ${formattedHour}:${formattedMinute}`}</span>
 
             <img
               src={chevronDownImg}
               alt="chevron down"
-              className={`inline ml-2 w-4 h-4 transition-transform ${isPickerOpen ? 'rotate-180' : 'rotate-0'}`}
+              className={`inline ml-2 w-4 h-4 transition-transform ${isPickerOpen ? "rotate-180" : "rotate-0"}`}
             />
           </div>
         </div>
@@ -144,7 +144,7 @@ export default function ReservePage() {
                 items={dateItems}
                 selectedValue={selectedDate}
                 onValueChange={(val) =>
-                  setSelectedDate(val as 'today' | 'tomorrow')
+                  setSelectedDate(val as "today" | "tomorrow")
                 }
               />
               <DialPicker

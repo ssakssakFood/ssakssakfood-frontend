@@ -28,14 +28,13 @@ export default function CategoryPage() {
       currentBadge.scrollIntoView({ behavior: "smooth", inline: "center" });
     }
   }, [selectedSlug]);
-  
+
   useEffect(() => {
     if (menuListRef.current) {
       menuListRef.current.scrollTop = 0;
     }
-    window.scrollTo(0, 0); 
+    window.scrollTo(0, 0);
   }, [selectedSlug]);
-
 
   const filteredMenus =
     selectedSlug === "all"
@@ -73,7 +72,7 @@ export default function CategoryPage() {
       {/* 메뉴 목록 컨테이너 */}
       {filteredMenus.length > 0 ? (
         // ⭐️ Ref 추가: 메뉴 목록 컨테이너에 menuListRef 연결
-        <div ref={menuListRef} className="flex flex-col gap-6 mt-4"> 
+        <div ref={menuListRef} className="flex flex-col gap-6 mt-4">
           {filteredMenus.map((menu) => (
             <MenuCard
               key={menu.id}
