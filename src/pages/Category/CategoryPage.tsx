@@ -12,7 +12,7 @@ import CategoryBadge from "@/components/CategoryBadge";
 export default function CategoryPage() {
   const { slug } = useParams<{ slug: CategorySlugType }>();
   const [selectedSlug, setSelectedSlug] = useState<CategorySlugType | "all">(
-    slug ?? "all"
+    slug ?? "all",
   );
   const badgeScrollRef = useRef<HTMLDivElement>(null);
   const menuListRef = useRef<HTMLDivElement>(null);
