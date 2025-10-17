@@ -56,14 +56,14 @@ export default function LocationSearch() {
               page: newPage,
               size: 15,
             },
-          },
+          }
         );
 
         const newResults = res.data.documents;
         const totalCount = res.data.meta.total_count;
 
         setResults((prev) =>
-          isNewSearch ? newResults : [...prev, ...newResults],
+          isNewSearch ? newResults : [...prev, ...newResults]
         );
         setHasMore(newPage * 15 < totalCount);
         setPage(newPage);
@@ -80,7 +80,7 @@ export default function LocationSearch() {
         isFetchingRef.current = false;
       }
     },
-    [debouncedInput],
+    [debouncedInput]
   );
 
   useEffect(() => {
@@ -106,7 +106,7 @@ export default function LocationSearch() {
 
       if (node) observer.current.observe(node);
     },
-    [isLoading, hasMore, page, fetchPlaces],
+    [isLoading, hasMore, page, fetchPlaces]
   );
 
   const onClickCurrent = () => {
@@ -128,7 +128,7 @@ export default function LocationSearch() {
               x: longitude,
               y: latitude,
             },
-          },
+          }
         );
 
         const addressInfo = res.data.documents?.[0]?.address;
@@ -142,7 +142,7 @@ export default function LocationSearch() {
           `/location/map?x=${longitude}&y=${latitude}&place=${encodeURIComponent(place)}&address=${encodeURIComponent(address)}&query=${encodeURIComponent(input ?? "")}`,
           {
             state: { mode: "call-api" },
-          },
+          }
         );
       } catch (err) {
         console.error("주소 정보 가져오기 실패", err);
@@ -185,10 +185,11 @@ export default function LocationSearch() {
     setSelectedId((prev) => (prev === id ? null : id));
   };
   return (
-    <div className="w-full flex flex-col ">
-      <PageHeader title="위치관리" />
-
-      <div className="flex ">
+    <div className=" flex flex-col  -mx-6">
+      <div className="px-6">
+        <PageHeader title="위치관리" />
+      </div>
+      <div className="flex px-6">
         <button className="cursor-pointer">
           <img src={SearchIcon} alt="검색" className="size-6 mr-3" />
         </button>
@@ -205,7 +206,9 @@ export default function LocationSearch() {
       </div>
       <span className=" h-1 bg-grey-5 mb-4"></span>
       {/* 현재위치불러오기 */}
-      <SearchLocationBtn className="mb-4" onClick={onClickCurrent} />
+      <div className="flex items-center justify-center">
+        <SearchLocationBtn className="mb-4 mx-6" onClick={onClickCurrent} />
+      </div>
       {/* 리스트 */}
       {results.map((item, idx) => {
         const isLast = idx === results.length - 1;
@@ -214,7 +217,7 @@ export default function LocationSearch() {
           <div
             onClick={() => handleSelect(item.id)}
             ref={isLast ? lastResultRef : null}
-            className="scrollbar-hide"
+            className="scrollbar-hide mx-6"
             key={item.id}
           >
             <LocationList
@@ -230,13 +233,14 @@ export default function LocationSearch() {
         );
       })}
       <div
-        className=" fixed  w-full max-w-[353px] flex justify-center bottom-0 pb-6  z-50 bg-white "
+        className=" fixed   w-full max-w-[353px]  items-center flex justify-center bottom-0 pb-6  z-50 bg-white mx-6"
         // onClick={() => handleSelectLocation(results[selectedId])}
       >
         <Button
           labelName="위치등록"
           disabled={selectedId === null}
           onClick={handleRegister}
+          // className=" w-full "
         />
       </div>
     </div>
