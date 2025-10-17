@@ -233,7 +233,7 @@ export default function LocationSearch() {
       <div className="flex items-center justify-center">
         <div className="fixed max-w-[354px] w-full -mx-6  items-center flex justify-center bottom-0 pb-6   bg-white">
           <Button
-            labelName="위치등록"
+            labelName="위치 등록하기"
             disabled={selectedId === null}
             onClick={handleRegister}
             // className=" fixed  "
