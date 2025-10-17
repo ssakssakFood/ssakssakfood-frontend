@@ -12,7 +12,7 @@ import CategoryBadge from "@/components/CategoryBadge";
 export default function CategoryPage() {
   const { slug } = useParams<{ slug: CategorySlugType }>();
   const [selectedSlug, setSelectedSlug] = useState<CategorySlugType | "all">(
-    slug ?? "all",
+    slug ?? "all"
   );
   const badgeScrollRef = useRef<HTMLDivElement>(null);
   const menuListRef = useRef<HTMLDivElement>(null);
@@ -42,7 +42,7 @@ export default function CategoryPage() {
       : MENUS.filter((menu) => menu.slug === selectedSlug);
 
   return (
-    <div className="flex flex-col gap-6 mt-4 mb-20 px-4">
+    <div className="flex flex-col gap-6 mt-4 mb-20">
       {/* 카테고리 뱃지 목록 */}
       <div
         ref={badgeScrollRef}
