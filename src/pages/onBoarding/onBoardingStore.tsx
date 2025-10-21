@@ -74,7 +74,7 @@ export default function StoreInformation() {
     <div className="w-full flex flex-col min-h-dvh ">
       <section className="flex-1 ">
         <PageHeader title={"회원가입"} />
-        <ProgressBar step={2} className="my-8" />
+        <ProgressBar step={4} className="my-8" owner={true} />
         <section className="flex flex-col gap-6">
           <div>
             <p className="text-2xl font-bold mb-2">가게 정보를 입력해주세요</p>
