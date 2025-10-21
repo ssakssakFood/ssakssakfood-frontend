@@ -2,7 +2,7 @@ import { useState } from "react";
 import Button from "../../components/Button";
 import InputField2 from "../../components/InputField2";
 import { ProgressBar } from "../../components/ProgressBar";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useMutation } from "react-query";
 
 import type { EmailRequestDTO, EmailSend } from "../../types/onboarding";
@@ -16,6 +16,8 @@ import Modal from "@/components/onBoarding/Modal";
 
 export default function OnBoardingConfirmPage() {
   const navigate = useNavigate();
+  const location = useLocation();
+  console.log(location, "로케이션");
 
   const [emailValue, setEmailValue] = useState<string>("");
   const [codeValue, setCodeValue] = useState<string>("");
@@ -51,7 +53,12 @@ export default function OnBoardingConfirmPage() {
     mutationFn: (body: EmailRequestDTO) => onBoardingEmailCode(body),
     onSuccess: () => {
       console.log("성공");
-      navigate("/onBoarding/number");
+      console.log(location.state);
+      if (location.state === "owner") {
+        navigate("/onboarding/pass", { state: "owner" });
+      } else {
+        navigate("/onBoarding/number");
+      }
     },
     onError: (err) => console.log(err),
   });

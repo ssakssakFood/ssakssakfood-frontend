@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { ProgressBar } from "../../components/ProgressBar";
 import InputField2 from "../../components/InputField2";
 import Button from "../../components/Button";
@@ -15,6 +15,7 @@ import axiosLib from "axios";
 
 export default function OnBoardingPassPage() {
   const navigate = useNavigate();
+  const location = useLocation();
 
   //비번 볼래말래
   const [showPwd, setShowPwd] = useState<boolean>(false);
@@ -22,7 +23,7 @@ export default function OnBoardingPassPage() {
   const { register, watch } = useForm({ mode: "onChange" });
 
   //회원가입
-  const { email, nickname, phone } = useOnboardingState();
+  const { email, nickname, phone, setTemp } = useOnboardingState();
 
   const pw = watch("password") || "";
   const pwChecked = watch("passwordCheck") || "";
@@ -49,17 +50,23 @@ export default function OnBoardingPassPage() {
     },
   });
 
+  console.log(location.state);
   const handleNext = () => {
-    handleSignupForm.mutate({
-      email,
-      loginId: id,
-      password: pw,
-      nickname,
-      phoneNumber: phone,
-    });
+    if (location.state === "owner") {
+      navigate("/onBoarding/owner");
+      setTemp({ loginId: id, password: pw });
+    } else {
+      handleSignupForm.mutate({
+        email,
+        loginId: id,
+        password: pw,
+        nickname,
+        phoneNumber: phone,
+      });
+    }
   };
 
-  const idValid = /^[a-zA-Z0-9]+$/.test(id);
+  const idValid = /^[a-zA-Z0-9]{2,20}$/.test(id); //영어 숫자 2~20글자
   const nextBtn = idValid && noSpacePattern && pattern2 && isMatch;
 
   return (

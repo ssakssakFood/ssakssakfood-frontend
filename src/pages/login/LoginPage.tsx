@@ -30,6 +30,14 @@ export default function LoginPage() {
   const loginId = watch("login");
   const password = watch("password");
 
+  const handleSignup = () => {
+    if (manager) {
+      navigate("/term", { state: "owner" });
+    } else {
+      navigate("/term");
+    }
+  };
+
   return (
     <div className="flex flex-col min-h-dvh -mx-6 bg-main1 relative">
       <div className="bg-main1 py-5 xxs:py-7 h-[335px] xxs:h-[272px] ">
@@ -66,10 +74,7 @@ export default function LoginPage() {
           <div className="flex items-center justify-center body-r-14 text-grey-2 mb-5">
             <p className="pr-1">이메일 찾기 |</p>
             <p className="pr-1"> 비밀번호 찾기 |</p>
-            <p
-              className="pr-1 cursor-pointer"
-              onClick={() => navigate("/term")}
-            >
+            <p className="pr-1 cursor-pointer" onClick={handleSignup}>
               회원가입
             </p>
           </div>

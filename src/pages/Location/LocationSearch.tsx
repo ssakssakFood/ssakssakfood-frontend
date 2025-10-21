@@ -8,6 +8,7 @@ import axios from "axios";
 import { postLocation } from "../../api/location/location";
 import SearchIcon from "@/assets/icons/search.svg?url";
 import PageHeader from "@/components/PageHeader";
+import { useOnboardingState } from "@/store/useOnboardingStore";
 
 export interface Place {
   place_name: string;
@@ -150,10 +151,22 @@ export default function LocationSearch() {
       }
     });
   };
-
+  console.log(location.state);
+  const { setTemp } = useOnboardingState();
   const handleRegister = async () => {
     if (selectedId === null) return;
+
     const p = results.find((item) => item.id === selectedId);
+    if (location.state === "owner") {
+      setTemp({
+        location: {
+          ...location,
+          roadAddress: p?.address_name,
+          latitude: Number(p?.y),
+          longitude: Number(p?.x),
+        },
+      });
+    }
     console.log(p);
     const payload = {
       kakaoPlaceId: p?.id.toString() ?? "",
@@ -210,7 +223,7 @@ export default function LocationSearch() {
       {/* 리스트 */}
       {results.map((item, idx) => {
         const isLast = idx === results.length - 1;
-        console.log(item);
+        // console.log(item);
         return (
           <div
             onClick={() => handleSelect(item.id)}
