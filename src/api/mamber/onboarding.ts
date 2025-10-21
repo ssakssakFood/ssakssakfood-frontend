@@ -3,6 +3,7 @@ import type {
   EmailRequestDTO,
   EmailSend,
   LoginRequestDto,
+  OwnerSignuoDto,
   UserSignUpRequestDto,
 } from "../../types/onboarding";
 import api from "../apiMember";
@@ -85,6 +86,23 @@ export const useUploadImg = (memberId: number) => {
     mutationFn: (formData: FormData) => upLoadImg(memberId, formData),
     onSuccess: () => {
       console.log("성공");
+    },
+    onError: (err) => console.log(err),
+  });
+};
+
+//owner 회원가입
+export const postOwnerSignup = async (body: OwnerSignuoDto) => {
+  const { data } = await api.post("/owners/signup", body);
+  return data;
+};
+
+export const useSignup = () => {
+  const navigate = useNavigate();
+  return useMutation({
+    mutationFn: (body: OwnerSignuoDto) => postOwnerSignup(body),
+    onSuccess: () => {
+      navigate("/onBoarding/complete");
     },
     onError: (err) => console.log(err),
   });
