@@ -87,7 +87,7 @@ export default function LocationMap() {
         </div>
       </div>
       <div className="flex items-center justify-center">
-        <div className="absolute bottom-0 w-full -mx-6 pt-5 pb-6 flex flex-col items-center gap-5 bg-white z-20 rounded-t-2xl ">
+        <div className="absolute bottom-0 w-full -mx-6 pt-5 pb-8 flex flex-col items-center gap-5 bg-white z-20 rounded-t-2xl ">
           <div className="flex flex-col  w-full items-start gap-1 px-6">
             <span className="subtitle-b-16">{place}</span>
             <span className="body-r-14 mb-6">{address}</span>
