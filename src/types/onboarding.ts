@@ -31,7 +31,7 @@ export type Location = {
   detailAddress?: string;
 };
 
-export type OwnerSignuoDto = {
+export type OwnerSignupDto = {
   loginId: string;
   password: string;
   email: string;
