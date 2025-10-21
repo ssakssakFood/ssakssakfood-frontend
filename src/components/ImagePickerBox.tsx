@@ -22,7 +22,7 @@ const ImagePickerBox = forwardRef<HTMLInputElement, ImagePickerBoxProps>(
       className = "",
       label = "이미지 업로드",
     },
-    ref
+    ref,
   ) => {
     const id = useId();
     // const [innerFile, setInnerFile] = useState<File | null>(null);
@@ -90,7 +90,7 @@ const ImagePickerBox = forwardRef<HTMLInputElement, ImagePickerBoxProps>(
         />
       </div>
     );
-  }
+  },
 );
 
 ImagePickerBox.displayName = "ImagePickerBox";

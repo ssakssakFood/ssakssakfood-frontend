@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Button from "../../components/Button";
 import InputField2 from "../../components/InputField2";
 import { ProgressBar } from "../../components/ProgressBar";

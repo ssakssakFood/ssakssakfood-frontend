@@ -60,14 +60,14 @@ export default function LocationSearch() {
               page: newPage,
               size: 15,
             },
-          }
+          },
         );
 
         const newResults = res.data.documents;
         const totalCount = res.data.meta.total_count;
 
         setResults((prev) =>
-          isNewSearch ? newResults : [...prev, ...newResults]
+          isNewSearch ? newResults : [...prev, ...newResults],
         );
         setHasMore(newPage * 15 < totalCount);
         setPage(newPage);
@@ -84,7 +84,7 @@ export default function LocationSearch() {
         isFetchingRef.current = false;
       }
     },
-    [debouncedInput]
+    [debouncedInput],
   );
 
   useEffect(() => {
@@ -110,7 +110,7 @@ export default function LocationSearch() {
 
       if (node) observer.current.observe(node);
     },
-    [isLoading, hasMore, page, fetchPlaces]
+    [isLoading, hasMore, page, fetchPlaces],
   );
 
   const onClickCurrent = () => {
@@ -132,7 +132,7 @@ export default function LocationSearch() {
               x: longitude,
               y: latitude,
             },
-          }
+          },
         );
 
         const addressInfo = res.data.documents?.[0]?.address;
@@ -150,7 +150,7 @@ export default function LocationSearch() {
               owner: isOwner ? "owner" : undefined,
               returnPath: "/location/search",
             },
-          }
+          },
         );
       } catch (err) {
         console.error("주소 정보 가져오기 실패", err);
