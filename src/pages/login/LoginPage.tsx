@@ -26,7 +26,7 @@ export default function LoginPage() {
     reset(
       manager
         ? { login: "minsol", password: "qwer1234@Q" } // 사장님 프리셋
-        : { login: "qwer1234", password: "qwer1234Q@" } // 고객 프리셋
+        : { login: "qwer1234", password: "qwer1234Q@" }, // 고객 프리셋
     );
   }, [manager, reset]);
 
