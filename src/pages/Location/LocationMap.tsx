@@ -6,6 +6,7 @@ import type { gpsLocationSavedRequest } from "../../types/location";
 import Search from "@assets/icons/search.svg?react";
 import Marker from "@/assets/icons/map-marker.svg?url";
 import PageHeader from "@/components/PageHeader";
+import { useOnboardingState } from "@/store/useOnboardingStore";
 
 declare global {
   interface Window {
@@ -15,6 +16,7 @@ declare global {
 }
 export default function LocationMap() {
   const navigate = useNavigate();
+  const location = useLocation();
   const mapRef = useRef<HTMLDivElement>(null);
   const [searchParams] = useSearchParams();
 
@@ -25,15 +27,39 @@ export default function LocationMap() {
   // const road = searchParams.get("road");
   // const query = searchParams.get("query");
 
-  const location = useLocation();
   const returnPath = location.state?.returnPath ?? "/";
-  const mode = location.state?.mode ?? "call-api";
-  const handleSelect = async (place: gpsLocationSavedRequest) => {
-    if (mode === "call-api") {
-      await postGpsLocation(payload);
+  // const owner = location.state?.owner === "owner";
+  const { setTemp } = useOnboardingState();
+
+  // const mode = location.state?.mode ?? "call-api";
+
+  const owner = location.state === "owner" || location.state?.owner === "owner";
+  const mode = location.state?.mode ?? (owner ? "fill-only" : "call-api");
+
+  console.log(location);
+  console.log(owner);
+  const handleSelect = async (placePayload: gpsLocationSavedRequest) => {
+    if (owner || mode === "fill-only") {
+      setTemp({
+        location: {
+          roadAddress: String(address ?? ""),
+          latitude: Number(y ?? 0),
+          longitude: Number(x ?? 0),
+        },
+      });
+      if (owner) {
+        navigate("/onboarding/store");
+      } else {
+        navigate(returnPath, { state: { selectedPlace: placePayload } });
+      }
+      return;
+    }
+    try {
+      await postGpsLocation(placePayload);
       navigate("/location/edit");
-    } else {
-      navigate(returnPath, { state: { selectedPlace: place } });
+    } catch (e) {
+      console.error(e);
+      alert("위치 등록에 실패했습니다.");
     }
   };
 

@@ -37,7 +37,10 @@ export default function LocationSearch() {
   //무한스크롤 옵저버
   const observer = useRef<IntersectionObserver | null>(null);
 
-  const mode = location.state?.mode ?? "fill-only";
+  const isOwner =
+    location.state === "owner" || location.state?.owner === "owner";
+  // const mode = location.state?.mode ?? "fill-only";
+  const mode = location.state?.mode ?? (isOwner ? "fill-only" : "call-api");
 
   const isFetchingRef = useRef(false);
   const fetchPlaces = useCallback(
@@ -142,7 +145,11 @@ export default function LocationSearch() {
         navigate(
           `/location/map?x=${longitude}&y=${latitude}&place=${encodeURIComponent(place)}&address=${encodeURIComponent(address)}&query=${encodeURIComponent(input ?? "")}`,
           {
-            state: { mode: "call-api" },
+            state: {
+              mode: isOwner ? "fill-only" : "call-api",
+              owner: isOwner ? "owner" : undefined,
+              returnPath: "/location/search",
+            },
           }
         );
       } catch (err) {
@@ -157,7 +164,7 @@ export default function LocationSearch() {
     if (selectedId === null) return;
 
     const p = results.find((item) => item.id === selectedId);
-    if (location.state === "owner") {
+    if (isOwner) {
       setTemp({
         location: {
           ...location,
@@ -166,6 +173,8 @@ export default function LocationSearch() {
           longitude: Number(p?.x),
         },
       });
+      navigate("/onboarding/store");
+      return;
     }
     console.log(p);
     const payload = {
@@ -239,6 +248,7 @@ export default function LocationSearch() {
               y={Number(item.y)}
               place={item.place_name ?? ""}
               address={item.address_name ?? ""}
+              owner={isOwner}
             />
           </div>
         );
