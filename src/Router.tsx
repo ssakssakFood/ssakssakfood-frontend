@@ -22,6 +22,7 @@ import StorePage from "./pages/Store/StorePage";
 import ReservePage from "./pages/Reserve/ReservePage";
 import OwnerInformation from "@/pages/onBoarding/onBoardingOwner";
 import StoreInformation from "@/pages/onBoarding/onBoardingStore";
+import NearbyRegister from "@/pages/NearBy/NearByRegister";
 
 const router = createBrowserRouter([
   {
@@ -55,6 +56,9 @@ const router = createBrowserRouter([
       { path: "/location/edit", element: <LocationEdit /> },
       { path: "/location/search", element: <LocationSearch /> },
       { path: "/location/map", element: <LocationMap /> },
+      //내주변
+      { path: "/nearby/register", element: <NearbyRegister /> },
+
       //매장별 식품
       { path: "/store/:id", element: <StorePage /> },
       //예약

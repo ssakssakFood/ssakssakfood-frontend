@@ -1,9 +1,13 @@
+import { useNavigate } from "react-router-dom";
+
 interface RoutesModalProps {
   onCloseModal: () => void;
   data: object;
 }
 
 export default function RoutesModal({ onCloseModal, data }: RoutesModalProps) {
+  const navigate = useNavigate();
+
   return (
     <>
       <div
@@ -30,7 +34,7 @@ export default function RoutesModal({ onCloseModal, data }: RoutesModalProps) {
           <button
             className="w-full flex h-12 py-4 px-5.32rem rounded-lg items-center justify-center
                            text-main1 subtitle-b-16 border-dashed border border-main1"
-            // onClick={}
+            onClick={() => navigate("/nearby/register")}
           >
             루트 등록하기
           </button>
