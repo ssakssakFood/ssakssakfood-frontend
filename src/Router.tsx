@@ -8,7 +8,6 @@ import OnBoardingConfirmPage from "./pages/onBoarding/onBoardingConfirm";
 import OnBoardingPage from "./pages/onBoarding/onBoarding";
 import OnBoardingPassPage from "./pages/onBoarding/onBoardingPass";
 import SearchResultPage from "./pages/SearchResult/SearchResultPage";
-import NearByPage from "./pages/NearBy/NearByPage";
 import LocationEdit from "./pages/Location/LocationEdit";
 import LocationSearch from "./pages/Location/LocationSearch";
 import LocationMap from "./pages/Location/LocationMap";
@@ -22,6 +21,7 @@ import StorePage from "./pages/Store/StorePage";
 import ReservePage from "./pages/Reserve/ReservePage";
 import OwnerInformation from "@/pages/onBoarding/onBoardingOwner";
 import StoreInformation from "@/pages/onBoarding/onBoardingStore";
+import NearbyPage from "@/pages/NearBy/NearByPage";
 import NearbyRegister from "@/pages/NearBy/NearByRegister";
 
 const router = createBrowserRouter([
@@ -31,7 +31,7 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <Home /> },
       { path: "search", element: <SearchResultPage /> },
-      { path: "nearby", element: <NearByPage /> },
+      { path: "nearby", element: <NearbyPage /> },
       { path: "category/:slug", element: <CategoryPage /> },
     ],
   },

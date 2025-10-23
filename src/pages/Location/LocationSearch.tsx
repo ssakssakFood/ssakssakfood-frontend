@@ -9,6 +9,7 @@ import { postLocation } from "../../api/location/location";
 import SearchIcon from "@/assets/icons/search.svg?url";
 import PageHeader from "@/components/PageHeader";
 import { useOnboardingState } from "@/store/useOnboardingStore";
+import { useNearbyState } from "@/store/useRouteStore";
 
 export interface Place {
   place_name: string;
@@ -42,6 +43,12 @@ export default function LocationSearch() {
   // const mode = location.state?.mode ?? "fill-only";
   const mode = location.state?.mode ?? (isOwner ? "fill-only" : "call-api");
 
+  //내주변
+  const isNearbyStart = location.state === "nearbyStart";
+  const isNearbyEnd = location.state === "nearbyEnd";
+  // console.log(isNearbyStart, "ㅂㅂㅂㅂㅂㅂㅂㅂㅂㅂㅂㅂ");
+  const { setTemp: nearSet } = useNearbyState();
+
   const isFetchingRef = useRef(false);
   const fetchPlaces = useCallback(
     async (newPage = 1, isNewSearch = false) => {
@@ -60,14 +67,14 @@ export default function LocationSearch() {
               page: newPage,
               size: 15,
             },
-          },
+          }
         );
 
         const newResults = res.data.documents;
         const totalCount = res.data.meta.total_count;
 
         setResults((prev) =>
-          isNewSearch ? newResults : [...prev, ...newResults],
+          isNewSearch ? newResults : [...prev, ...newResults]
         );
         setHasMore(newPage * 15 < totalCount);
         setPage(newPage);
@@ -84,7 +91,7 @@ export default function LocationSearch() {
         isFetchingRef.current = false;
       }
     },
-    [debouncedInput],
+    [debouncedInput]
   );
 
   useEffect(() => {
@@ -110,7 +117,7 @@ export default function LocationSearch() {
 
       if (node) observer.current.observe(node);
     },
-    [isLoading, hasMore, page, fetchPlaces],
+    [isLoading, hasMore, page, fetchPlaces]
   );
 
   const onClickCurrent = () => {
@@ -132,7 +139,7 @@ export default function LocationSearch() {
               x: longitude,
               y: latitude,
             },
-          },
+          }
         );
 
         const addressInfo = res.data.documents?.[0]?.address;
@@ -150,7 +157,7 @@ export default function LocationSearch() {
               owner: isOwner ? "owner" : undefined,
               returnPath: "/location/search",
             },
-          },
+          }
         );
       } catch (err) {
         console.error("주소 정보 가져오기 실패", err);
@@ -158,7 +165,7 @@ export default function LocationSearch() {
       }
     });
   };
-  console.log(location.state);
+  // console.log(location.state);
   const { setTemp } = useOnboardingState();
   const handleRegister = async () => {
     if (selectedId === null) return;
@@ -175,7 +182,28 @@ export default function LocationSearch() {
       });
       navigate("/onboarding/store");
       return;
+    } else if (isNearbyStart) {
+      nearSet({
+        start: {
+          lat: Number(p?.y),
+          lng: Number(p?.x),
+        },
+        startJibunAddress: p?.address_name,
+      });
+      navigate("/nearby/register");
+      return;
+    } else if (isNearbyEnd) {
+      nearSet({
+        end: {
+          lat: Number(p?.y),
+          lng: Number(p?.x),
+        },
+        endJibunAddress: p?.address_name,
+      });
+      navigate("/nearby/register");
+      return;
     }
+
     console.log(p);
     const payload = {
       kakaoPlaceId: p?.id.toString() ?? "",
@@ -202,7 +230,6 @@ export default function LocationSearch() {
       alert("위치 등록에 실패했습니다.");
     }
   };
-
   const handleSelect = (id: number) => {
     setSelectedId((prev) => (prev === id ? null : id));
   };

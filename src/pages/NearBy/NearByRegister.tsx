@@ -4,8 +4,16 @@ import Switch from "@/assets/icons/switch.svg";
 import BDot from "@/assets/icons/blue-dot.svg";
 import RDot from "@/assets/icons/red-dot.svg";
 import Button from "@/components/Button";
+import { useNavigate } from "react-router-dom";
+import { useNearbyState } from "@/store/useRouteStore";
+import NearbyMap from "@/pages/NearBy/NearbyMap";
+import RouteMap from "@/pages/NearBy/NearbyMap";
 
 export default function NearbyRegister() {
+  const navigate = useNavigate();
+  const { start, startJibunAddress, end, endJibunAddress } = useNearbyState();
+  //   console.log(start, startJibunAddress, end, endJibunAddress);
+
   return (
     <div className="flex flex-col min-h-dvh">
       <PageHeader title="루트 등록" />
@@ -22,14 +30,30 @@ export default function NearbyRegister() {
           <div className="p-4 flex gap-4 bg-grey-5 rounded-xl">
             <img src={Switch} alt="출발지 도착지" />
             <div className="flex flex-col w-full">
-              <div className="flex gap-2 border-b border-b-grey-4 pb-4">
+              <div
+                className="flex gap-2 border-b border-b-grey-4 pb-4 cursor-pointer"
+                onClick={() => {
+                  navigate("/location/search", { state: "nearbyStart" });
+                }}
+              >
                 <img src={RDot} alt="출발지" />
-                <p className="text-grey-3 body-r-14">출발지입력</p>
+                <p
+                  className={`body-r-14 ${startJibunAddress ? "text-black" : "text-grey-3"}`}
+                >
+                  {startJibunAddress || "출발지입력"}
+                </p>
               </div>
-              <div className="flex gap-2 pt-4">
+              <div
+                className="flex gap-2 pt-4 cursor-pointer"
+                onClick={() => {
+                  navigate("/location/search", { state: "nearbyEnd" });
+                }}
+              >
                 <img src={BDot} alt="도착지" />
-                <p className="text-grey-3 body-r-14 cursor-pointer">
-                  도착지입력
+                <p
+                  className={`body-r-14 ${endJibunAddress ? "text-black" : "text-grey-3"}`}
+                >
+                  {endJibunAddress || "도착지입력"}
                 </p>
               </div>
             </div>
@@ -37,7 +61,7 @@ export default function NearbyRegister() {
         </div>
         {/* 지도 */}
 
-        <div></div>
+        <RouteMap start={start} end={end} height={260} />
       </section>
 
       <Button labelName="루트 등록하기" className="mb-8" />

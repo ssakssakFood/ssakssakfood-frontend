@@ -22,7 +22,7 @@ interface nearbyState {
   reset: () => void;
 }
 
-export const useOnboardingState = create<nearbyState>((set) => ({
+export const useNearbyState = create<nearbyState>((set) => ({
   start: undefined,
   end: undefined,
   polyline: undefined,

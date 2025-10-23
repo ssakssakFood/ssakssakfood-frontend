@@ -5,7 +5,6 @@ import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Marker from "@/assets/icons/map-marker.svg?url";
 import SearchInput from "@/components/SearchInput";
-import { useGetNearby } from "@/api/nearby/nearby";
 import RoutesModal from "@/components/nearby/RoutesModal";
 
 declare global {
@@ -13,7 +12,7 @@ declare global {
     kakao: any;
   }
 }
-export default function NearByPage() {
+export default function NearbyPage() {
   const { latitude, longitude, address, fullAdress, loading, error } =
     useGeolocation();
 
@@ -50,8 +49,8 @@ export default function NearByPage() {
     });
   }, [loading, error, latitude, longitude]);
 
-  const { data } = useGetNearby();
-  console.log(data);
+  // const { data } = useGetNearby();
+  // console.log(data);
 
   const handleModal = () => {
     setIsModal(true);

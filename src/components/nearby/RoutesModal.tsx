@@ -1,3 +1,4 @@
+import { useNearbyState } from "@/store/useRouteStore";
 import { useNavigate } from "react-router-dom";
 
 interface RoutesModalProps {
@@ -7,7 +8,7 @@ interface RoutesModalProps {
 
 export default function RoutesModal({ onCloseModal, data }: RoutesModalProps) {
   const navigate = useNavigate();
-
+  const { startName } = useNearbyState();
   return (
     <>
       <div

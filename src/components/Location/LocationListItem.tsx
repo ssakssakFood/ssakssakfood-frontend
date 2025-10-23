@@ -27,7 +27,7 @@ export default function LocationList({
   owner,
 }: LocationListProps) {
   const navigate = useNavigate();
-  console.log(owner, "지도에서보기");
+  // console.log(owner, "지도에서보기");
   const handleViewOnMapClick = (e: React.MouseEvent) => {
     e.stopPropagation();
 
@@ -40,7 +40,7 @@ export default function LocationList({
           mode: owner ? "fill-only" : "call-api",
           returnPath: "/location/search",
         },
-      },
+      }
     );
     console.log(`지도에서 보기 클릭: ${place}, ${address}`);
   };
