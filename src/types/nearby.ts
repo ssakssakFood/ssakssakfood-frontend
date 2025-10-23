@@ -4,16 +4,16 @@ export type Routes = {
 };
 
 export type NearbyRequestDTO = {
-  start?: Routes;
-  end?: Routes;
+  start: Routes;
+  end: Routes;
   polyline?: Routes;
   routeName: string;
-  radiusMeters: number;
-  categoryIds: number[];
+  radiusMeters?: number;
+  categoryIds?: number[];
   startName: string;
   startJibunAddress: string;
-  startBuildingName: string;
+  startBuildingName?: string;
   endName: string;
   endJibunAddress: string;
-  endBuildingName: string;
+  endBuildingName?: string;
 };

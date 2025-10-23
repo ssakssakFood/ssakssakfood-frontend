@@ -1,7 +1,7 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import axios from "axios";
-import SMarker from "@/assets/icons/start-marker.svg";
-import EMarker from "@/assets/icons/end-marker.svg";
+import SMarkerUrl from "@/assets/icons/start-marker.svg?url";
+import EMarkerUrl from "@/assets/icons/end-marker.svg?url";
 
 type LatLng = { lat: number; lng: number };
 
@@ -14,22 +14,24 @@ declare global {
 interface Props {
   start?: LatLng;
   end?: LatLng;
-  waypoints?: LatLng[]; // 선택: 중간 경유지
   height?: number | string; // px 또는 %
+  /** 보행 거리/시간을 필요하면 여기로 알려줌 (단위: m, sec) */
+  onSummary?: (summary: { distance: number; time: number }) => void;
 }
 
 export default function RouteMap({
   start,
   end,
-  waypoints = [],
   height = 260,
+  onSummary,
 }: Props) {
   const mapEl = useRef<HTMLDivElement>(null);
   const mapRef = useRef<any>(null);
   const polylineRef = useRef<any>(null);
   const markersRef = useRef<any[]>([]);
+  const [isMapReady, setIsMapReady] = useState(false);
 
-  // Kakao 지도 인스턴스 생성 (index.html에 SDK 이미 포함됨)
+  // Kakao 지도 인스턴스 생성
   useEffect(() => {
     let timer: number | null = null;
 
@@ -45,23 +47,31 @@ export default function RouteMap({
     ensureKakaoReady().then(() => {
       if (!mapEl.current) return;
       const { kakao } = window;
-      const center = start || end || { lat: 37.5665, lng: 126.978 };
-      mapRef.current = new kakao.maps.Map(mapEl.current, {
-        center: new kakao.maps.LatLng(center.lat, center.lng),
-        level: 6,
-      });
+
+      const init = () => {
+        const center = start || end || { lat: 37.5665, lng: 126.978 };
+        mapRef.current = new kakao.maps.Map(mapEl.current!, {
+          center: new kakao.maps.LatLng(center.lat, center.lng),
+          level: 6,
+        });
+        setIsMapReady(true); // ✅ 지도 준비 완료
+      };
+
+      if (kakao.maps.load) kakao.maps.load(init);
+      else init();
     });
 
     return () => {
       if (timer) clearTimeout(timer);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // 경로 그리기
+  // 경로 그리기 (보행)
   useEffect(() => {
     const map = mapRef.current;
+    if (!isMapReady) return;
     if (!map || !start || !end) return;
+
     const { kakao } = window;
 
     // 이전 오버레이/마커 정리
@@ -72,121 +82,139 @@ export default function RouteMap({
     markersRef.current.forEach((m) => m.setMap(null));
     markersRef.current = [];
 
-    // 마커
     const sPos = new kakao.maps.LatLng(start.lat, start.lng);
     const ePos = new kakao.maps.LatLng(end.lat, end.lng);
-    const sMarker = new kakao.maps.Marker({
-      map,
-      position: sPos,
-      image: new kakao.maps.MarkerImage(SMarker, new kakao.maps.Size(40, 40), {
-        offset: new kakao.maps.Point(20, 20),
-      }),
-    });
-    const eMarker = new kakao.maps.Marker({
-      map,
-      position: ePos,
-      image: new kakao.maps.MarkerImage(EMarker, new kakao.maps.Size(40, 40), {
-        offset: new kakao.maps.Point(20, 20),
-      }),
-    });
+
+    const makeMarker = (position: any, url?: string) => {
+      try {
+        if (url) {
+          const image = new kakao.maps.MarkerImage(
+            url,
+            new kakao.maps.Size(40, 40),
+            { offset: new kakao.maps.Point(20, 20) }
+          );
+          return new kakao.maps.Marker({ map, position, image });
+        }
+        return new kakao.maps.Marker({ map, position });
+      } catch {
+        return new kakao.maps.Marker({ map, position });
+      }
+    };
+
+    const sMarker = makeMarker(sPos, SMarkerUrl);
+    const eMarker = makeMarker(ePos, EMarkerUrl);
     markersRef.current = [sMarker, eMarker];
 
-    // bounds
     const bounds = new kakao.maps.LatLngBounds();
     bounds.extend(sPos);
     bounds.extend(ePos);
-    waypoints.forEach((w) =>
-      bounds.extend(new kakao.maps.LatLng(w.lat, w.lng))
-    );
 
-    // --- Kakao Mobility 다중 목적지 Directions (직접 호출) ---
-    const fetchDirections = async () => {
-      const destinations = [
-        { key: "0", x: end.lng, y: end.lat },
-        ...waypoints.map((w, i) => ({
-          key: String(i + 1),
-          x: w.lng,
-          y: w.lat,
-        })),
-      ];
+    const fetchWalkRoute = async (signal?: AbortSignal) => {
+      const appKey = import.meta.env.VITE_APP_TMAP_KEY as string | undefined;
+      if (!appKey) {
+        console.warn("[RouteMap] VITE_APP_TMAP_KEY 가 설정되어 있지 않습니다.");
+      }
 
-      const { data } = await axios.post(
-        "https://apis-navi.kakaomobility.com/v1/destinations/directions",
-        {
-          origin: { x: start.lng, y: start.lat },
-          destinations,
-          // 필요 시 옵션 추가:
-          // priority: "TIME",       // "TIME" | "DISTANCE" (기본: TIME)
-          // avoid: ["motorway"],    // ["ferries","toll","motorway","schoolzone","uturn"]
-          // roadevent: 0,           // 0|1|2
-          radius: 5000,
-          // radius: 5000,           // 0~10000(m)
+      const url =
+        "https://apis.openapi.sk.com/tmap/routes/pedestrian?version=1&format=json";
+      const body = {
+        reqCoordType: "WGS84GEO",
+        resCoordType: "WGS84GEO",
+        startX: Number(start.lng),
+        startY: Number(start.lat),
+        endX: Number(end.lng),
+        endY: Number(end.lat),
+        startName: "출발지",
+        endName: "도착지",
+      };
+
+      const { data } = await axios.post(url, body, {
+        headers: {
+          "Content-Type": "application/json",
+          appKey: appKey ?? "",
         },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `KakaoAK ${import.meta.env.VITE_KAKAO_REST_API_MAP_KEY}`,
-          },
-        }
-      );
+        signal,
+      });
 
-      return data;
+      console.log("[RouteMap] Tmap response:", data);
+      const features = data?.features ?? [];
+      let totalDistance = 0;
+      let totalTime = 0;
+      for (const f of features) {
+        const p = f?.properties;
+        if (p?.totalDistance != null) totalDistance = p.totalDistance;
+        if (p?.totalTime != null) totalTime = p.totalTime;
+      }
+
+      const lineCoords: Array<{ lat: number; lng: number }> = [];
+      features
+        .filter((f: any) => f.geometry?.type === "LineString")
+        .forEach((f: any) => {
+          (f.geometry.coordinates || []).forEach((c: [number, number]) => {
+            lineCoords.push({ lng: c[0], lat: c[1] });
+          });
+        });
+
+      return { lineCoords, totalDistance, totalTime };
     };
+
+    const ac = new AbortController();
 
     (async () => {
       try {
-        const data = await fetchDirections();
+        const { lineCoords, totalDistance, totalTime } = await fetchWalkRoute(
+          ac.signal
+        );
 
-        // 상세 geometry가 있는 경우
-        const sections = data?.routes?.[0]?.sections ?? [];
-        console.log(data);
-        let pathLL: any[] = [];
+        onSummary?.({ distance: totalDistance, time: totalTime });
 
-        if (sections.length) {
-          const vertexPairs: { lat: number; lng: number }[] = [];
-          sections.forEach((section: any) => {
-            (section.roads || []).forEach((road: any) => {
-              const v = road.vertexes || [];
-              for (let i = 0; i < v.length; i += 2) {
-                vertexPairs.push({ lng: v[i], lat: v[i + 1] });
-              }
-            });
-          });
+        const path =
+          lineCoords.length > 1
+            ? lineCoords.map((p) => new kakao.maps.LatLng(p.lat, p.lng))
+            : [sPos, ePos]; // 폴백
 
-          pathLL =
-            vertexPairs.length > 1
-              ? vertexPairs.map((p) => new kakao.maps.LatLng(p.lat, p.lng))
-              : [sPos, ePos];
-        } else {
-          // 요약만 오는 응답(문서 샘플 형태) → 직선으로 폴백
-          pathLL = [sPos, ePos];
-        }
-
-        // bounds & draw
-        pathLL.forEach((ll) => bounds.extend(ll));
-        map.setBounds(bounds, 40, 40, 40, 40);
+        path.forEach((ll) => bounds.extend(ll));
+        map.setBounds(bounds, 40); // ✅ padding 한 개만
 
         polylineRef.current = new kakao.maps.Polyline({
           map,
-          path: pathLL,
-          strokeWeight: 4,
+          path,
+          strokeWeight: 6,
           strokeColor: "#FF6B00",
           strokeOpacity: 1,
           strokeStyle: "solid",
         });
-      } catch (e) {
-        // 실패 시 직선 표시
+      } catch (e: any) {
+        if (e?.name === "CanceledError" || e?.message === "canceled") return;
+        // 실패 시 직선 표시 + 에러 로그
         polylineRef.current = new kakao.maps.Polyline({
           map,
           path: [sPos, ePos],
-          strokeWeight: 4,
+          strokeWeight: 6,
           strokeColor: "#FF6B00",
         });
-        map.setBounds(bounds, 40, 40, 40, 40);
-        console.error("Kakao Mobility API error:", e);
+        map.setBounds(bounds, 40);
+        console.error("Tmap Pedestrian API error:", e);
       }
     })();
-  }, [start?.lat, start?.lng, end?.lat, end?.lng, waypoints]);
 
-  return <div ref={mapEl} style={{ width: "100%", height }} />;
+    return () => {
+      ac.abort();
+    };
+  }, [isMapReady, start?.lat, start?.lng, end?.lat, end?.lng, onSummary]); // ✅ isMapReady 추가
+
+  const styleHeight =
+    typeof height === "number" ? `${height}px` : height || "260px";
+
+  return (
+    <div
+      ref={mapEl}
+      style={{
+        width: "100%",
+        height: styleHeight,
+        minHeight: "200px",
+        position: "relative",
+      }}
+    />
+  );
 }

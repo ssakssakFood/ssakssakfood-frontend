@@ -6,20 +6,53 @@ import RDot from "@/assets/icons/red-dot.svg";
 import Button from "@/components/Button";
 import { useNavigate } from "react-router-dom";
 import { useNearbyState } from "@/store/useRouteStore";
-import NearbyMap from "@/pages/NearBy/NearbyMap";
 import RouteMap from "@/pages/NearBy/NearbyMap";
+import { useRouteRegister } from "@/api/nearby/nearby";
+import { useState } from "react";
 
 export default function NearbyRegister() {
   const navigate = useNavigate();
+
+  const [routeValue, setRouteValue] = useState("");
+
   const { start, startJibunAddress, end, endJibunAddress } = useNearbyState();
   //   console.log(start, startJibunAddress, end, endJibunAddress);
+
+  const routeRegister = useRouteRegister();
+  const handleRouteRegister = () => {
+    routeRegister.mutate({
+      start: {
+        lat: Number(start?.lat),
+        lng: Number(start?.lng),
+      },
+      startName: startJibunAddress,
+      startJibunAddress,
+      end: {
+        lat: Number(end?.lat),
+        lng: Number(end?.lng),
+      },
+      endName: endJibunAddress,
+      routeName: routeValue,
+      radiusMeters: 1000,
+      endJibunAddress,
+    });
+  };
+
+  const isValid = Boolean(routeValue && startJibunAddress && endJibunAddress);
+  console.log(isValid);
 
   return (
     <div className="flex flex-col min-h-dvh">
       <PageHeader title="루트 등록" />
       <div className="my-6">
         <p className="mb-4 subtitle-b-16">루트 이름</p>
-        <InputField2 placeholder="루트 이름 입력" />
+        <InputField2
+          placeholder="루트 이름 입력"
+          value={routeValue}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+            setRouteValue(e.target.value);
+          }}
+        />
       </div>
 
       <section className="flex-1">
@@ -64,7 +97,12 @@ export default function NearbyRegister() {
         <RouteMap start={start} end={end} height={260} />
       </section>
 
-      <Button labelName="루트 등록하기" className="mb-8" />
+      <Button
+        labelName="루트 등록하기"
+        className="mb-8"
+        onClick={handleRouteRegister}
+        disabled={!isValid}
+      />
     </div>
   );
 }
