@@ -6,6 +6,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Marker from "@/assets/icons/map-marker.svg?url";
 import SearchInput from "@/components/SearchInput";
 import RoutesModal from "@/components/nearby/RoutesModal";
+import { useGetNearby } from "@/api/nearby/nearby";
 
 declare global {
   interface Window {
@@ -49,8 +50,8 @@ export default function NearbyPage() {
     });
   }, [loading, error, latitude, longitude]);
 
-  // const { data } = useGetNearby();
-  // console.log(data);
+  const { data } = useGetNearby();
+  console.log(data);
 
   const handleModal = () => {
     setIsModal(true);

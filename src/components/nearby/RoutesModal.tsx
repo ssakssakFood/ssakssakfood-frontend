@@ -1,14 +1,16 @@
 import { useNearbyState } from "@/store/useRouteStore";
+import { NearbyResponseDto } from "@/types/nearby";
 import { useNavigate } from "react-router-dom";
 
 interface RoutesModalProps {
   onCloseModal: () => void;
-  data: object;
+  data: NearbyResponseDto[];
 }
 
 export default function RoutesModal({ onCloseModal, data }: RoutesModalProps) {
   const navigate = useNavigate();
   const { startName } = useNearbyState();
+  console.log(data);
   return (
     <>
       <div
@@ -21,10 +23,28 @@ export default function RoutesModal({ onCloseModal, data }: RoutesModalProps) {
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex flex-col w-full items-start gap-1 px-6">
-          <span className="subtitle-b-16">내 루트</span>
-
+          <div className="flex items-center justify-between w-full">
+            <p className="subtitle-b-16">내 루트</p>
+            <button
+              className="py-1 px-3 rounded-sm bg-grey-5 body-r-14 "
+              // onClick={() => setIsEdit((pre) => !pre)}
+            >
+              수정
+            </button>
+          </div>
           {data ? (
-            <span className="body-r-14 mb-6">s</span>
+            <>
+              {data?.map((item: NearbyResponseDto) => {
+                return (
+                  <span
+                    className="body-r-14 py-4 border-b-1 border-grey-5 w-full"
+                    key={item.routeId}
+                  >
+                    {item?.routeName}
+                  </span>
+                );
+              })}
+            </>
           ) : (
             <div className="flex flex-col justify-center items-center w-full text-grey-2 mb-6">
               <p>등록된 루트가 없어요!</p>

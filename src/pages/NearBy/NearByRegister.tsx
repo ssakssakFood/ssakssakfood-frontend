@@ -10,12 +10,14 @@ import RouteMap from "@/pages/NearBy/NearbyMap";
 import { useRouteRegister } from "@/api/nearby/nearby";
 import { useState } from "react";
 
+type LatLng = { lat: number; lng: number };
 export default function NearbyRegister() {
   const navigate = useNavigate();
+  const { start, startJibunAddress, end, endJibunAddress, setTemp, routeName } =
+    useNearbyState();
+  const [routeValue, setRouteValue] = useState(routeName || "");
+  const [polyline, setPolyline] = useState<LatLng[]>([]);
 
-  const [routeValue, setRouteValue] = useState("");
-
-  const { start, startJibunAddress, end, endJibunAddress } = useNearbyState();
   //   console.log(start, startJibunAddress, end, endJibunAddress);
 
   const routeRegister = useRouteRegister();
@@ -31,12 +33,28 @@ export default function NearbyRegister() {
         lat: Number(end?.lat),
         lng: Number(end?.lng),
       },
+      polyline,
       endName: endJibunAddress,
       routeName: routeValue,
       radiusMeters: 1000,
       endJibunAddress,
+      categoryIds: [0],
     });
   };
+  //     routeRegister.mutate({
+  //       routeName: "강남→역삼 테스트 루트",
+  //       start: { lat: 37.4979, lng: 127.0276 },
+  //       end: { lat: 37.501, lng: 127.039 },
+  //       polyline: [
+  //         { lat: 37.4979, lng: 127.0276 },
+  //         { lat: 37.4988, lng: 127.031 },
+  //         { lat: 37.5002, lng: 127.0355 },
+  //         { lat: 37.501, lng: 127.039 },
+  //       ],
+  //       radiusMeters: 1000,
+  //       categoryIds: [],
+  //     });
+  //   };
 
   const isValid = Boolean(routeValue && startJibunAddress && endJibunAddress);
   console.log(isValid);
@@ -51,6 +69,7 @@ export default function NearbyRegister() {
           value={routeValue}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
             setRouteValue(e.target.value);
+            setTemp({ routeName: routeValue });
           }}
         />
       </div>
@@ -94,7 +113,12 @@ export default function NearbyRegister() {
         </div>
         {/* 지도 */}
 
-        <RouteMap start={start} end={end} height={260} />
+        <RouteMap
+          start={start}
+          end={end}
+          height={260}
+          onPolylineReady={setPolyline}
+        />
       </section>
 
       <Button

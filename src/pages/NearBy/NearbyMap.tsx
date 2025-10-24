@@ -14,16 +14,19 @@ declare global {
 interface Props {
   start?: LatLng;
   end?: LatLng;
-  height?: number | string; // px 또는 %
-  /** 보행 거리/시간을 필요하면 여기로 알려줌 (단위: m, sec) */
-  onSummary?: (summary: { distance: number; time: number }) => void;
+  height?: number | string;
+  /** 보행 거리/시간을 필요하면 여기로 알려줌  */
+  //   onSummary?: (summary: { distance: number; time: number }) => void;
+
+  onPolylineReady?: (polyline: LatLng[]) => void;
 }
 
 export default function RouteMap({
   start,
   end,
   height = 260,
-  onSummary,
+  //   onSummary,
+  onPolylineReady,
 }: Props) {
   const mapEl = useRef<HTMLDivElement>(null);
   const mapRef = useRef<any>(null);
@@ -54,7 +57,7 @@ export default function RouteMap({
           center: new kakao.maps.LatLng(center.lat, center.lng),
           level: 6,
         });
-        setIsMapReady(true); // ✅ 지도 준비 완료
+        setIsMapReady(true);
       };
 
       if (kakao.maps.load) kakao.maps.load(init);
@@ -165,16 +168,19 @@ export default function RouteMap({
         const { lineCoords, totalDistance, totalTime } = await fetchWalkRoute(
           ac.signal
         );
-
-        onSummary?.({ distance: totalDistance, time: totalTime });
-
+        // onSummary?.({ distance: totalDistance, time: totalTime });
+        const rounded = lineCoords.map((p) => ({
+          lat: +p.lat.toFixed(6),
+          lng: +p.lng.toFixed(6),
+        }));
+        onPolylineReady?.(rounded);
         const path =
           lineCoords.length > 1
             ? lineCoords.map((p) => new kakao.maps.LatLng(p.lat, p.lng))
             : [sPos, ePos]; // 폴백
 
         path.forEach((ll) => bounds.extend(ll));
-        map.setBounds(bounds, 40); // ✅ padding 한 개만
+        map.setBounds(bounds, 40);
 
         polylineRef.current = new kakao.maps.Polyline({
           map,
@@ -186,7 +192,6 @@ export default function RouteMap({
         });
       } catch (e: any) {
         if (e?.name === "CanceledError" || e?.message === "canceled") return;
-        // 실패 시 직선 표시 + 에러 로그
         polylineRef.current = new kakao.maps.Polyline({
           map,
           path: [sPos, ePos],
@@ -201,7 +206,7 @@ export default function RouteMap({
     return () => {
       ac.abort();
     };
-  }, [isMapReady, start?.lat, start?.lng, end?.lat, end?.lng, onSummary]); // ✅ isMapReady 추가
+  }, [isMapReady, start?.lat, start?.lng, end?.lat, end?.lng, onPolylineReady]); // ✅ isMapReady 추가
 
   const styleHeight =
     typeof height === "number" ? `${height}px` : height || "260px";
