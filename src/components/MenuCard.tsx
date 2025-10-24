@@ -1,6 +1,6 @@
-import mockImg from "@/assets/icons/bread.svg";
-import StockBadge from "./StockBadge";
-import { useNavigate } from "react-router-dom";
+import mockImg from '@/assets/icons/bread.svg';
+import StockBadge from './StockBadge';
+import { useNavigate } from 'react-router-dom';
 
 interface MenuCardProps {
   id: number; // ✅ 메뉴 ID 추가
@@ -70,6 +70,42 @@ export default function MenuCard({
           </div>
         </div>
       </div>
+    </div>
+  );
+}
+
+export function MenuImgCard({
+  originalPrice,
+  salePrice,
+  name,
+}: {
+  originalPrice: number;
+  salePrice: number;
+  name: string;
+}) {
+  return (
+    <div className="relative w-[128px] h-[128px] flex-shrink-0">
+      <img
+        src={mockImg}
+        alt="임시"
+        className="w-full h-full object-cover rounded-[8px]"
+      />
+      <div
+        className="absolute inset-0 rounded-[8px] z-10 
+                   bg-gradient-to-t from-black/60 via-black/0 to-transparent"
+      ></div>
+      <div className="absolute left-[10px] bottom-[30px] text-[16px] text-white font-bold z-20">
+        {name}
+      </div>
+      <div className='flex items-center  gap-2 absolute left-[10px] bottom-[12px] text-white z-20'>
+        <div className="line-through text-[12px]">
+          {originalPrice.toLocaleString()}원
+        </div>
+        <div className="font-bold text-[14px]">
+          {salePrice.toLocaleString()}원
+        </div>
+      </div>
+      <div className="absolute top-[8px] left-[8px]"></div>
     </div>
   );
 }
