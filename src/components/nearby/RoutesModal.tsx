@@ -1,6 +1,9 @@
 import { useNearbyState } from "@/store/useRouteStore";
 import { NearbyResponseDto } from "@/types/nearby";
 import { useNavigate } from "react-router-dom";
+import Dlete from "@/assets/icons/x-circle-thin.svg";
+import { useState } from "react";
+import { useRouteDelete } from "@/api/nearby/nearby";
 
 interface RoutesModalProps {
   onCloseModal: () => void;
@@ -9,8 +12,12 @@ interface RoutesModalProps {
 
 export default function RoutesModal({ onCloseModal, data }: RoutesModalProps) {
   const navigate = useNavigate();
+  const [isEdit, setIsEdit] = useState(false);
+  const deleteRoute = useRouteDelete();
   const { startName } = useNearbyState();
+
   console.log(data);
+
   return (
     <>
       <div
@@ -27,21 +34,33 @@ export default function RoutesModal({ onCloseModal, data }: RoutesModalProps) {
             <p className="subtitle-b-16">내 루트</p>
             <button
               className="py-1 px-3 rounded-sm bg-grey-5 body-r-14 "
-              // onClick={() => setIsEdit((pre) => !pre)}
+              onClick={() => setIsEdit((pre) => !pre)}
             >
-              수정
+              {!isEdit ? "수정" : "저장"}
             </button>
           </div>
-          {data ? (
+          {data.length > 0 ? (
             <>
               {data?.map((item: NearbyResponseDto) => {
                 return (
-                  <span
-                    className="body-r-14 py-4 border-b-1 border-grey-5 w-full"
-                    key={item.routeId}
-                  >
-                    {item?.routeName}
-                  </span>
+                  <>
+                    <div className="flex items-center justify-between w-full">
+                      <span
+                        className="body-r-14 py-4 border-b-1 border-grey-5 w-full"
+                        key={item.routeId}
+                      >
+                        {item?.routeName}
+                      </span>
+                      {!isEdit || (
+                        <img
+                          src={Dlete}
+                          alt="삭제하기"
+                          className="size-6 cursor-pointer"
+                          onClick={() => deleteRoute.mutate(item.routeId)}
+                        />
+                      )}
+                    </div>
+                  </>
                 );
               })}
             </>
@@ -51,7 +70,6 @@ export default function RoutesModal({ onCloseModal, data }: RoutesModalProps) {
               <p>루트를 등록해볼까요?</p>
             </div>
           )}
-
           <button
             className="w-full flex h-12 py-4 px-5.32rem rounded-lg items-center justify-center
                            text-main1 subtitle-b-16 border-dashed border border-main1"

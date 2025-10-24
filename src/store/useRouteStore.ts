@@ -48,5 +48,6 @@ export const useNearbyState = create<nearbyState>((set) => ({
       start: undefined,
       end: undefined,
       polyline: undefined,
+      routeName: "",
     }),
 }));

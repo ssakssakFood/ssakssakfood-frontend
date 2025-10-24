@@ -1,7 +1,9 @@
 import api from "@/api/apiMember";
 import { NearbyRequestDTO } from "@/types/nearby";
-import { useMutation, useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useNavigate } from "react-router-dom";
 //경로 목록 조회
+
 export const getnearby = async () => {
   const { data } = await api.get("/routes");
   return data;
@@ -21,9 +23,32 @@ export const postNearby = async (body: NearbyRequestDTO) => {
 };
 
 export const useRouteRegister = () => {
+  const navigate = useNavigate();
   return useMutation({
     mutationFn: (body: NearbyRequestDTO) => postNearby(body),
     onSuccess: (res) => {
+      console.log(res);
+      navigate("/nearby");
+    },
+    onError: (err) => console.error(err),
+  });
+};
+
+//route 삭제
+export const deleteNearby = async (routeId: number) => {
+  const { data } = await api.delete(`/routes/${routeId}`);
+  return data;
+};
+
+export const useRouteDelete = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (routeId: number) => deleteNearby(routeId),
+    onSuccess: (res) => {
+      queryClient.invalidateQueries({
+        queryKey: ["routes"],
+      });
       console.log(res);
     },
     onError: (err) => console.error(err),

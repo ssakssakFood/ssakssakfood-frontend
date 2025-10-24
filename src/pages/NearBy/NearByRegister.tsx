@@ -13,8 +13,15 @@ import { useState } from "react";
 type LatLng = { lat: number; lng: number };
 export default function NearbyRegister() {
   const navigate = useNavigate();
-  const { start, startJibunAddress, end, endJibunAddress, setTemp, routeName } =
-    useNearbyState();
+  const {
+    start,
+    startJibunAddress,
+    end,
+    endJibunAddress,
+    setTemp,
+    routeName,
+    reset,
+  } = useNearbyState();
   const [routeValue, setRouteValue] = useState(routeName || "");
   const [polyline, setPolyline] = useState<LatLng[]>([]);
 
@@ -40,6 +47,8 @@ export default function NearbyRegister() {
       endJibunAddress,
       categoryIds: [0],
     });
+
+    reset();
   };
   //     routeRegister.mutate({
   //       routeName: "강남→역삼 테스트 루트",
