@@ -9,7 +9,7 @@ import receiptActive from "@/assets/icons/receipt-active.svg";
 import mypage from "@/assets/icons/user.svg";
 import mypageActive from "@/assets/icons/user-active.svg";
 
-export default function FooterNav() {
+export default function OwnerFooterNav() {
   const navigate = useNavigate();
   const routerLocation = useLocation();
 
@@ -27,14 +27,7 @@ export default function FooterNav() {
   }, [routerLocation.pathname]);
 
   const navItems = [
-    { id: "home", label: "홈", icon: home, activeIcon: homeActive, path: "/" },
-    {
-      id: "nearby",
-      label: "내 주변",
-      icon: location,
-      activeIcon: locationActive,
-      path: "/nearby",
-    },
+    { id: "home", label: "홈", icon: home, activeIcon: homeActive, path: "/manager-home" },
     {
       id: "orders",
       label: "주문 내역",
@@ -61,7 +54,7 @@ export default function FooterNav() {
 
   return (
     <nav className="bg-white border-t border-[#DFDFDF] z-50">
-      <div className="flex justify-center gap-[32px] py-2">
+      <div className="flex justify-center gap-[56px] py-2">
         {navItems.map((item) => (
           <button
             key={item.id}

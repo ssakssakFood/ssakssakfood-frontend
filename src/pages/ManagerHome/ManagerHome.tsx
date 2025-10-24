@@ -1,7 +1,8 @@
 import CurrentDateDisplayWithDateObject from '@/utils/CurrentDate';
 import chevronL from '@/assets/icons/chevron-right.svg';
-import { MenuImgCard } from '@/components/MenuCard';
+import { MenuAddCard, MenuImgCard } from '@/components/MenuCard';
 import addImg from '@/assets/icons/plus-orange.svg';
+import OwnerFooterNav from '@/layout/OwnerFooterNav';
 
 export default function ManagerHome() {
   const myStoreId = 1; // 임시 사장님 매장 ID
@@ -43,7 +44,7 @@ export default function ManagerHome() {
           <MenuImgCard originalPrice={10000} salePrice={8000} name="식품명" />
         </div>
       </section>
-      <section className='mt-[24px]'>
+      <section className="mt-[24px] mb-[100px]">
         <div className="flex justify-between items-center">
           <h2 className="flex gap-2 text-[20px] font-bold">
             내 식품 <span className="text-red">5</span>
@@ -52,11 +53,21 @@ export default function ManagerHome() {
             수정
           </div>
         </div>
-        <div className='text-[16px] font-semibold text-[#FE7549] flex gap-2 justify-center items-center border-1 border-dashed border-[#FE7549] rounded-lg h-[48px] mt-[24px] cursor-pointer'>
-          <img src={addImg} alt="식품 추가 아이콘"/>
+        <div className="text-[16px] font-semibold text-[#FE7549] flex gap-2 justify-center items-center border-1 border-dashed border-[#FE7549] rounded-lg h-[48px] mt-[24px] cursor-pointer mb-[16px]">
+          <img src={addImg} alt="식품 추가 아이콘" />
           식품 추가하기
         </div>
+        <div className="flex flex-col gap-4">
+          <MenuAddCard name="식품명" originalPrice={10000} salePrice={8000} />
+          <MenuAddCard name="식품명" originalPrice={10000} salePrice={8000} />
+          <MenuAddCard name="식품명" originalPrice={10000} salePrice={8000} />
+          <MenuAddCard name="식품명" originalPrice={10000} salePrice={8000} />
+          <MenuAddCard name="식품명" originalPrice={10000} salePrice={8000} />
+        </div>
       </section>
+      <footer className="fixed bottom-0 w-full max-w-[401px] bg-white border-t border-gray-100 z-10 mx-auto ml-[-24px]">
+        <OwnerFooterNav />
+      </footer>
     </>
   );
 }
