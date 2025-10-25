@@ -2,8 +2,6 @@ import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import home from "@/assets/icons/home-line.svg";
 import homeActive from "@/assets/icons/home-line-active.svg";
-import location from "@/assets/icons/location-nav.svg";
-import locationActive from "@/assets/icons/location-active.svg";
 import receipt from "@/assets/icons/receipt.svg";
 import receiptActive from "@/assets/icons/receipt-active.svg";
 import mypage from "@/assets/icons/user.svg";
@@ -27,7 +25,13 @@ export default function OwnerFooterNav() {
   }, [routerLocation.pathname]);
 
   const navItems = [
-    { id: "home", label: "홈", icon: home, activeIcon: homeActive, path: "/manager-home" },
+    {
+      id: "home",
+      label: "홈",
+      icon: home,
+      activeIcon: homeActive,
+      path: "/manager-home",
+    },
     {
       id: "orders",
       label: "주문 내역",

@@ -1,7 +1,7 @@
-import mockImg from '@/assets/icons/bread.svg';
-import StockBadge from './StockBadge';
-import { useNavigate } from 'react-router-dom';
-import closeImg from '@/assets/icons/x-circle.svg';
+import mockImg from "@/assets/icons/bread.svg";
+import StockBadge from "./StockBadge";
+import { useNavigate } from "react-router-dom";
+import closeImg from "@/assets/icons/x-circle.svg";
 interface MenuCardProps {
   id: number;
   title: string;
@@ -133,13 +133,13 @@ export function MenuAddCard({
           <div className="text-[18px] font-bold">{name}</div>
           <div className="flex flex-col text-[14px] font-normal text-[#7F7F7F]">
             <div>
-              원가{' '}
+              원가{" "}
               <span className="font-semibold">
                 {originalPrice.toLocaleString()}원
               </span>
             </div>
             <div>
-              판매가{' '}
+              판매가{" "}
               <span className="font-semibold">
                 {salePrice.toLocaleString()}원
               </span>

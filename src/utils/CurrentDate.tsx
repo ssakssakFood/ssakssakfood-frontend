@@ -11,11 +11,11 @@ function CurrentDateDisplayWithDateObject() {
 
   // 3. 요일 (Weekday)
   // getDay()는 0부터 6까지의 숫자를 반환합니다. (0: 일요일, 6: 토요일)
-  const daysOfWeek = ['일', '월', '화', '수', '목', '금', '토'];
+  const daysOfWeek = ["일", "월", "화", "수", "목", "금", "토"];
   const dayName = daysOfWeek[currentDate.getDay()];
 
   // 4. 포맷팅
-  const formattedDate = `${month.toString().padStart(2, '0')}.${day.toString().padStart(2, '0')} (${dayName})`;
+  const formattedDate = `${month.toString().padStart(2, "0")}.${day.toString().padStart(2, "0")} (${dayName})`;
 
   return <div>{formattedDate}</div>;
 }

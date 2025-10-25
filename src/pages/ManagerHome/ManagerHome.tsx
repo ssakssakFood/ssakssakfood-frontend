@@ -1,15 +1,15 @@
-import { useState } from 'react';
-import CurrentDateDisplayWithDateObject from '@/utils/CurrentDate';
-import chevronL from '@/assets/icons/chevron-right.svg';
-import { MenuAddCard, MenuImgCard } from '@/components/MenuCard';
-import addImg from '@/assets/icons/plus-orange.svg';
-import OwnerFooterNav from '@/layout/OwnerFooterNav';
-import { useNavigate } from 'react-router-dom';
+import { useState } from "react";
+import CurrentDateDisplayWithDateObject from "@/utils/CurrentDate";
+import chevronL from "@/assets/icons/chevron-right.svg";
+import { MenuAddCard, MenuImgCard } from "@/components/MenuCard";
+import addImg from "@/assets/icons/plus-orange.svg";
+import OwnerFooterNav from "@/layout/OwnerFooterNav";
+import { useNavigate } from "react-router-dom";
 
 export default function ManagerHome() {
   const navigate = useNavigate();
   const [isEditMode, setIsEditMode] = useState(false);
-  
+
   return (
     <>
       <div className="font-bold text-[20px] mt-[24px]">
@@ -29,7 +29,10 @@ export default function ManagerHome() {
           <h2 className="text-[20px] font-bold flex gap-2">
             오늘의 판매 식품<span className="text-red"> 20</span>
           </h2>
-          <div className="flex items-center text-[16px] text-[#7F7F7F] cursor-pointer gap-1" onClick={() => navigate('/allfoods')}>
+          <div
+            className="flex items-center text-[16px] text-[#7F7F7F] cursor-pointer gap-1"
+            onClick={() => navigate("/allfoods")}
+          >
             전체보기
             <img src={chevronL} alt="전체보기 아이콘" />
           </div>
@@ -37,8 +40,8 @@ export default function ManagerHome() {
         <div
           className="flex gap-2 overflow-x-auto pb-[12px] mt-[24px]"
           style={{
-            msOverflowStyle: 'none',
-            scrollbarWidth: 'none',
+            msOverflowStyle: "none",
+            scrollbarWidth: "none",
           }}
         >
           <MenuImgCard originalPrice={10000} salePrice={8000} name="식품명" />
@@ -54,13 +57,13 @@ export default function ManagerHome() {
           </h2>
           {isEditMode ? (
             <div className="flex gap-2">
-              <div 
+              <div
                 className="w-[50px] h-[24px] bg-[#F3F3F3] rounded-md flex items-center justify-center cursor-pointer text-[14px]"
                 onClick={() => setIsEditMode(false)}
               >
                 취소
               </div>
-              <div 
+              <div
                 className="w-[50px] h-[24px] bg-[#FE7549] text-white rounded-md flex items-center justify-center cursor-pointer text-[14px]"
                 onClick={() => setIsEditMode(false)}
               >
@@ -68,7 +71,7 @@ export default function ManagerHome() {
               </div>
             </div>
           ) : (
-            <div 
+            <div
               className="w-[50px] h-[24px] bg-[#F3F3F3] rounded-md flex items-center justify-center cursor-pointer text-[14px]"
               onClick={() => setIsEditMode(true)}
             >
@@ -82,34 +85,34 @@ export default function ManagerHome() {
             식품 추가하기
           </div>
         )}
-        <div className={`flex flex-col gap-4 ${isEditMode ? 'mt-[24px]' : ''}`}>
-          <MenuAddCard 
-            name="식품명" 
-            originalPrice={10000} 
+        <div className={`flex flex-col gap-4 ${isEditMode ? "mt-[24px]" : ""}`}>
+          <MenuAddCard
+            name="식품명"
+            originalPrice={10000}
             salePrice={8000}
             isEditMode={isEditMode}
           />
-          <MenuAddCard 
-            name="식품명" 
-            originalPrice={10000} 
+          <MenuAddCard
+            name="식품명"
+            originalPrice={10000}
             salePrice={8000}
             isEditMode={isEditMode}
           />
-          <MenuAddCard 
-            name="식품명" 
-            originalPrice={10000} 
+          <MenuAddCard
+            name="식품명"
+            originalPrice={10000}
             salePrice={8000}
             isEditMode={isEditMode}
           />
-          <MenuAddCard 
-            name="식품명" 
-            originalPrice={10000} 
+          <MenuAddCard
+            name="식품명"
+            originalPrice={10000}
             salePrice={8000}
             isEditMode={isEditMode}
           />
-          <MenuAddCard 
-            name="식품명" 
-            originalPrice={10000} 
+          <MenuAddCard
+            name="식품명"
+            originalPrice={10000}
             salePrice={8000}
             isEditMode={isEditMode}
           />
