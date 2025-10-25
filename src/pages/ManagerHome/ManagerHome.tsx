@@ -3,10 +3,11 @@ import chevronL from '@/assets/icons/chevron-right.svg';
 import { MenuAddCard, MenuImgCard } from '@/components/MenuCard';
 import addImg from '@/assets/icons/plus-orange.svg';
 import OwnerFooterNav from '@/layout/OwnerFooterNav';
+import { useNavigate } from 'react-router-dom';
 
 export default function ManagerHome() {
-  const myStoreId = 1; // 임시 사장님 매장 ID
-
+  const navigate = useNavigate();
+  
   return (
     <>
       <div className="font-bold text-[20px] mt-[24px]">
@@ -26,7 +27,7 @@ export default function ManagerHome() {
           <h2 className="text-[20px] font-bold flex gap-2">
             오늘의 판매 식품<span className="text-red"> 20</span>
           </h2>
-          <div className="flex items-center text-[16px] text-[#7F7F7F] cursor-pointer gap-1">
+          <div className="flex items-center text-[16px] text-[#7F7F7F] cursor-pointer gap-1" onClick={() => navigate('/allfoods')}>
             전체보기
             <img src={chevronL} alt="전체보기 아이콘" />
           </div>

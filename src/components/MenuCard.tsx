@@ -122,7 +122,7 @@ export function MenuAddCard({
   salePrice: number;
 }) {
   return (
-    <div className='flex justify-between items-end'>
+    <div className="flex justify-between items-end">
       <div className="flex gap-4 items-center">
         <img src={mockImg} alt="식품 추가 아이콘" width={80} />
         <div className="flex flex-col gap-2">
@@ -145,6 +145,74 @@ export function MenuAddCard({
       </div>
       <div className="w-[74px] h-[30px] text-white text-[14px] font-semibold flex rounded-lg items-center justify-center bg-main1 px-[11px] py-[7px] cursor-pointer">
         판매 시작
+      </div>
+    </div>
+  );
+}
+
+//(사장님) 오늘의 판매 식품 리스트에 보이는 메뉴 카드 컴포넌트입니다.
+export function MenuTodayCard({
+  name,
+  originalPrice,
+  salePrice,
+  dueDate,
+  stockCount,
+  isShare,
+  isSoldOut,
+}: {
+  name: string;
+  originalPrice: number;
+  salePrice: number;
+  dueDate: string;
+  stockCount: number;
+  isShare?: boolean;
+  isSoldOut?: boolean;
+}) {
+  return (
+    <div className="flex gap-[12px] items-center">
+      {/* 이미지 영역 */}
+      <div className="relative w-[114px] h-[114px] flex-shrink-0">
+        <img
+          src={mockImg}
+          alt="임시"
+          className="w-full h-full rounded-[8px]"
+        />
+        {isSoldOut && (
+          <div className="absolute inset-0 bg-black opacity-50 rounded-[8px]" />
+        )}
+        <div className="absolute top-[8px] left-[8px]">
+          <StockBadge count={stockCount} isSoldOut={isSoldOut}/>
+        </div>
+      </div>
+
+      {/* 정보 영역 */}
+      <div className="flex flex-col justify-between flex-1 min-w-0">
+        {/* 상단: 이름과 마감기한 */}
+        <div className="flex flex-col gap-[2px]">
+          <span className="text-[18px] font-bold truncate">{name}</span>
+          <div className="text-[14px] text-[#7F7F7F]">
+            마감기한 <span>{dueDate}</span>
+          </div>
+        </div>
+
+        {/* 중간: 급식카드 배지 */}
+        {isShare ? (
+          <div className="text-[14px] font-semibold text-[#496FF8] bg-[#EDF1FF] w-fit px-0.5 mt-[2px]">
+            급식카드 소지자 무료 식품
+          </div>
+        ) : (
+          <div className="h-[21px]" />
+        )}
+
+        {/* 하단: 가격 */}
+        <div className="flex flex-col items-end">
+          <span className="text-[14px] font-semibold text-[#7F7F7F] line-through">
+            {originalPrice.toLocaleString()}원
+          </span>
+          <span className="text-[18px] font-bold">
+            {salePrice.toLocaleString()}원
+          </span>
+        </div>
       </div>
     </div>
   );
