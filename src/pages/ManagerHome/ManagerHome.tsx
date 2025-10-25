@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import CurrentDateDisplayWithDateObject from '@/utils/CurrentDate';
 import chevronL from '@/assets/icons/chevron-right.svg';
 import { MenuAddCard, MenuImgCard } from '@/components/MenuCard';
@@ -7,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 
 export default function ManagerHome() {
   const navigate = useNavigate();
+  const [isEditMode, setIsEditMode] = useState(false);
   
   return (
     <>
@@ -35,8 +37,8 @@ export default function ManagerHome() {
         <div
           className="flex gap-2 overflow-x-auto pb-[12px] mt-[24px]"
           style={{
-            msOverflowStyle: 'none', // IE 및 Edge
-            scrollbarWidth: 'none', // Firefox
+            msOverflowStyle: 'none',
+            scrollbarWidth: 'none',
           }}
         >
           <MenuImgCard originalPrice={10000} salePrice={8000} name="식품명" />
@@ -50,20 +52,67 @@ export default function ManagerHome() {
           <h2 className="flex gap-2 text-[20px] font-bold">
             내 식품 <span className="text-red">5</span>
           </h2>
-          <div className="w-[50px] h-[24px] bg-[#F3F3F3] rounded-md flex items-center justify-center cursor-pointer">
-            수정
+          {isEditMode ? (
+            <div className="flex gap-2">
+              <div 
+                className="w-[50px] h-[24px] bg-[#F3F3F3] rounded-md flex items-center justify-center cursor-pointer text-[14px]"
+                onClick={() => setIsEditMode(false)}
+              >
+                취소
+              </div>
+              <div 
+                className="w-[50px] h-[24px] bg-[#FE7549] text-white rounded-md flex items-center justify-center cursor-pointer text-[14px]"
+                onClick={() => setIsEditMode(false)}
+              >
+                저장
+              </div>
+            </div>
+          ) : (
+            <div 
+              className="w-[50px] h-[24px] bg-[#F3F3F3] rounded-md flex items-center justify-center cursor-pointer text-[14px]"
+              onClick={() => setIsEditMode(true)}
+            >
+              수정
+            </div>
+          )}
+        </div>
+        {!isEditMode && (
+          <div className="text-[16px] font-semibold text-[#FE7549] flex gap-2 justify-center items-center border-1 border-dashed border-[#FE7549] rounded-lg h-[48px] mt-[24px] cursor-pointer mb-[16px]">
+            <img src={addImg} alt="식품 추가 아이콘" />
+            식품 추가하기
           </div>
-        </div>
-        <div className="text-[16px] font-semibold text-[#FE7549] flex gap-2 justify-center items-center border-1 border-dashed border-[#FE7549] rounded-lg h-[48px] mt-[24px] cursor-pointer mb-[16px]">
-          <img src={addImg} alt="식품 추가 아이콘" />
-          식품 추가하기
-        </div>
-        <div className="flex flex-col gap-4">
-          <MenuAddCard name="식품명" originalPrice={10000} salePrice={8000} />
-          <MenuAddCard name="식품명" originalPrice={10000} salePrice={8000} />
-          <MenuAddCard name="식품명" originalPrice={10000} salePrice={8000} />
-          <MenuAddCard name="식품명" originalPrice={10000} salePrice={8000} />
-          <MenuAddCard name="식품명" originalPrice={10000} salePrice={8000} />
+        )}
+        <div className={`flex flex-col gap-4 ${isEditMode ? 'mt-[24px]' : ''}`}>
+          <MenuAddCard 
+            name="식품명" 
+            originalPrice={10000} 
+            salePrice={8000}
+            isEditMode={isEditMode}
+          />
+          <MenuAddCard 
+            name="식품명" 
+            originalPrice={10000} 
+            salePrice={8000}
+            isEditMode={isEditMode}
+          />
+          <MenuAddCard 
+            name="식품명" 
+            originalPrice={10000} 
+            salePrice={8000}
+            isEditMode={isEditMode}
+          />
+          <MenuAddCard 
+            name="식품명" 
+            originalPrice={10000} 
+            salePrice={8000}
+            isEditMode={isEditMode}
+          />
+          <MenuAddCard 
+            name="식품명" 
+            originalPrice={10000} 
+            salePrice={8000}
+            isEditMode={isEditMode}
+          />
         </div>
       </section>
       <footer className="fixed bottom-0 w-full max-w-[401px] bg-white border-t border-gray-100 z-10 mx-auto ml-[-24px]">

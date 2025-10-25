@@ -1,7 +1,7 @@
 import mockImg from '@/assets/icons/bread.svg';
 import StockBadge from './StockBadge';
 import { useNavigate } from 'react-router-dom';
-import Button from './Button';
+import closeImg from '@/assets/icons/x-circle.svg';
 interface MenuCardProps {
   id: number;
   title: string;
@@ -116,17 +116,21 @@ export function MenuAddCard({
   name,
   originalPrice,
   salePrice,
+  isEditMode,
+  onDelete,
 }: {
   name: string;
   originalPrice: number;
   salePrice: number;
+  isEditMode?: boolean;
+  onDelete?: () => void;
 }) {
   return (
-    <div className="flex justify-between items-end">
+    <div className="flex justify-between items-center">
       <div className="flex gap-4 items-center">
         <img src={mockImg} alt="식품 추가 아이콘" width={80} />
         <div className="flex flex-col gap-2">
-          <div className="text-18px] font-bold">{name}</div>
+          <div className="text-[18px] font-bold">{name}</div>
           <div className="flex flex-col text-[14px] font-normal text-[#7F7F7F]">
             <div>
               원가{' '}
@@ -143,9 +147,18 @@ export function MenuAddCard({
           </div>
         </div>
       </div>
-      <div className="w-[74px] h-[30px] text-white text-[14px] font-semibold flex rounded-lg items-center justify-center bg-main1 px-[11px] py-[7px] cursor-pointer">
-        판매 시작
-      </div>
+      {isEditMode ? (
+        <div
+          className="w-[30px] h-[30px] flex items-center justify-center rounded-full cursor-pointer"
+          onClick={onDelete}
+        >
+          <img src={closeImg} alt="삭제" />
+        </div>
+      ) : (
+        <div className="w-[74px] h-[30px] text-white text-[14px] font-semibold flex rounded-lg items-center justify-center bg-main1 px-[11px] py-[7px] cursor-pointer">
+          판매 시작
+        </div>
+      )}
     </div>
   );
 }
@@ -172,16 +185,12 @@ export function MenuTodayCard({
     <div className="flex gap-[12px] items-center">
       {/* 이미지 영역 */}
       <div className="relative w-[114px] h-[114px] flex-shrink-0">
-        <img
-          src={mockImg}
-          alt="임시"
-          className="w-full h-full rounded-[8px]"
-        />
+        <img src={mockImg} alt="임시" className="w-full h-full rounded-[8px]" />
         {isSoldOut && (
           <div className="absolute inset-0 bg-black opacity-50 rounded-[8px]" />
         )}
         <div className="absolute top-[8px] left-[8px]">
-          <StockBadge count={stockCount} isSoldOut={isSoldOut}/>
+          <StockBadge count={stockCount} isSoldOut={isSoldOut} />
         </div>
       </div>
 
