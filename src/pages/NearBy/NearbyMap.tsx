@@ -11,7 +11,7 @@ declare global {
   }
 }
 
-interface Props {
+interface NearbyMapProps {
   start?: LatLng;
   end?: LatLng;
   height?: number | string;
@@ -19,6 +19,7 @@ interface Props {
   //   onSummary?: (summary: { distance: number; time: number }) => void;
 
   onPolylineReady?: (polyline: LatLng[]) => void;
+  onMapReady?: (map: any) => void;
 }
 
 export default function RouteMap({
@@ -26,8 +27,9 @@ export default function RouteMap({
   end,
   height = 260,
   //   onSummary,
+  onMapReady,
   onPolylineReady,
-}: Props) {
+}: NearbyMapProps) {
   const mapEl = useRef<HTMLDivElement>(null);
   const mapRef = useRef<any>(null);
   const polylineRef = useRef<any>(null);
@@ -58,6 +60,7 @@ export default function RouteMap({
           level: 6,
         });
         setIsMapReady(true);
+        onMapReady?.(mapRef.current); //부모한테 지도 넘겨줌
       };
 
       if (kakao.maps.load) kakao.maps.load(init);

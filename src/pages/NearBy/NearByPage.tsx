@@ -2,13 +2,14 @@
 import useGeolocation from "@/hooks/useGeolocation";
 import Route from "@assets/icons/tabler_route.svg";
 import Close from "@assets/icons/x-close-black.svg";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Marker from "@/assets/icons/map-marker.svg?url";
 import SearchInput from "@/components/SearchInput";
 import RoutesModal from "@/components/nearby/RoutesModal";
 import { useAlongRoute, useGetNearby } from "@/api/nearby/nearby";
 import NearMarker from "@/assets/icons/marker.svg?url";
 import { LatLng, NearbyResponseDto } from "@/types/nearby";
+import RouteMap from "@/pages/NearBy/NearbyMap";
 declare global {
   interface Window {
     kakao: any;
@@ -17,6 +18,7 @@ declare global {
 export default function NearbyPage() {
   const { latitude, longitude, address, fullAdress, loading, error } =
     useGeolocation();
+  const getNearbyAlong = useAlongRoute();
 
   const [ismodal, setIsModal] = useState(false);
 
@@ -34,6 +36,9 @@ export default function NearbyPage() {
     null
   );
 
+  //출발지,목적지 상태
+  const [start, setStart] = useState<LatLng | undefined>(undefined);
+  const [end, setEnd] = useState<LatLng | undefined>(undefined);
   console.log(selectedRoute);
 
   const renderStoreMarkers = (
@@ -112,7 +117,9 @@ export default function NearbyPage() {
   const { data } = useGetNearby();
   console.log(data);
 
-  const getNearbyAlong = useAlongRoute();
+  const handleMapReady = (map: any) => {
+    mapInstanceRef.current = map;
+  };
 
   const handleModal = () => {
     setIsModal(true);
@@ -126,33 +133,60 @@ export default function NearbyPage() {
     setSelectedRoute(item);
     setIsModal(false);
   };
+  const handlePolylineReady = useCallback((polyline: LatLng[]) => {
+    if (!polyline?.length) return;
+    clearStoreMarkers();
+    getNearbyAlong.mutate(
+      { polyline, radiusMeters: 2000, category: [0] },
+      { onSuccess: (res: any) => renderStoreMarkers(res?.markers ?? []) }
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
+  const showRoute = !!selectedRoute;
   return (
-    <div ref={mapRef} className="flex-1 relative min-h-dvh -mx-6 ">
-      <div className="flex items-center mt-5">
-        <SearchInput className="relative bg-white px-4 py-[10px] rounded-3xl mx-6 z-20 w-full mb-2" />
-      </div>
-      <div
-        className="absolute flex rounded-4xl h-6 w-22 py-1 px-3 gap-2 z-20 mx-6"
-        style={{ background: "var(--color-gradient-main1)" }}
-        onClick={handleModal}
-      >
-        <img src={Route} alt="루트" />
-        <p className="body-r-14 text-white">내 루트</p>
-      </div>
-      {selectedRoute && (
-        <div className="absolute flex rounded-4xl h-6 left-25 w-fit py-1 pl-3 pr-2 gap-2 z-20 mx-6 bg-white text-sm items-center shadow-main1">
-          <p className="text-black">{selectedRoute.routeName}</p>
-          <img
-            src={Close}
-            alt="취소"
-            className="w-4 h-4 cursor-pointer"
-            onClick={() => setSelectedRoute(null)}
+    <div className="relative h-dvh -mx-6">
+      {!showRoute && <div ref={mapRef} className="absolute inset-0 z-10" />}
+
+      {showRoute && (
+        <div className="absolute inset-0 z-20">
+          <RouteMap
+            start={selectedRoute?.start}
+            end={selectedRoute?.end}
+            height="100%"
+            onMapReady={(map) => (mapInstanceRef.current = map)}
+            onPolylineReady={handlePolylineReady}
           />
         </div>
       )}
 
-      {/* 모달 */}
+      {/* 상단 UI는 공통으로 */}
+      <div className="pointer-events-none absolute top-0 left-0 right-0 z-[30]">
+        <div className="mt-5 px-6 pointer-events-auto">
+          <SearchInput className="relative bg-white px-4 py-[10px] rounded-3xl w-full mb-2" />
+        </div>
+
+        <div
+          className="mx-6 flex rounded-4xl h-6 w-22 py-1 px-3 gap-2 pointer-events-auto"
+          style={{ background: "var(--color-gradient-main1)" }}
+          onClick={handleModal}
+        >
+          <img src={Route} alt="루트" />
+          <p className="body-r-14 text-white">내 루트</p>
+        </div>
+
+        {selectedRoute && (
+          <div className="mx-6 mt-2 flex rounded-4xl h-6 w-fit py-1 pl-3 pr-2 gap-2 bg-white items-center shadow-main1 pointer-events-auto">
+            <p className="text-black text-sm">{selectedRoute.routeName}</p>
+            <img
+              src={Close}
+              onClick={() => setSelectedRoute(null)}
+              className="w-4 h-4 cursor-pointer"
+            />
+          </div>
+        )}
+      </div>
+
       {ismodal && (
         <RoutesModal
           onCloseModal={onCloseModal}
