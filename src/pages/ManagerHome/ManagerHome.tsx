@@ -80,7 +80,10 @@ export default function ManagerHome() {
           )}
         </div>
         {!isEditMode && (
-          <div className="text-[16px] font-semibold text-[#FE7549] flex gap-2 justify-center items-center border-1 border-dashed border-[#FE7549] rounded-lg h-[48px] mt-[24px] cursor-pointer mb-[16px]">
+          <div
+            className="text-[16px] font-semibold text-[#FE7549] flex gap-2 justify-center items-center border-1 border-dashed border-[#FE7549] rounded-lg h-[48px] mt-[24px] cursor-pointer mb-[16px]"
+            onClick={() => navigate("/addfood")}
+          >
             <img src={addImg} alt="식품 추가 아이콘" />
             식품 추가하기
           </div>
