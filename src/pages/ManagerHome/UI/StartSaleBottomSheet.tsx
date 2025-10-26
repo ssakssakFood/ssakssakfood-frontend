@@ -72,7 +72,7 @@ export default function StartSaleBottomSheet({
   );
 
   const ANIMATION_DURATION = 300;
-  const MAX_HEIGHT = isPickerOpen ? 580 : 420;
+  const MAX_HEIGHT = isPickerOpen ? 540 : 380;
   const MIN_HEIGHT = 0;
   const CLOSE_THRESHOLD = 100;
 

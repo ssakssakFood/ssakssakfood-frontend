@@ -119,6 +119,7 @@ export function MenuAddCard({
   salePrice,
   isEditMode,
   onDelete,
+  onStartSale,
 }: {
   id: number;
   name: string;
@@ -126,6 +127,7 @@ export function MenuAddCard({
   salePrice: number;
   isEditMode?: boolean;
   onDelete?: () => void;
+  onStartSale?: (id: number) => void;
 }) {
   const navigate = useNavigate();
 
@@ -164,7 +166,7 @@ export function MenuAddCard({
         <div
           className="w-[30px] h-[30px] flex items-center justify-center rounded-full cursor-pointer"
           onClick={(e) => {
-            e.stopPropagation(); // 카드 클릭 이벤트 방지
+            e.stopPropagation();
             onDelete?.();
           }}
         >
@@ -174,8 +176,8 @@ export function MenuAddCard({
         <div 
           className="w-[74px] h-[30px] text-white text-[14px] font-semibold flex rounded-lg items-center justify-center bg-main1 px-[11px] py-[7px] cursor-pointer"
           onClick={(e) => {
-            e.stopPropagation(); // 카드 클릭 이벤트 방지
-            // 판매 시작 로직
+            e.stopPropagation();
+            onStartSale?.(id);
           }}
         >
           판매 시작
