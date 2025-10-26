@@ -6,7 +6,7 @@ import Marker from "@/assets/icons/map-marker.svg?url";
 import SearchInput from "@/components/SearchInput";
 import RoutesModal from "@/components/nearby/RoutesModal";
 import { useAlongRoute, useGetNearby } from "@/api/nearby/nearby";
-
+import NearMarker from "@/assets/icons/marker.svg";
 declare global {
   interface Window {
     kakao: any;
@@ -63,7 +63,7 @@ export default function NearbyPage() {
       };
 
       const map = new kakao.maps.Map(mapRef.current, mapOption);
-      mapInstanceRef.current = map; // ✅ 인스턴스 보관
+      mapInstanceRef.current = map;
 
       // 내 위치 마커
       new kakao.maps.Marker({
@@ -74,17 +74,16 @@ export default function NearbyPage() {
         }),
       });
 
-      // ✅ 지도 준비되면 반경 2km 탐색 호출
       getNearbyAlong.mutate(
         {
-          // 네가 주석에 써둔 형태 유지
           polyline: [{ lat: latitude, lng: longitude }],
           radiusMeters: 2000,
-          category: [0], // 필요 시 필터
+          category: [0],
         },
         {
           onSuccess: (res: any) => {
             // res.markers 사용
+            console.log(res);
             renderStoreMarkers(res?.markers ?? []);
           },
         }

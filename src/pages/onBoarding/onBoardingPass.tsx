@@ -66,7 +66,7 @@ export default function OnBoardingPassPage() {
     }
   };
 
-  const idValid = /^[a-zA-Z0-9]{2,20}$/.test(id); //영어 숫자 2~20글자
+  const idValid = /^[a-zA-Z0-9]{4,20}$/.test(id); //영어 숫자 2~20글자
   const nextBtn = idValid && noSpacePattern && pattern2 && isMatch;
 
   return (

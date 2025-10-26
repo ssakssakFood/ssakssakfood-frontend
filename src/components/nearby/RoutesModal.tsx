@@ -3,7 +3,7 @@ import { NearbyResponseDto } from "@/types/nearby";
 import { useNavigate } from "react-router-dom";
 import Dlete from "@/assets/icons/x-circle-thin.svg";
 import { useState } from "react";
-import { usePutRoute, useRouteDelete } from "@/api/nearby/nearby";
+import { useRouteDelete } from "@/api/nearby/nearby";
 
 interface RoutesModalProps {
   onCloseModal: () => void;
@@ -14,9 +14,6 @@ export default function RoutesModal({ onCloseModal, data }: RoutesModalProps) {
   const navigate = useNavigate();
   const [isEdit, setIsEdit] = useState(false);
   const deleteRoute = useRouteDelete();
-  const { startName } = useNearbyState();
-  //item수정
-  // console.log(data);
 
   return (
     <>
