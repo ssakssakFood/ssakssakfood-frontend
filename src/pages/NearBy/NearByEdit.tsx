@@ -97,9 +97,11 @@ export default function NearbyEdit() {
               >
                 <img src={RDot} alt="출발지" />
                 <p
-                  className={`body-r-14 ${draft.startJibunAddress ? "text-black" : "text-grey-3"}`}
+                  className={`body-r-14 ${draft.startJibunAddress || data?.startJibunAddress ? "text-black" : "text-grey-3"}`}
                 >
-                  {draft.startJibunAddress || "출발지입력"}
+                  {draft.startJibunAddress ||
+                    data?.startJibunAddress ||
+                    "출발지입력"}
                 </p>
               </div>
               <div
@@ -112,9 +114,11 @@ export default function NearbyEdit() {
               >
                 <img src={BDot} alt="도착지" />
                 <p
-                  className={`body-r-14 ${draft.endJibunAddress ? "text-black" : "text-grey-3"}`}
+                  className={`body-r-14 ${draft.endJibunAddress || data?.endJibunAddress ? "text-black" : "text-grey-3"}`}
                 >
-                  {draft.endJibunAddress || "도착지입력"}
+                  {draft.endJibunAddress ||
+                    data?.endJibunAddress ||
+                    "도착지입력"}
                 </p>
               </div>
             </div>
