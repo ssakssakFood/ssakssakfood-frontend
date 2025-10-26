@@ -26,11 +26,11 @@ export default function Layout() {
         </div>
       )}
 
-      <main className="px-6">
+      <main className="px-6 w-full">
         <Outlet />
       </main>
 
-      <footer className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[401px] bg-white border-t border-gray-100 z-10">
+      <footer className="fixed bottom-0 w-full max-w-[401px] bg-white border-t border-gray-100 z-10 mx-auto">
         <FooterNav />
       </footer>
     </>
