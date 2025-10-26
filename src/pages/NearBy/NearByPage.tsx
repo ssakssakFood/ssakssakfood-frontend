@@ -1,12 +1,14 @@
 //내 주변 페이지
 import useGeolocation from "@/hooks/useGeolocation";
 import Route from "@assets/icons/tabler_route.svg";
+import Close from "@assets/icons/x-close-black.svg";
 import { useEffect, useRef, useState } from "react";
 import Marker from "@/assets/icons/map-marker.svg?url";
 import SearchInput from "@/components/SearchInput";
 import RoutesModal from "@/components/nearby/RoutesModal";
 import { useAlongRoute, useGetNearby } from "@/api/nearby/nearby";
 import NearMarker from "@/assets/icons/marker.svg?url";
+import { LatLng, NearbyResponseDto } from "@/types/nearby";
 declare global {
   interface Window {
     kakao: any;
@@ -18,6 +20,8 @@ export default function NearbyPage() {
 
   const [ismodal, setIsModal] = useState(false);
 
+  const [polyline, setPolyline] = useState<LatLng[]>([]);
+
   const mapRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<HTMLDivElement>(null);
   const storeMarkersRef = useRef<any[]>([]);
@@ -25,6 +29,13 @@ export default function NearbyPage() {
     storeMarkersRef.current.forEach((m) => m.setMap(null));
     storeMarkersRef.current = [];
   };
+
+  const [selectedRoute, setSelectedRoute] = useState<NearbyResponseDto | null>(
+    null
+  );
+
+  console.log(selectedRoute);
+
   const renderStoreMarkers = (
     markers: Array<{
       lat: number;
@@ -109,6 +120,13 @@ export default function NearbyPage() {
   const onCloseModal = () => {
     setIsModal(false);
   };
+
+  //루트 주변 경로 가져오기 ...
+  const handleGetRoute = (item: NearbyResponseDto) => {
+    setSelectedRoute(item);
+    setIsModal(false);
+  };
+
   return (
     <div ref={mapRef} className="flex-1 relative min-h-dvh -mx-6 ">
       <div className="flex items-center mt-5">
@@ -122,9 +140,26 @@ export default function NearbyPage() {
         <img src={Route} alt="루트" />
         <p className="body-r-14 text-white">내 루트</p>
       </div>
+      {selectedRoute && (
+        <div className="absolute flex rounded-4xl h-6 left-25 w-fit py-1 pl-3 pr-2 gap-2 z-20 mx-6 bg-white text-sm items-center shadow-main1">
+          <p className="text-black">{selectedRoute.routeName}</p>
+          <img
+            src={Close}
+            alt="취소"
+            className="w-4 h-4 cursor-pointer"
+            onClick={() => setSelectedRoute(null)}
+          />
+        </div>
+      )}
 
       {/* 모달 */}
-      {ismodal && <RoutesModal onCloseModal={onCloseModal} data={data} />}
+      {ismodal && (
+        <RoutesModal
+          onCloseModal={onCloseModal}
+          data={data}
+          onSelectItem={handleGetRoute}
+        />
+      )}
     </div>
   );
 }

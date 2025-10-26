@@ -43,3 +43,4 @@ export type NearbyEditRequest = {
   start: Routes;
   end: Routes;
 };
+export type LatLng = { lat: number; lng: number };

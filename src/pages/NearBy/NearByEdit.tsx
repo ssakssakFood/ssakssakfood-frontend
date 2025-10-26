@@ -9,8 +9,8 @@ import RouteMap from "@/pages/NearBy/NearbyMap";
 import { useDetailRoute, usePutRoute } from "@/api/nearby/nearby";
 import { useEffect, useState } from "react";
 import { useNearbyUiState } from "@/store/useNearbyStore";
+import { LatLng } from "@/types/nearby";
 
-type LatLng = { lat: number; lng: number };
 export default function NearbyEdit() {
   const navigate = useNavigate();
   const parmas = useParams();

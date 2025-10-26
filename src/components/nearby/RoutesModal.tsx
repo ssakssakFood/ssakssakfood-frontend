@@ -1,4 +1,3 @@
-import { useNearbyState } from "@/store/useRouteStore";
 import { NearbyResponseDto } from "@/types/nearby";
 import { useNavigate } from "react-router-dom";
 import Dlete from "@/assets/icons/x-circle-thin.svg";
@@ -8,9 +7,14 @@ import { useRouteDelete } from "@/api/nearby/nearby";
 interface RoutesModalProps {
   onCloseModal: () => void;
   data: NearbyResponseDto[];
+  onSelectItem: (item: NearbyResponseDto) => void;
 }
 
-export default function RoutesModal({ onCloseModal, data }: RoutesModalProps) {
+export default function RoutesModal({
+  onCloseModal,
+  data,
+  onSelectItem,
+}: RoutesModalProps) {
   const navigate = useNavigate();
   const [isEdit, setIsEdit] = useState(false);
   const deleteRoute = useRouteDelete();
@@ -44,8 +48,13 @@ export default function RoutesModal({ onCloseModal, data }: RoutesModalProps) {
                     <div className="flex items-center justify-between w-full">
                       <span
                         className="body-r-14 py-4 border-b-1 border-grey-5 w-full"
-                        onClick={() => navigate(`/nearby/edit/${item.routeId}`)}
-                        // onClick={() => handleEditClick(item)}
+                        onClick={() => {
+                          if (isEdit) {
+                            navigate(`/nearby/edit/${item.routeId}`);
+                          } else {
+                            onSelectItem(item);
+                          }
+                        }}
                         key={item.routeId}
                       >
                         {item?.routeName}
