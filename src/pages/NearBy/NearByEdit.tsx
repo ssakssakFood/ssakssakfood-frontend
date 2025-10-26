@@ -5,64 +5,62 @@ import BDot from "@/assets/icons/blue-dot.svg";
 import RDot from "@/assets/icons/red-dot.svg";
 import Button from "@/components/Button";
 import { useNavigate, useParams } from "react-router-dom";
-import { useNearbyState } from "@/store/useRouteStore";
 import RouteMap from "@/pages/NearBy/NearbyMap";
 import { useDetailRoute, usePutRoute } from "@/api/nearby/nearby";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNearbyUiState } from "@/store/useNearbyStore";
 
 type LatLng = { lat: number; lng: number };
 export default function NearbyEdit() {
   const navigate = useNavigate();
-  const {
-    // start,
-    // startJibunAddress,
-    // end,
-    // endJibunAddress,
-    setTemp,
-    // routeName,
-    reset,
-  } = useNearbyState();
-  const {
-    routeName,
-    start: startUi,
-    end: endUi,
-    startJibunAddress,
-    endJibunAddress,
-  } = useNearbyUiState();
-  console.log(startUi);
-
-  console.log(endJibunAddress, startJibunAddress);
-
-  const [routeValue, setRouteValue] = useState(routeName || "");
-  const [polyline, setPolyline] = useState<LatLng[]>([]);
-
-  //   console.log(start, startJibunAddress, end, endJibunAddress);
   const parmas = useParams();
   const routeId = Number(parmas.routeId);
   const putRoute = usePutRoute(routeId);
+  const isValidId = Number.isFinite(routeId);
 
+  const { editedByRoute, setDraft } = useNearbyUiState();
   const { data } = useDetailRoute(routeId);
   console.log(data);
+
+  const draft = isValidId ? (editedByRoute[routeId] ?? {}) : {};
+  const startForMap = draft.start ?? data?.start ?? undefined;
+  const endForMap = draft.end ?? data?.end ?? undefined;
+
+  // console.log(startUi);
+
+  // console.log(endJibunAddress, startJibunAddress);
+
+  const [routeValue, setRouteValue] = useState(
+    draft.routeName ?? data?.routeName ?? ""
+  );
+  const [polyline, setPolyline] = useState<LatLng[]>([]);
+
+  //   console.log(start, startJibunAddress, end, endJibunAddress);
+
+  useEffect(() => {
+    if (!data || !isValidId) return;
+    if (editedByRoute[routeId]) return;
+    setDraft(routeId, {
+      routeName: data.routeName,
+      start: data.start,
+      end: data.end,
+      startJibunAddress: data.start?.jibunAddress,
+      endJibunAddress: data.end?.jibunAddress,
+    });
+  }, [data, isValidId, routeId, editedByRoute, setDraft]);
 
   const handleEditRoute = () => {
     putRoute.mutate({
       routeName: routeValue,
-      start: {
-        lat: Number(startUi?.lat),
-        lng: Number(startUi?.lng),
-      },
-
-      end: {
-        lat: Number(endUi?.lat),
-        lng: Number(endUi?.lng),
-      },
+      start: startForMap!,
+      end: endForMap!,
       polyline,
     });
     navigate("/nearby");
   };
 
-  const isValid = Boolean(routeValue && startJibunAddress && endJibunAddress);
+  // const isValid = Boolean(routeValue && startJibunAddress && endJibunAddress);
+  const isValid = Boolean(routeValue);
   // console.log(isValid);
 
   return (
@@ -73,9 +71,10 @@ export default function NearbyEdit() {
         <InputField2
           placeholder="루트 이름 입력"
           value={routeValue || data?.routeName}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-            setRouteValue(e.target.value);
-            setTemp({ routeName: e.target.value });
+          onChange={(e) => {
+            const v = e.target.value;
+            setRouteValue(v);
+            setDraft(routeId, { routeName: v });
           }}
         />
       </div>
@@ -98,9 +97,9 @@ export default function NearbyEdit() {
               >
                 <img src={RDot} alt="출발지" />
                 <p
-                  className={`body-r-14 ${startJibunAddress ? "text-black" : "text-grey-3"}`}
+                  className={`body-r-14 ${draft.startJibunAddress ? "text-black" : "text-grey-3"}`}
                 >
-                  {startJibunAddress || "출발지입력"}
+                  {draft.startJibunAddress || "출발지입력"}
                 </p>
               </div>
               <div
@@ -113,9 +112,9 @@ export default function NearbyEdit() {
               >
                 <img src={BDot} alt="도착지" />
                 <p
-                  className={`body-r-14 ${endJibunAddress ? "text-black" : "text-grey-3"}`}
+                  className={`body-r-14 ${draft.endJibunAddress ? "text-black" : "text-grey-3"}`}
                 >
-                  {endJibunAddress || "도착지입력"}
+                  {draft.endJibunAddress || "도착지입력"}
                 </p>
               </div>
             </div>
@@ -124,8 +123,8 @@ export default function NearbyEdit() {
         {/* 지도 */}
 
         <RouteMap
-          start={startUi ?? data?.start}
-          end={endUi ?? data?.end}
+          start={startForMap}
+          end={endForMap}
           height={260}
           onPolylineReady={setPolyline}
         />

@@ -104,6 +104,7 @@ export const getDetailRoute = async (routeId: number) => {
 export const useDetailRoute = (routeId: number) => {
   return useQuery({
     queryFn: () => getDetailRoute(routeId),
-    queryKey: ["routeDetail"],
+    queryKey: ["routeDetail", routeId],
+    keepPreviousData: false,
   });
 };

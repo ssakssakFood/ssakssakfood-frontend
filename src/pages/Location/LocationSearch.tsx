@@ -60,7 +60,8 @@ export default function LocationSearch() {
   const routeId = location.state.routeId;
 
   const { setTemp: nearSet } = useNearbyState();
-  const { setTemp: nearUiSet } = useNearbyUiState(); //ui 수정용
+  // const { setTemp: nearUiSet } = useNearbyUiState(); //ui 수정용
+  const { setDraft } = useNearbyUiState();
 
   const isFetchingRef = useRef(false);
   const fetchPlaces = useCallback(
@@ -190,7 +191,7 @@ export default function LocationSearch() {
         start: { lat: Number(p?.y), lng: Number(p?.x) },
         startJibunAddress: p?.address_name,
       };
-      nearUiSet(payload);
+      setDraft(routeId, payload);
 
       if (routeId) navigate(`/nearby/edit/${routeId}`);
       else navigate(`/nearby/edit`);
@@ -202,7 +203,7 @@ export default function LocationSearch() {
         end: { lat: Number(p?.y), lng: Number(p?.x) },
         endJibunAddress: p?.address_name,
       };
-      nearUiSet(payload);
+      setDraft(routeId, payload);
 
       if (routeId) navigate(`/nearby/edit/${routeId}`);
       else navigate(`/nearby/edit`);

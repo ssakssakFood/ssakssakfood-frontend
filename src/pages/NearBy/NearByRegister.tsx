@@ -9,7 +9,6 @@ import { useNearbyState } from "@/store/useRouteStore";
 import RouteMap from "@/pages/NearBy/NearbyMap";
 import { useRouteRegister } from "@/api/nearby/nearby";
 import { useState } from "react";
-import { useNearbyUiState } from "@/store/useNearbyStore";
 
 type LatLng = { lat: number; lng: number };
 export default function NearbyRegister() {
@@ -23,7 +22,7 @@ export default function NearbyRegister() {
     routeName,
     reset,
   } = useNearbyState();
-  const { setTemp: uiSetTemp } = useNearbyUiState();
+  // const { setTemp: uiSetTemp } = useNearbyUiState();
   const [routeValue, setRouteValue] = useState(routeName || "");
   const [polyline, setPolyline] = useState<LatLng[]>([]);
 
@@ -65,7 +64,7 @@ export default function NearbyRegister() {
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
             setRouteValue(e.target.value);
             setTemp({ routeName: e.target.value });
-            uiSetTemp({ routeName: e.target.value });
+            // uiSetTemp({ routeName: e.target.value });
             // set
           }}
         />
