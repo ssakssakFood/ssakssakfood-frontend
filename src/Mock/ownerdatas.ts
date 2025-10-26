@@ -186,4 +186,4 @@ export const ADDEDMENUS = [
     originalPrice: 2500,
     discountPrice: 1800,
   },
-]
+];

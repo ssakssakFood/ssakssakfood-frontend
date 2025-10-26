@@ -64,11 +64,11 @@ export default function StartSaleBottomSheet({
   // 현재 시간으로 초기화
   const now = new Date();
   const [selectedDate, setSelectedDate] = useState<"today" | "tomorrow">(
-    "today"
+    "today",
   );
   const [selectedHour, setSelectedHour] = useState<number>(now.getHours());
   const [selectedMinute, setSelectedMinute] = useState<number>(
-    now.getMinutes()
+    now.getMinutes(),
   );
 
   const ANIMATION_DURATION = 300;

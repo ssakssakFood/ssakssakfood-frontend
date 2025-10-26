@@ -49,7 +49,9 @@ export default function InputField2({
           <img src={showPwd ? OpenEye : CloseEye} alt="" onClick={onClick} />
         </div>
       )}
-      <div className="absolute right-4 top-2.5 text-[16px] font-semibold">{inputText}</div>
+      <div className="absolute right-4 top-2.5 text-[16px] font-semibold">
+        {inputText}
+      </div>
     </div>
     // </div>
   );

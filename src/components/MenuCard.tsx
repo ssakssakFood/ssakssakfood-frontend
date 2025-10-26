@@ -138,7 +138,7 @@ export function MenuAddCard({
   };
 
   return (
-    <div 
+    <div
       className="flex justify-between items-center cursor-pointer"
       onClick={handleCardClick}
     >
@@ -173,7 +173,7 @@ export function MenuAddCard({
           <img src={closeImg} alt="삭제" />
         </div>
       ) : (
-        <div 
+        <div
           className="w-[74px] h-[30px] text-white text-[14px] font-semibold flex rounded-lg items-center justify-center bg-main1 px-[11px] py-[7px] cursor-pointer"
           onClick={(e) => {
             e.stopPropagation();

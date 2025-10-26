@@ -1,29 +1,29 @@
-import Button from '@/components/Button';
-import { CategoryMiniBadge } from '@/components/CategoryBadge';
-import { MenuHeader } from '@/components/Headers';
-import ImagePickerBox from '@/components/ImagePickerBox';
-import InputField2 from '@/components/InputField2';
-import Modal from '@/components/onBoarding/Modal';
-import { CATEGORY } from '@/constants/Category';
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import Button from "@/components/Button";
+import { CategoryMiniBadge } from "@/components/CategoryBadge";
+import { MenuHeader } from "@/components/Headers";
+import ImagePickerBox from "@/components/ImagePickerBox";
+import InputField2 from "@/components/InputField2";
+import Modal from "@/components/onBoarding/Modal";
+import { CATEGORY } from "@/constants/Category";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function AddFoodPage() {
   const navigate = useNavigate();
-  const [selectedCategory, setSelectedCategory] = useState<string>('');
-  const [foodName, setFoodName] = useState<string>('');
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
+  const [foodName, setFoodName] = useState<string>("");
   const [imageFile, setImageFile] = useState<File | null>(null);
-  const [costPrice, setCostPrice] = useState<string>('');
-  const [sellingPrice, setSellingPrice] = useState<string>('');
+  const [costPrice, setCostPrice] = useState<string>("");
+  const [sellingPrice, setSellingPrice] = useState<string>("");
   const [modal, setModal] = useState(false);
 
   // 모든 필드가 채워졌는지 확인
   const isFormValid =
-    foodName.trim() !== '' &&
-    selectedCategory !== '' &&
+    foodName.trim() !== "" &&
+    selectedCategory !== "" &&
     imageFile !== null &&
-    costPrice.trim() !== '' &&
-    sellingPrice.trim() !== '';
+    costPrice.trim() !== "" &&
+    sellingPrice.trim() !== "";
 
   const handleAddFoodComplete = () => {
     if (isFormValid) {

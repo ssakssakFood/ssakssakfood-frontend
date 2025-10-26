@@ -71,7 +71,7 @@ const router = createBrowserRouter([
   },
   //메뉴 상세 페이지
   { path: "menu/:id", element: <MenuDetailPage /> },
-  { path: "/addfood/:id", element: <AddfoodEditPage />},
+  { path: "/addfood/:id", element: <AddfoodEditPage /> },
 ]);
 
 export default router;

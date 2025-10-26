@@ -20,7 +20,7 @@ const CategoryBadge = forwardRef<HTMLButtonElement, CategoryBadgeProps>(
         {label}
       </button>
     );
-  }
+  },
 );
 
 CategoryBadge.displayName = "CategoryBadge";
