@@ -6,7 +6,7 @@ import Marker from "@/assets/icons/map-marker.svg?url";
 import SearchInput from "@/components/SearchInput";
 import RoutesModal from "@/components/nearby/RoutesModal";
 import { useAlongRoute, useGetNearby } from "@/api/nearby/nearby";
-import NearMarker from "@/assets/icons/marker.svg";
+import NearMarker from "@/assets/icons/marker.svg?url";
 declare global {
   interface Window {
     kakao: any;
@@ -37,11 +37,16 @@ export default function NearbyPage() {
     if (!mapInstanceRef.current || !kakao) return;
 
     clearStoreMarkers();
-
+    const imageSize = new kakao.maps.Size(30, 30);
+    const imageOffset = new kakao.maps.Point(16, 32);
+    const nearMarkerImage = new kakao.maps.MarkerImage(NearMarker, imageSize, {
+      offset: imageOffset,
+    });
     markers.forEach((s) => {
       const mk = new kakao.maps.Marker({
         position: new kakao.maps.LatLng(s.lat, s.lng),
         map: mapInstanceRef.current,
+        image: nearMarkerImage,
       });
 
       storeMarkersRef.current.push(mk);
@@ -76,14 +81,17 @@ export default function NearbyPage() {
 
       getNearbyAlong.mutate(
         {
-          polyline: [{ lat: latitude, lng: longitude }],
+          polyline: [
+            { lat: latitude, lng: longitude },
+            { lat: latitude, lng: longitude },
+          ],
           radiusMeters: 2000,
           category: [0],
         },
         {
           onSuccess: (res: any) => {
             // res.markers 사용
-            console.log(res);
+            console.log(res, "근처경로조회");
             renderStoreMarkers(res?.markers ?? []);
           },
         }
@@ -94,14 +102,6 @@ export default function NearbyPage() {
   console.log(data);
 
   const getNearbyAlong = useAlongRoute();
-
-  // useEffect(() => {
-  //   getNearbyAlong.mutate({
-  //     polyline: { lat: latitude, lng: longitude },
-  //     radiusMeters: 2000,
-  //     category: [0],
-  //   });
-  // });
 
   const handleModal = () => {
     setIsModal(true);
