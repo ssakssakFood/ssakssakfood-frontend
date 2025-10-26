@@ -93,3 +93,17 @@ export const usePutRoute = (routeId: number) => {
     onError: (err) => console.error(err),
   });
 };
+
+//경로 상세조회
+
+export const getDetailRoute = async (routeId: number) => {
+  const { data } = await api.get(`/routes/${routeId}`);
+  return data;
+};
+
+export const useDetailRoute = (routeId: number) => {
+  return useQuery({
+    queryFn: () => getDetailRoute(routeId),
+    queryKey: ["routeDetail"],
+  });
+};
