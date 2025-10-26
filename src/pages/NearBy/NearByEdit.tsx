@@ -7,7 +7,7 @@ import Button from "@/components/Button";
 import { useNavigate, useParams } from "react-router-dom";
 import { useNearbyState } from "@/store/useRouteStore";
 import RouteMap from "@/pages/NearBy/NearbyMap";
-import { usePutRoute } from "@/api/nearby/nearby";
+import { useDetailRoute, usePutRoute } from "@/api/nearby/nearby";
 import { useState } from "react";
 import { useNearbyUiState } from "@/store/useNearbyStore";
 
@@ -42,6 +42,9 @@ export default function NearbyEdit() {
   const routeId = Number(parmas.routeId);
   const putRoute = usePutRoute(routeId);
 
+  const { data } = useDetailRoute(routeId);
+  console.log(data);
+
   const handleEditRoute = () => {
     putRoute.mutate({
       routeName: routeValue,
@@ -69,10 +72,10 @@ export default function NearbyEdit() {
         <p className="mb-4 subtitle-b-16">루트 이름</p>
         <InputField2
           placeholder="루트 이름 입력"
-          value={routeValue}
+          value={routeValue || data?.routeName}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
             setRouteValue(e.target.value);
-            setTemp({ routeName: routeValue });
+            setTemp({ routeName: e.target.value });
           }}
         />
       </div>
@@ -121,9 +124,8 @@ export default function NearbyEdit() {
         {/* 지도 */}
 
         <RouteMap
-          // key={routeId}
-          start={startUi}
-          end={endUi}
+          start={startUi ?? data?.start}
+          end={endUi ?? data?.end}
           height={260}
           onPolylineReady={setPolyline}
         />
