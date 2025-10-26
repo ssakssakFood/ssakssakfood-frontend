@@ -37,8 +37,7 @@ export default function NearbyPage() {
   );
 
   //출발지,목적지 상태
-  const [start, setStart] = useState<LatLng | undefined>(undefined);
-  const [end, setEnd] = useState<LatLng | undefined>(undefined);
+
   console.log(selectedRoute);
 
   const renderStoreMarkers = (
@@ -146,7 +145,7 @@ export default function NearbyPage() {
   const showRoute = !!selectedRoute;
   return (
     <div className="relative h-dvh -mx-6">
-      {!showRoute && <div ref={mapRef} className="absolute inset-0 z-10" />}
+      <div ref={mapRef} className="absolute inset-0 z-10" />
 
       {showRoute && (
         <div className="absolute inset-0 z-20">
@@ -159,7 +158,6 @@ export default function NearbyPage() {
           />
         </div>
       )}
-
       {/* 상단 UI는 공통으로 */}
       <div className="pointer-events-none absolute top-0 left-0 right-0 z-[30]">
         <div className="mt-5 px-6 pointer-events-auto">
