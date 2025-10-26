@@ -2,11 +2,10 @@
 import useGeolocation from "@/hooks/useGeolocation";
 import Route from "@assets/icons/tabler_route.svg";
 import { useEffect, useRef, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
 import Marker from "@/assets/icons/map-marker.svg?url";
 import SearchInput from "@/components/SearchInput";
 import RoutesModal from "@/components/nearby/RoutesModal";
-import { useGetNearby } from "@/api/nearby/nearby";
+import { useAlongRoute, useGetNearby } from "@/api/nearby/nearby";
 
 declare global {
   interface Window {
@@ -19,9 +18,35 @@ export default function NearbyPage() {
 
   const [ismodal, setIsModal] = useState(false);
 
-  const navigate = useNavigate();
-  const location = useLocation();
   const mapRef = useRef<HTMLDivElement>(null);
+  const mapInstanceRef = useRef<HTMLDivElement>(null);
+  const storeMarkersRef = useRef<any[]>([]);
+  const clearStoreMarkers = () => {
+    storeMarkersRef.current.forEach((m) => m.setMap(null));
+    storeMarkersRef.current = [];
+  };
+  const renderStoreMarkers = (
+    markers: Array<{
+      lat: number;
+      lng: number;
+      storeName?: string;
+      distanceMeters?: number;
+    }>
+  ) => {
+    const kakao = window.kakao;
+    if (!mapInstanceRef.current || !kakao) return;
+
+    clearStoreMarkers();
+
+    markers.forEach((s) => {
+      const mk = new kakao.maps.Marker({
+        position: new kakao.maps.LatLng(s.lat, s.lng),
+        map: mapInstanceRef.current,
+      });
+
+      storeMarkersRef.current.push(mk);
+    });
+  };
 
   useEffect(() => {
     const kakao = window.kakao;
@@ -32,14 +57,15 @@ export default function NearbyPage() {
       const centerPos = new kakao.maps.LatLng(latitude, longitude);
       const mapOption = {
         center: centerPos,
-        level: 2,
+        level: 3,
         draggable: true,
         scrollwheel: true,
       };
 
       const map = new kakao.maps.Map(mapRef.current, mapOption);
+      mapInstanceRef.current = map; // ✅ 인스턴스 보관
 
-      // 마커
+      // 내 위치 마커
       new kakao.maps.Marker({
         position: centerPos,
         map,
@@ -47,11 +73,36 @@ export default function NearbyPage() {
           offset: new kakao.maps.Point(20, 20),
         }),
       });
+
+      // ✅ 지도 준비되면 반경 2km 탐색 호출
+      getNearbyAlong.mutate(
+        {
+          // 네가 주석에 써둔 형태 유지
+          polyline: [{ lat: latitude, lng: longitude }],
+          radiusMeters: 2000,
+          category: [0], // 필요 시 필터
+        },
+        {
+          onSuccess: (res: any) => {
+            // res.markers 사용
+            renderStoreMarkers(res?.markers ?? []);
+          },
+        }
+      );
     });
   }, [loading, error, latitude, longitude]);
-
   const { data } = useGetNearby();
   console.log(data);
+
+  const getNearbyAlong = useAlongRoute();
+
+  // useEffect(() => {
+  //   getNearbyAlong.mutate({
+  //     polyline: { lat: latitude, lng: longitude },
+  //     radiusMeters: 2000,
+  //     category: [0],
+  //   });
+  // });
 
   const handleModal = () => {
     setIsModal(true);

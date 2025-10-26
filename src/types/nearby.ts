@@ -28,3 +28,10 @@ export type NearbyResponseDto = {
   radiusMeters: 0;
   categoryIds: number[];
 };
+
+//경로 주변 가게 탐색
+export type NearbyAlongRouteRequest = {
+  polyline: Routes[];
+  radiusMeters: number;
+  category: number[];
+};
