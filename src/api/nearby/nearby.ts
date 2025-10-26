@@ -1,6 +1,9 @@
-import apiC from "@/api/apiCatalog";
 import api from "@/api/apiMember";
-import { NearbyAlongRouteRequest, NearbyRequestDTO } from "@/types/nearby";
+import {
+  NearbyAlongRouteRequest,
+  NearbyEditRequest,
+  NearbyRequestDTO,
+} from "@/types/nearby";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 //경로 목록 조회
@@ -73,6 +76,20 @@ export const useAlongRoute = () => {
       });
       console.log(res);
     },
+    onError: (err) => console.error(err),
+  });
+};
+//경로 수정
+export const putRoute = async (routeId: number, body: NearbyEditRequest) => {
+  const { data } = await api.put(`/routes/${routeId}`, body);
+  return data;
+};
+
+//경로 수정
+export const usePutRoute = (routeId: number) => {
+  return useMutation({
+    mutationFn: (body: NearbyEditRequest) => putRoute(routeId, body),
+    onSuccess: () => console.log("경로수정성공"),
     onError: (err) => console.error(err),
   });
 };

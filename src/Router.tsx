@@ -25,6 +25,7 @@ import NearbyPage from "@/pages/NearBy/NearByPage";
 import NearbyRegister from "@/pages/NearBy/NearByRegister";
 import ManagerHome from "./pages/ManagerHome/ManagerHome";
 import AllfoodsPage from "./pages/ManagerHome/AllFoodsPage";
+import NearbyEdit from "@/pages/NearBy/NearByEdit";
 
 const router = createBrowserRouter([
   {
@@ -60,6 +61,7 @@ const router = createBrowserRouter([
       { path: "/location/map", element: <LocationMap /> },
       //내주변
       { path: "/nearby/register", element: <NearbyRegister /> },
+      { path: "/nearby/edit/:routeId", element: <NearbyEdit /> },
 
       //매장별 식품
       { path: "/store/:id", element: <StorePage /> },

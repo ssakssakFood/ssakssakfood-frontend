@@ -35,3 +35,11 @@ export type NearbyAlongRouteRequest = {
   radiusMeters: number;
   category: number[];
 };
+
+//경로 수정
+export type NearbyEditRequest = {
+  routeName: string;
+  polyline: Routes[];
+  start: Routes;
+  end: Routes;
+};
