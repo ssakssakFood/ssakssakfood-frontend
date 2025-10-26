@@ -1,25 +1,41 @@
-import Button from "@/components/Button";
-import { CategoryMiniBadge } from "@/components/CategoryBadge";
-import { MenuHeader } from "@/components/Headers";
-import ImagePickerBox from "@/components/ImagePickerBox";
-import InputField2 from "@/components/InputField2";
-import { CATEGORY } from "@/constants/Category";
-import { useState } from "react";
+import Button from '@/components/Button';
+import { CategoryMiniBadge } from '@/components/CategoryBadge';
+import { MenuHeader } from '@/components/Headers';
+import ImagePickerBox from '@/components/ImagePickerBox';
+import InputField2 from '@/components/InputField2';
+import Modal from '@/components/onBoarding/Modal';
+import { CATEGORY } from '@/constants/Category';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function AddFoodPage() {
-  const [selectedCategory, setSelectedCategory] = useState<string>("");
-  const [foodName, setFoodName] = useState<string>("");
+  const navigate = useNavigate();
+  const [selectedCategory, setSelectedCategory] = useState<string>('');
+  const [foodName, setFoodName] = useState<string>('');
   const [imageFile, setImageFile] = useState<File | null>(null);
-  const [costPrice, setCostPrice] = useState<string>("");
-  const [sellingPrice, setSellingPrice] = useState<string>("");
+  const [costPrice, setCostPrice] = useState<string>('');
+  const [sellingPrice, setSellingPrice] = useState<string>('');
+  const [modal, setModal] = useState(false);
 
   // 모든 필드가 채워졌는지 확인
   const isFormValid =
-    foodName.trim() !== "" &&
-    selectedCategory !== "" &&
+    foodName.trim() !== '' &&
+    selectedCategory !== '' &&
     imageFile !== null &&
-    costPrice.trim() !== "" &&
-    sellingPrice.trim() !== "";
+    costPrice.trim() !== '' &&
+    sellingPrice.trim() !== '';
+
+  const handleAddFoodComplete = () => {
+    if (isFormValid) {
+      setModal(true);
+    }
+  };
+
+  const closeModal = () => {
+    setModal(false);
+    // 모달 닫으면 홈으로 이동
+    navigate(-1);
+  };
 
   return (
     <div>
@@ -89,9 +105,26 @@ export default function AddFoodPage() {
             className="w-full text-lg py-6 cursor-pointer"
             labelName="식품 추가 완료하기"
             disabled={!isFormValid}
+            onClick={handleAddFoodComplete}
           />
         </div>
       </footer>
+
+      {modal && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center">
+          <div
+            className="absolute inset-0 bg-black/50"
+            onClick={closeModal}
+          ></div>
+          <div className="relative z-[101] w-full">
+            <Modal
+              closeModal={closeModal}
+              title="식품 추가가 완료되었어요!"
+              subTitle="등록한 식품을 판매에 등록해보세요"
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 }
