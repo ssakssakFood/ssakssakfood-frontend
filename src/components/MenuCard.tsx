@@ -113,20 +113,33 @@ export function MenuImgCard({
 }
 
 export function MenuAddCard({
+  id,
   name,
   originalPrice,
   salePrice,
   isEditMode,
   onDelete,
 }: {
+  id: number;
   name: string;
   originalPrice: number;
   salePrice: number;
   isEditMode?: boolean;
   onDelete?: () => void;
 }) {
+  const navigate = useNavigate();
+
+  const handleCardClick = () => {
+    if (!isEditMode) {
+      navigate(`/addfood/${id}`);
+    }
+  };
+
   return (
-    <div className="flex justify-between items-center">
+    <div 
+      className="flex justify-between items-center cursor-pointer"
+      onClick={handleCardClick}
+    >
       <div className="flex gap-4 items-center">
         <img src={mockImg} alt="식품 추가 아이콘" width={80} />
         <div className="flex flex-col gap-2">
@@ -150,12 +163,21 @@ export function MenuAddCard({
       {isEditMode ? (
         <div
           className="w-[30px] h-[30px] flex items-center justify-center rounded-full cursor-pointer"
-          onClick={onDelete}
+          onClick={(e) => {
+            e.stopPropagation(); // 카드 클릭 이벤트 방지
+            onDelete?.();
+          }}
         >
           <img src={closeImg} alt="삭제" />
         </div>
       ) : (
-        <div className="w-[74px] h-[30px] text-white text-[14px] font-semibold flex rounded-lg items-center justify-center bg-main1 px-[11px] py-[7px] cursor-pointer">
+        <div 
+          className="w-[74px] h-[30px] text-white text-[14px] font-semibold flex rounded-lg items-center justify-center bg-main1 px-[11px] py-[7px] cursor-pointer"
+          onClick={(e) => {
+            e.stopPropagation(); // 카드 클릭 이벤트 방지
+            // 판매 시작 로직
+          }}
+        >
           판매 시작
         </div>
       )}

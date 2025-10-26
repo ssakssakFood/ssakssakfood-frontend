@@ -5,6 +5,7 @@ import { MenuAddCard, MenuImgCard } from "@/components/MenuCard";
 import addImg from "@/assets/icons/plus-orange.svg";
 import OwnerFooterNav from "@/layout/OwnerFooterNav";
 import { useNavigate } from "react-router-dom";
+import { ADDEDMENUS } from "@/Mock/ownerdatas";
 
 export default function ManagerHome() {
   const navigate = useNavigate();
@@ -53,7 +54,7 @@ export default function ManagerHome() {
       <section className="mt-[24px] mb-[100px]">
         <div className="flex justify-between items-center">
           <h2 className="flex gap-2 text-[20px] font-bold">
-            내 식품 <span className="text-red">5</span>
+            내 식품 <span className="text-red">{ADDEDMENUS.length}</span>
           </h2>
           {isEditMode ? (
             <div className="flex gap-2">
@@ -89,36 +90,16 @@ export default function ManagerHome() {
           </div>
         )}
         <div className={`flex flex-col gap-4 ${isEditMode ? "mt-[24px]" : ""}`}>
-          <MenuAddCard
-            name="식품명"
-            originalPrice={10000}
-            salePrice={8000}
-            isEditMode={isEditMode}
-          />
-          <MenuAddCard
-            name="식품명"
-            originalPrice={10000}
-            salePrice={8000}
-            isEditMode={isEditMode}
-          />
-          <MenuAddCard
-            name="식품명"
-            originalPrice={10000}
-            salePrice={8000}
-            isEditMode={isEditMode}
-          />
-          <MenuAddCard
-            name="식품명"
-            originalPrice={10000}
-            salePrice={8000}
-            isEditMode={isEditMode}
-          />
-          <MenuAddCard
-            name="식품명"
-            originalPrice={10000}
-            salePrice={8000}
-            isEditMode={isEditMode}
-          />
+          {ADDEDMENUS.map((menu) => (
+            <MenuAddCard
+              key={menu.id}
+              id={menu.id}
+              name={menu.name}
+              originalPrice={menu.originalPrice}
+              salePrice={menu.discountPrice}
+              isEditMode={isEditMode}
+            />
+          ))}
         </div>
       </section>
       <footer className="fixed bottom-0 w-full max-w-[401px] bg-white border-t border-gray-100 z-10 mx-auto ml-[-24px]">

@@ -25,6 +25,7 @@ import StoreInformation from "@/pages/onBoarding/onBoardingStore";
 import ManagerHome from "./pages/ManagerHome/ManagerHome";
 import AllfoodsPage from "./pages/ManagerHome/AllFoodsPage";
 import AddFoodPage from "./pages/ManagerHome/AddFoodPage";
+import AddfoodEditPage from "./pages/ManagerHome/AddFoodEditPage";
 
 const router = createBrowserRouter([
   {
@@ -70,6 +71,7 @@ const router = createBrowserRouter([
   },
   //메뉴 상세 페이지
   { path: "menu/:id", element: <MenuDetailPage /> },
+  { path: "/addfood/:id", element: <AddfoodEditPage />},
 ]);
 
 export default router;
