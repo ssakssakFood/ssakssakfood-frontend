@@ -1,20 +1,24 @@
 // Home.tsx
-import React, { useMemo } from "react";
-import { MENUS } from "@/Mock/menudatas";
+import React from "react";
 import { CATEGORY } from "./constants/Category";
 import MenuCard from "./components/MenuCard";
 import Carousel from "./components/Carousel";
 import { useNavigate } from "react-router-dom";
 import FooterNav from "./layout/FooterNav";
+import { useGetHomeMenus } from "@/api/menu/menu";
 
 const Home: React.FC = () => {
   const navigate = useNavigate();
 
-  const topDiscountMenus = useMemo(() => {
-    return [...MENUS]
-      .sort((a, b) => b.discountRate - a.discountRate)
-      .slice(0, 6);
-  }, []);
+  // 할인율 높은 음식 리스트 조회
+  const { data: homeMenus, isLoading } = useGetHomeMenus();
+
+  // 디버깅용 콘솔 로그
+  console.log("===== Home Menus Debug =====");
+  console.log("homeMenus:", homeMenus);
+  console.log("isLoading:", isLoading);
+  console.log("homeMenus 개수:", homeMenus?.length);
+  console.log("==========================");
 
   return (
     <div className="relative">
@@ -49,19 +53,29 @@ const Home: React.FC = () => {
       <div className="flex flex-col gap-[24px] mt-[32px] mb-[84px]">
         <span className="text-[20px] font-bold">할인율 높은 음식</span>
         <div className="flex flex-col gap-[24px]">
-          {topDiscountMenus.map((menu) => (
-            <MenuCard
-              key={menu.id}
-              id={menu.id}
-              title={menu.title}
-              storeName={menu.storeName}
-              pickupTime={menu.pickupTime}
-              originalPrice={menu.originalPrice}
-              salePrice={menu.salePrice}
-              discountRate={menu.discountRate}
-              stockCount={menu.stockCount}
-            />
-          ))}
+          {isLoading ? (
+            <div className="text-center text-gray-500 py-8">
+              로딩 중...
+            </div>
+          ) : !homeMenus || homeMenus.length === 0 ? (
+            <div className="text-center text-gray-500 py-8">
+              아직 근처에 등록된 식품이 없어요
+            </div>
+          ) : (
+            homeMenus.map((menu) => (
+              <MenuCard
+                key={menu.id}
+                id={menu.id}
+                title={menu.name}
+                storeName={menu.storeName}
+                pickupTime={menu.deadline}
+                originalPrice={menu.originalPrice}
+                salePrice={menu.discountPrice}
+                discountRate={menu.discountRate}
+                stockCount={menu.surplusQuantity}
+              />
+            ))
+          )}
         </div>
       </div>
 

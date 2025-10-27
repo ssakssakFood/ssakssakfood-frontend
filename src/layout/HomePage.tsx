@@ -18,17 +18,6 @@ export default function Layout() {
 
   const primaryLocation = primaryLocationData;
 
-  // 디버깅용 콘솔 로그
-  console.log("===== Location Debug =====");
-  console.log("로그인 여부:", loggedIn);
-  console.log("현재 경로:", location.pathname);
-  console.log("memberType:", memberType);
-  console.log("primaryLocationData:", primaryLocationData);
-  console.log("primaryLocation:", primaryLocation);
-  console.log("isPrimaryLoading:", isPrimaryLoading);
-  console.log("geolocation fullAdress:", fullAdress);
-  console.log("========================");
-
   // 표시할 위치 결정 로직
   const getDisplayLocation = () => {
     // 로그인하지 않은 경우: geolocation 사용
