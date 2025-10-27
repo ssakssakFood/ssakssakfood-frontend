@@ -322,6 +322,11 @@ export default function LocationSearch() {
               place={item.place_name ?? ""}
               address={item.address_name ?? ""}
               owner={isOwner}
+              routeId={routeId}
+              isNearbyStartEdit={isNearbyStartEdit}
+              isNearbyEndEdit={isNearbyEndEdit}
+              isNearbyStart={isNearbyStart}
+              isNearbyEnd={isNearbyEnd}
             />
           </div>
         );

@@ -43,7 +43,7 @@ export default function LocationMap() {
   console.log(navState);
   //내주변 수정
   const isNearbyStartEdit = navState?.nearby === "nearbyStartEdit";
-  const isNearbyEndEdit = navState?.nearby === "isNearbyEndEdit";
+  const isNearbyEndEdit = navState?.nearby === "nearbyEndEdit";
   const isNearbyStart = navState?.postNearby === "isNearbyStart";
   const isNearbyEnd = navState?.postNearby === "isNearbyEnd";
   const routeId = location.state.routeId;
