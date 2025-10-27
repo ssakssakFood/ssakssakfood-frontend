@@ -27,7 +27,9 @@ export default function NearbyPage() {
 
   const [ismodal, setIsModal] = useState(false);
   // const [storeModal, setStoreModal] = useState(false);
-  const [selectedMaker, setSelectedMarker] = useState<number | null>(null);
+  const [selectedMarker, setSelectedMarker] = useState<number | undefined>(
+    undefined
+  );
 
   const mapRef = useRef<HTMLDivElement>(null);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -45,16 +47,10 @@ export default function NearbyPage() {
 
   //출발지,목적지 상태
 
-  console.log(selectedRoute);
+  // console.log(selectedRoute);
 
-  const { data: storeData, refetch } = useStoreMenus(selectedMaker);
+  const { data: storeData } = useStoreMenus(selectedMarker);
   console.log(storeData);
-
-  useEffect(() => {
-    if (storeData) {
-      console.log("가져온 스토어 데이터:", storeData);
-    }
-  }, [storeData]);
 
   const renderStoreMarkers = (
     markers: Array<{
@@ -81,12 +77,10 @@ export default function NearbyPage() {
         image: nearMarkerImage,
       });
 
-      //마커----------클릭하기--------
       kakao.maps.event.addListener(mk, "click", () => {
-        console.log("마커 클릭번호", s.storeId);
         setSelectedMarker(s.storeId);
-        refetch();
       });
+
       storeMarkersRef.current.push(mk);
     });
   };
@@ -135,10 +129,10 @@ export default function NearbyPage() {
           },
         }
       );
-    });
+    }); // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loading, error, latitude, longitude]);
   const { data } = useGetNearby();
-  console.log(data);
+  // console.log(data);
 
   // const handleMapReady = (map: any) => {
   //   mapInstanceRef.current = map;
@@ -161,14 +155,19 @@ export default function NearbyPage() {
     clearStoreMarkers();
     getNearbyAlong.mutate(
       { polyline, radiusMeters: 2000, category: [0] },
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      { onSuccess: (res: any) => renderStoreMarkers(res?.markers ?? []) }
+      {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        onSuccess: (res: any) => {
+          console.log("근처경로조회,루트임");
+          renderStoreMarkers(res?.markers ?? []);
+        },
+      }
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const showRoute = !!selectedRoute;
-  console.log(typeof selectedMaker);
+  console.log(typeof selectedMarker);
 
   return (
     <div className="relative h-dvh -mx-6">
@@ -191,26 +190,28 @@ export default function NearbyPage() {
           <SearchInput className="relative bg-white px-4 py-[10px] rounded-3xl w-full mb-2" />
         </div>
 
-        <div
-          className="mx-6 flex rounded-4xl h-6 w-22 py-1 px-3 gap-2 pointer-events-auto"
-          style={{ background: "var(--color-gradient-main1)" }}
-          onClick={handleModal}
-        >
-          <img src={Route} alt="루트" />
-          <p className="body-r-14 text-white">내 루트</p>
-        </div>
-
-        {selectedRoute && (
-          <div className="mx-6 mt-2 flex rounded-4xl h-6 w-fit py-1 pl-3 pr-2 gap-2 bg-white items-center shadow-main1 pointer-events-auto">
-            <p className="text-black text-sm">{selectedRoute.routeName}</p>
-            <img
-              src={Close}
-              onClick={() => setSelectedRoute(null)}
-              className="w-4 h-4 cursor-pointer"
-              alt="닫기"
-            />
+        <div className="flex">
+          <div
+            className="ml-6 mr-2 flex rounded-4xl h-6 w-22 py-1 px-3 gap-2 pointer-events-auto"
+            style={{ background: "var(--color-gradient-main1)" }}
+            onClick={handleModal}
+          >
+            <img src={Route} alt="루트" />
+            <p className="body-r-14 text-white">내 루트</p>
           </div>
-        )}
+
+          {selectedRoute && (
+            <div className=" flex rounded-4xl h-6 w-fit py-1 pl-3 pr-2 gap-2 bg-white items-center shadow-main1 pointer-events-auto">
+              <p className="text-black text-sm">{selectedRoute.routeName}</p>
+              <img
+                src={Close}
+                onClick={() => setSelectedRoute(null)}
+                className="w-4 h-4 cursor-pointer"
+                alt="닫기"
+              />
+            </div>
+          )}
+        </div>
       </div>
 
       {ismodal && (
