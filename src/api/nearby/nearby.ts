@@ -108,3 +108,21 @@ export const useDetailRoute = (routeId: number) => {
     keepPreviousData: false,
   });
 };
+
+//가게 메뉴 목록 조회
+export const getStoreMenus = async (storeId: number) => {
+  const { data } = await api.get(`/stores/${storeId}/menus`);
+  return data;
+};
+
+export const useStoreMenus = (routeId: number) => {
+  return useQuery({
+    queryFn: () => getStoreMenus(routeId),
+    queryKey: ["storeMenus", routeId],
+    keepPreviousData: false,
+    enabled: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    refetchOnMount: false,
+  });
+};
