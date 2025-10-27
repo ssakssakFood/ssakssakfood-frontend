@@ -49,9 +49,8 @@ export default function LocationSearch() {
   const isNearbyEnd = location.state === "nearbyEnd";
 
   const navState = location.state;
-  console.log(navState.state);
+  //내주변 수정
   const isNearbyStartEdit = navState?.state === "nearbyStartEdit";
-  console.log(isNearbyStartEdit);
   const isNearbyEndEdit = navState?.state === "nearbyEndEdit";
 
   console.log(location.state, "로케이션상태");
@@ -170,6 +169,17 @@ export default function LocationSearch() {
               mode: isOwner ? "fill-only" : "call-api",
               owner: isOwner ? "owner" : undefined,
               returnPath: "/location/search",
+              nearby: isNearbyStartEdit
+                ? "nearbyStartEdit"
+                : isNearbyEndEdit
+                  ? "nearbyEndEdit"
+                  : undefined,
+              postNearby: isNearbyStart
+                ? "isNearbyStart"
+                : isNearbyEnd
+                  ? "isNearbyStart"
+                  : undefined,
+              routeId,
             },
           }
         );
@@ -210,7 +220,7 @@ export default function LocationSearch() {
       return;
     }
 
-    // --- CREATE(등록) 분기 ---
+    // 등록
     if (isOwner) {
       setTemp({
         location: {

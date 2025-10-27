@@ -7,6 +7,7 @@ type LatLng = { lat: number; lng: number };
 
 declare global {
   interface Window {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     kakao: any;
   }
 }
@@ -19,6 +20,7 @@ interface NearbyMapProps {
   //   onSummary?: (summary: { distance: number; time: number }) => void;
 
   onPolylineReady?: (polyline: LatLng[]) => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onMapReady?: (map: any) => void;
 }
 
@@ -31,8 +33,11 @@ export default function RouteMap({
   onPolylineReady,
 }: NearbyMapProps) {
   const mapEl = useRef<HTMLDivElement>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const mapRef = useRef<any>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const polylineRef = useRef<any>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const markersRef = useRef<any[]>([]);
   const [isMapReady, setIsMapReady] = useState(false);
 
@@ -60,7 +65,7 @@ export default function RouteMap({
           level: 6,
         });
         setIsMapReady(true);
-        onMapReady?.(mapRef.current); //부모한테 지도 넘겨줌
+        onMapReady?.(mapRef.current); //부모한테 지도
       };
 
       if (kakao.maps.load) kakao.maps.load(init);
@@ -72,7 +77,8 @@ export default function RouteMap({
     };
   }, []);
 
-  // 경로 그리기 (보행)
+  // 경로 그리기
+
   useEffect(() => {
     const map = mapRef.current;
     if (!isMapReady) return;
@@ -90,7 +96,7 @@ export default function RouteMap({
 
     const sPos = new kakao.maps.LatLng(start.lat, start.lng);
     const ePos = new kakao.maps.LatLng(end.lat, end.lng);
-
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const makeMarker = (position: any, url?: string) => {
       try {
         if (url) {
@@ -117,9 +123,6 @@ export default function RouteMap({
 
     const fetchWalkRoute = async (signal?: AbortSignal) => {
       const appKey = import.meta.env.VITE_APP_TMAP_KEY as string | undefined;
-      if (!appKey) {
-        console.warn("[RouteMap] VITE_APP_TMAP_KEY 가 설정되어 있지 않습니다.");
-      }
 
       const url =
         "https://apis.openapi.sk.com/tmap/routes/pedestrian?version=1&format=json";
@@ -153,8 +156,8 @@ export default function RouteMap({
       }
 
       const lineCoords: Array<{ lat: number; lng: number }> = [];
-      features
-        .filter((f: any) => f.geometry?.type === "LineString")
+      features // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        .filter((f: any) => f.geometry?.type === "LineString") // eslint-disable-next-line @typescript-eslint/no-explicit-any
         .forEach((f: any) => {
           (f.geometry.coordinates || []).forEach((c: [number, number]) => {
             lineCoords.push({ lng: c[0], lat: c[1] });
@@ -168,9 +171,7 @@ export default function RouteMap({
 
     (async () => {
       try {
-        const { lineCoords, totalDistance, totalTime } = await fetchWalkRoute(
-          ac.signal
-        );
+        const { lineCoords } = await fetchWalkRoute(ac.signal);
         // onSummary?.({ distance: totalDistance, time: totalTime });
         const rounded = lineCoords.map((p) => ({
           lat: +p.lat.toFixed(6),
@@ -192,7 +193,7 @@ export default function RouteMap({
           strokeColor: "#FF6B00",
           strokeOpacity: 1,
           strokeStyle: "solid",
-        });
+        }); // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (e: any) {
         if (e?.name === "CanceledError" || e?.message === "canceled") return;
         polylineRef.current = new kakao.maps.Polyline({
@@ -209,7 +210,7 @@ export default function RouteMap({
     return () => {
       ac.abort();
     };
-  }, [isMapReady, start?.lat, start?.lng, end?.lat, end?.lng, onPolylineReady]); // ✅ isMapReady 추가
+  }, [isMapReady, start?.lat, start?.lng, end?.lat, end?.lng, onPolylineReady]);
 
   const styleHeight =
     typeof height === "number" ? `${height}px` : height || "260px";

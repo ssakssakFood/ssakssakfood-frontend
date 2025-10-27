@@ -40,7 +40,7 @@ export default function RoutesModal({
               {!isEdit ? "수정" : "저장"}
             </button>
           </div>
-          {data.length > 0 ? (
+          {data?.length > 0 ? (
             <>
               {data?.map((item: NearbyResponseDto) => {
                 return (

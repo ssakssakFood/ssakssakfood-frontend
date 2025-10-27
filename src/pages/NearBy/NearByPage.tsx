@@ -6,26 +6,33 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import Marker from "@/assets/icons/map-marker.svg?url";
 import SearchInput from "@/components/SearchInput";
 import RoutesModal from "@/components/nearby/RoutesModal";
-import { useAlongRoute, useGetNearby } from "@/api/nearby/nearby";
+import {
+  useAlongRoute,
+  useGetNearby,
+  useStoreMenus,
+} from "@/api/nearby/nearby";
 import NearMarker from "@/assets/icons/marker.svg?url";
 import { LatLng, NearbyResponseDto } from "@/types/nearby";
 import RouteMap from "@/pages/NearBy/NearbyMap";
+// import MenuCard from "@/components/MenuCard";
 declare global {
   interface Window {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     kakao: any;
   }
 }
 export default function NearbyPage() {
-  const { latitude, longitude, address, fullAdress, loading, error } =
-    useGeolocation();
+  const { latitude, longitude, loading, error } = useGeolocation();
   const getNearbyAlong = useAlongRoute();
 
   const [ismodal, setIsModal] = useState(false);
-
-  const [polyline, setPolyline] = useState<LatLng[]>([]);
+  // const [storeModal, setStoreModal] = useState(false);
+  const [selectedMaker, setSelectedMarker] = useState<number | null>(null);
 
   const mapRef = useRef<HTMLDivElement>(null);
-  const mapInstanceRef = useRef<HTMLDivElement>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const mapInstanceRef = useRef<any>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const storeMarkersRef = useRef<any[]>([]);
   const clearStoreMarkers = () => {
     storeMarkersRef.current.forEach((m) => m.setMap(null));
@@ -40,8 +47,18 @@ export default function NearbyPage() {
 
   console.log(selectedRoute);
 
+  const { data: storeData, refetch } = useStoreMenus(selectedMaker);
+  console.log(storeData);
+
+  useEffect(() => {
+    if (storeData) {
+      console.log("가져온 스토어 데이터:", storeData);
+    }
+  }, [storeData]);
+
   const renderStoreMarkers = (
     markers: Array<{
+      storeId: number;
       lat: number;
       lng: number;
       storeName?: string;
@@ -64,6 +81,12 @@ export default function NearbyPage() {
         image: nearMarkerImage,
       });
 
+      //마커----------클릭하기--------
+      kakao.maps.event.addListener(mk, "click", () => {
+        console.log("마커 클릭번호", s.storeId);
+        setSelectedMarker(s.storeId);
+        refetch();
+      });
       storeMarkersRef.current.push(mk);
     });
   };
@@ -104,6 +127,7 @@ export default function NearbyPage() {
           category: [0],
         },
         {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           onSuccess: (res: any) => {
             // res.markers 사용
             console.log(res, "근처경로조회");
@@ -116,9 +140,9 @@ export default function NearbyPage() {
   const { data } = useGetNearby();
   console.log(data);
 
-  const handleMapReady = (map: any) => {
-    mapInstanceRef.current = map;
-  };
+  // const handleMapReady = (map: any) => {
+  //   mapInstanceRef.current = map;
+  // };
 
   const handleModal = () => {
     setIsModal(true);
@@ -137,12 +161,15 @@ export default function NearbyPage() {
     clearStoreMarkers();
     getNearbyAlong.mutate(
       { polyline, radiusMeters: 2000, category: [0] },
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       { onSuccess: (res: any) => renderStoreMarkers(res?.markers ?? []) }
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const showRoute = !!selectedRoute;
+  console.log(typeof selectedMaker);
+
   return (
     <div className="relative h-dvh -mx-6">
       <div ref={mapRef} className="absolute inset-0 z-10" />
@@ -180,6 +207,7 @@ export default function NearbyPage() {
               src={Close}
               onClick={() => setSelectedRoute(null)}
               className="w-4 h-4 cursor-pointer"
+              alt="닫기"
             />
           </div>
         )}
@@ -192,6 +220,21 @@ export default function NearbyPage() {
           onSelectItem={handleGetRoute}
         />
       )}
+      {/* {storeModal && (
+      {storeData?.map((menu) => (
+        <MenuCard
+          key={menu.id}
+          id={menu.id}
+          title={menu.title}
+          storeName={menu.storeName}
+          pickupTime={menu.pickupTime}
+          originalPrice={menu.originalPrice}
+          salePrice={menu.salePrice}
+          discountRate={menu.discountRate}
+          stockCount={menu.stockCount}
+        />
+      ))}
+      )} */}
     </div>
   );
 }
