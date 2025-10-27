@@ -72,7 +72,8 @@ export const useSearchMenus = (params: MenuSearchParams) => {
   return useQuery({
     queryKey: ["searchMenus", params],
     queryFn: () => searchMenus(params),
-    enabled: !!(params.keyword || params.category),
+    // keyword나 category가 있거나, 둘 다 없어도(전체 검색) 호출
+    enabled: true,
   });
 };
 
