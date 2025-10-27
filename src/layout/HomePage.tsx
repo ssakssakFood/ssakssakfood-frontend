@@ -1,6 +1,5 @@
 import { Outlet, useMatch } from "react-router-dom";
 import { LocationHeader } from "../components/Headers";
-import FooterNav from "./FooterNav";
 import SearchInput from "@/components/SearchInput";
 import useGeolocation from "@/hooks/useGeolocation";
 
@@ -9,6 +8,7 @@ export default function Layout() {
   const nearby = useMatch("/nearby");
 
   //Layout 분리 예정
+
   const displayLocation = loading
     ? "위치 정보를 불러오는 중..."
     : error
@@ -17,22 +17,20 @@ export default function Layout() {
 
   return (
     <>
-      {nearby ? (
-        ""
-      ) : (
-        <div className="w-full sticky top-0 z-[1000] bg-white py-2">
-          <LocationHeader location={displayLocation} />
-          <SearchInput className="bg-[#F3F3F3] px-[16px] py-[10px] rounded-3xl mx-6" />
-        </div>
-      )}
+      <div className="w-full max-w-[401px] mx-auto overflow-x-hidden">
+        {nearby ? (
+          ""
+        ) : (
+          <div className="w-full sticky top-0 z-[1000] bg-white py-2">
+            <LocationHeader location={displayLocation} />
+            <SearchInput className="bg-[#F3F3F3] px-[16px] py-[10px] rounded-3xl mx-6" />
+          </div>
+        )}
 
-      <main className="px-6 w-full">
-        <Outlet />
-      </main>
-
-      <footer className="fixed bottom-0 w-full max-w-[401px] bg-white border-t border-gray-100 z-10 mx-auto">
-        <FooterNav />
-      </footer>
+        <main className="px-6">
+          <Outlet />
+        </main>
+      </div>
     </>
   );
 }
