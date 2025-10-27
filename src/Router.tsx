@@ -25,6 +25,16 @@ import StoreInformation from "@/pages/onBoarding/onBoardingStore";
 import AllfoodsPage from "./pages/ManagerHome/AllFoodsPage";
 import AddFoodPage from "./pages/ManagerHome/AddFoodPage";
 import AddfoodEditPage from "./pages/ManagerHome/AddFoodEditPage";
+import AuthGuard from "@/components/AuthGuard";
+
+// 비회원 접근을 막습니다.
+const withAuthGuard = (Component: React.ComponentType) => {
+  return (
+    <AuthGuard>
+      <Component />
+    </AuthGuard>
+  );
+};
 
 const router = createBrowserRouter([
   {
@@ -33,7 +43,7 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <HomePage /> },
       { path: "search", element: <SearchResultPage /> },
-      { path: "nearby", element: <NearByPage /> },
+      { path: "nearby", element: withAuthGuard(NearByPage) },
       { path: "category/:slug", element: <CategoryPage /> },
     ],
   },
@@ -55,20 +65,20 @@ const router = createBrowserRouter([
       { path: "/onBoarding/owner", element: <OwnerInformation /> },
       { path: "/onBoarding/store", element: <StoreInformation /> },
       //위치수정
-      { path: "/location/edit", element: <LocationEdit /> },
-      { path: "/location/search", element: <LocationSearch /> },
-      { path: "/location/map", element: <LocationMap /> },
+      { path: "/location/edit", element: withAuthGuard(LocationEdit) },
+      { path: "/location/search", element: withAuthGuard(LocationSearch) },
+      { path: "/location/map", element: withAuthGuard(LocationMap) },
       //매장별 식품
-      { path: "/store/:id", element: <StorePage /> },
+      { path: "/store/:id", element: withAuthGuard(StorePage) },
       //예약
-      { path: "/menu/:id/reserve", element: <ReservePage /> },
-      { path: "/allfoods", element: <AllfoodsPage /> },
-      { path: "/addfood", element: <AddFoodPage /> },
+      { path: "/menu/:id/reserve", element: withAuthGuard(ReservePage) },
+      { path: "/allfoods", element: withAuthGuard(AllfoodsPage) },
+      { path: "/addfood", element: withAuthGuard(AddFoodPage) },
     ],
   },
-  //메뉴 상세 페이지
+  //메뉴 상세 페이지 (비회원도 접근 가능)
   { path: "menu/:id", element: <MenuDetailPage /> },
-  { path: "/addfood/:id", element: <AddfoodEditPage /> },
+  { path: "/addfood/:id", element: withAuthGuard(AddfoodEditPage) },
 ]);
 
 export default router;
