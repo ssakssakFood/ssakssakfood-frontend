@@ -76,8 +76,8 @@ const router = createBrowserRouter([
       { path: "/addfood", element: withAuthGuard(AddFoodPage) },
     ],
   },
-  //메뉴 상세 페이지 (비회원도 접근 가능)
-  { path: "menu/:id", element: <MenuDetailPage /> },
+  //메뉴 상세 페이지 (로그인 필수)
+  { path: "menu/:id", element: withAuthGuard(MenuDetailPage) },
   { path: "/addfood/:id", element: withAuthGuard(AddfoodEditPage) },
 ]);
 

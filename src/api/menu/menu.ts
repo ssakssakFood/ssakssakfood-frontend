@@ -68,12 +68,12 @@ export const searchMenus = async (
   return data.result;
 };
 
-export const useSearchMenus = (params: MenuSearchParams) => {
+export const useSearchMenus = (params: MenuSearchParams, enabled: boolean = true) => {
   return useQuery({
     queryKey: ["searchMenus", params],
     queryFn: () => searchMenus(params),
     // keyword나 category가 있거나, 둘 다 없어도(전체 검색) 호출
-    enabled: true,
+    enabled: enabled,
   });
 };
 
@@ -117,6 +117,36 @@ export const useGetHomeMenusGuest = (lat: number, lon: number, enabled: boolean 
   return useQuery({
     queryKey: ["homeMenusGuest", lat, lon],
     queryFn: () => getHomeMenusGuest(lat, lon),
+    enabled: enabled && !!lat && !!lon,
+  });
+};
+
+/*
+비회원 또는 대표 주소가 없는 사용자를 위한 메뉴 검색 API입니다.
+위도(lat), 경도(lon)와 함께 keyword 또는 category로 검색합니다.
+기본 반경 5km → 없으면 10km → 그래도 없으면 전체 검색
+정렬 기준: 거리 오름차순 → 할인율 내림차순
+ */
+export const searchMenusGuest = async (
+  lat: number,
+  lon: number,
+  params: MenuSearchParams
+): Promise<MenuDto[]> => {
+  const { data } = await api.get<ApiResponse<MenuDto[]>>("/menus/search/guest", {
+    params: { lat, lon, ...params },
+  });
+  return data.result;
+};
+
+export const useSearchMenusGuest = (
+  lat: number,
+  lon: number,
+  params: MenuSearchParams,
+  enabled: boolean = true
+) => {
+  return useQuery({
+    queryKey: ["searchMenusGuest", lat, lon, params],
+    queryFn: () => searchMenusGuest(lat, lon, params),
     enabled: enabled && !!lat && !!lon,
   });
 };

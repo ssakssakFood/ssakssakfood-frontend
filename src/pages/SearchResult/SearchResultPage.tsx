@@ -1,13 +1,37 @@
 import { useSearchParams } from "react-router-dom";
 import MenuCard from "@/components/MenuCard";
-import { useSearchMenus } from "@/api/menu/menu";
+import { useSearchMenus, useSearchMenusGuest } from "@/api/menu/menu";
+import { isLoggedIn } from "@/utils/getUserInfo";
+import { useGetMyPrimaryLocation } from "@/api/location/location";
+import useGeolocation from "@/hooks/useGeolocation";
 
 export default function SearchResultPage() {
   const [searchParams] = useSearchParams();
   const query = searchParams.get("query") || "";
 
-  // API를 통한 검색
-  const { data: searchResults, isLoading } = useSearchMenus({ keyword: query });
+  const loggedIn = isLoggedIn();
+  const { data: primaryLocation } = useGetMyPrimaryLocation(loggedIn);
+  const { latitude, longitude } = useGeolocation();
+
+  // 비회원이거나 대표 주소가 없는 경우 guest API 사용
+  const shouldUseGuestApi = !loggedIn || !primaryLocation;
+
+  // 회원용 API
+  const { data: memberResults, isLoading: memberLoading } = useSearchMenus(
+    { keyword: query },
+    !shouldUseGuestApi
+  );
+
+  // 게스트용 API
+  const { data: guestResults, isLoading: guestLoading } = useSearchMenusGuest(
+    latitude,
+    longitude,
+    { keyword: query },
+    shouldUseGuestApi
+  );
+
+  const searchResults = shouldUseGuestApi ? guestResults : memberResults;
+  const isLoading = shouldUseGuestApi ? guestLoading : memberLoading;
   const filteredMenus = searchResults || [];
 
   return (

@@ -4,9 +4,12 @@ import MenuCard from "@/components/MenuCard";
 import { CATEGORY } from "@/constants/Category";
 import type { CategorySlugType } from "@/constants/Category";
 import CategoryBadge from "@/components/CategoryBadge";
-import { useSearchMenus } from "@/api/menu/menu";
+import { useSearchMenus, useSearchMenusGuest } from "@/api/menu/menu";
 import type { CategoryType } from "@/types/menu";
 import FooterNav from "@/layout/FooterNav";
+import { isLoggedIn } from "@/utils/getUserInfo";
+import { useGetMyPrimaryLocation } from "@/api/location/location";
+import useGeolocation from "@/hooks/useGeolocation";
 
 //category/:slug 페이지 입니다.
 //각 선택된 카테고리의 메뉴 리스트를 보여줍니다.
@@ -50,25 +53,35 @@ export default function CategoryPage() {
     window.scrollTo(0, 0);
   }, [selectedSlug]);
 
+  const loggedIn = isLoggedIn();
+  const { data: primaryLocation } = useGetMyPrimaryLocation(loggedIn);
+  const { latitude, longitude } = useGeolocation();
+
+  // 비회원이거나 대표 주소가 없는 경우 guest API 사용
+  const shouldUseGuestApi = !loggedIn || !primaryLocation;
+
   // API를 통한 카테고리별 검색
   // "전체" 선택 시 category를 빈 값으로 전달하면 전체 메뉴 리스트 반환
   const category: CategoryType | undefined =
     selectedSlug !== "all" ? SLUG_TO_CATEGORY[selectedSlug] : undefined;
 
-  // 빈 객체를 전달하면 전체 메뉴 검색
-  const { data: searchResults, isLoading } = useSearchMenus(
-    selectedSlug === "all" ? {} : { category }
+  // 회원용 API
+  const { data: memberResults, isLoading: memberLoading } = useSearchMenus(
+    selectedSlug === "all" ? {} : { category },
+    !shouldUseGuestApi
   );
-  const filteredMenus = searchResults || [];
 
-  // 디버깅용 콘솔 로그
-  console.log("===== CategoryPage Debug =====");
-  console.log("selectedSlug:", selectedSlug);
-  console.log("category:", category);
-  console.log("searchResults:", searchResults);
-  console.log("isLoading:", isLoading);
-  console.log("filteredMenus 개수:", filteredMenus.length);
-  console.log("============================");
+  // 게스트용 API
+  const { data: guestResults, isLoading: guestLoading } = useSearchMenusGuest(
+    latitude,
+    longitude,
+    selectedSlug === "all" ? {} : { category },
+    shouldUseGuestApi
+  );
+
+  const searchResults = shouldUseGuestApi ? guestResults : memberResults;
+  const isLoading = shouldUseGuestApi ? guestLoading : memberLoading;
+  const filteredMenus = searchResults || [];
 
   return (
     <div className="flex flex-col gap-6 mt-4 mb-20">
