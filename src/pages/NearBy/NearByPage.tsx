@@ -15,6 +15,8 @@ import NearMarker from "@/assets/icons/marker.svg?url";
 import { LatLng, NearbyResponseDto } from "@/types/nearby";
 import RouteMap from "@/pages/NearBy/NearbyMap";
 import FooterNav from "@/layout/FooterNav";
+import NearbyStorePage from "@/pages/NearBy/nearbyStore";
+
 // import MenuCard from "@/components/MenuCard";
 declare global {
   interface Window {
@@ -29,7 +31,7 @@ export default function NearbyPage() {
   const [ismodal, setIsModal] = useState(false);
   // const [storeModal, setStoreModal] = useState(false);
   const [selectedMarker, setSelectedMarker] = useState<number | undefined>(
-    undefined,
+    undefined
   );
 
   const mapRef = useRef<HTMLDivElement>(null);
@@ -43,16 +45,17 @@ export default function NearbyPage() {
   };
 
   const [selectedRoute, setSelectedRoute] = useState<NearbyResponseDto | null>(
-    null,
+    null
   );
 
   //출발지,목적지 상태
 
   // console.log(selectedRoute);
 
-  const { data: storeData } = useStoreMenus(selectedMarker);
-  console.log(storeData);
+  // const { data: storeData } = useStoreMenus(selectedMarker);
+  // console.log(storeData);
 
+  console.log(selectedMarker);
   const renderStoreMarkers = (
     markers: Array<{
       storeId: number;
@@ -60,7 +63,7 @@ export default function NearbyPage() {
       lng: number;
       storeName?: string;
       distanceMeters?: number;
-    }>,
+    }>
   ) => {
     const kakao = window.kakao;
     if (!mapInstanceRef.current || !kakao) return;
@@ -128,7 +131,7 @@ export default function NearbyPage() {
             console.log(res, "근처경로조회");
             renderStoreMarkers(res?.markers ?? []);
           },
-        },
+        }
       );
     }); // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loading, error, latitude, longitude]);
@@ -162,7 +165,7 @@ export default function NearbyPage() {
           console.log("근처경로조회,루트임");
           renderStoreMarkers(res?.markers ?? []);
         },
-      },
+      }
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -222,21 +225,15 @@ export default function NearbyPage() {
           onSelectItem={handleGetRoute}
         />
       )}
-      {/* {storeModal && (
-      {storeData?.map((menu) => (
-        <MenuCard
-          key={menu.id}
-          id={menu.id}
-          title={menu.title}
-          storeName={menu.storeName}
-          pickupTime={menu.pickupTime}
-          originalPrice={menu.originalPrice}
-          salePrice={menu.salePrice}
-          discountRate={menu.discountRate}
-          stockCount={menu.stockCount}
-        />
-      ))}
-      )} */}
+
+      {/* 가게이름 */}
+      {/* <div
+        className="fixed left-1/2 bottom-0 -translate-x-1/2 w-full max-w-[401px]
+                       pt-5 pb-8 bg-white rounded-t-2xl z-[1101] min-h-64 flex  justify-center px-6"
+      > */}
+      <NearbyStorePage id={selectedMarker} />
+      {/* </div> */}
+
       <footer className="fixed bottom-0 w-full max-w-[401px] bg-white border-t border-gray-100 z-10 mx-auto">
         <FooterNav />
       </footer>

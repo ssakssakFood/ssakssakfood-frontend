@@ -25,7 +25,7 @@ export type NearbyResponseDto = {
   start: Routes;
   end: Routes;
   polyline: Routes[];
-  radiusMeters: 0;
+  radiusMeters: number;
   categoryIds: number[];
 };
 
@@ -44,3 +44,29 @@ export type NearbyEditRequest = {
   end: Routes;
 };
 export type LatLng = { lat: number; lng: number };
+
+//매장별 메뉴 조회
+export type StoreMenusResponeDTO = {
+  storeId: number;
+  storeName: string;
+  roadAddress: string;
+  detailAddress: string;
+  imageUrl: string;
+  menus: StoreMenus[];
+};
+
+export type StoreMenus = {
+  id: number;
+  name: string;
+  category: string;
+  originalPrice: number;
+  discountPrice: number;
+  discountRate: number;
+  surplusQuantity: number;
+  imageUrl: string;
+  deadline: string;
+  storeId: number;
+  storeName: string;
+  distanceKm: number;
+  shared: true;
+};

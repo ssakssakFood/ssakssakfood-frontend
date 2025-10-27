@@ -111,7 +111,7 @@ export const useDetailRoute = (routeId: number) => {
 
 //가게 메뉴 목록 조회
 export const getStoreMenus = async (storeId: number) => {
-  const { data } = await api.get(`/stores/${storeId}/menus`);
+  const { data } = await api.get(`/menus/stores/${storeId}`);
   return data;
 };
 
@@ -124,5 +124,6 @@ export const useStoreMenus = (storeId: number | undefined) => {
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
     refetchOnMount: false,
+    select: (res) => res.result,
   });
 };
