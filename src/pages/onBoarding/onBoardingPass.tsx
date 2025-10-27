@@ -56,6 +56,7 @@ export default function OnBoardingPassPage() {
       navigate("/onBoarding/owner");
       setTemp({ loginId: id, password: pw });
     } else {
+      setTemp({ loginId: id, password: pw });
       handleSignupForm.mutate({
         email,
         loginId: id,
