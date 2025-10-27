@@ -69,7 +69,7 @@ interface NearbyUiState {
   resetAll: () => void;
 }
 
-export const useNearbyUiState = create<NearbyUiState>((set, get) => ({
+export const useNearbyUiState = create<NearbyUiState>((set) => ({
   editedByRoute: {},
   setDraft: (routeId, patch) =>
     set((s) => ({

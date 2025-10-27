@@ -115,12 +115,12 @@ export const getStoreMenus = async (storeId: number) => {
   return data;
 };
 
-export const useStoreMenus = (routeId: number) => {
+export const useStoreMenus = (storeId: number | undefined) => {
   return useQuery({
-    queryFn: () => getStoreMenus(routeId),
-    queryKey: ["storeMenus", routeId],
+    queryFn: () => getStoreMenus(storeId as number),
+    queryKey: ["storeMenus", storeId],
     keepPreviousData: false,
-    enabled: false,
+    enabled: typeof storeId === "number",
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
     refetchOnMount: false,

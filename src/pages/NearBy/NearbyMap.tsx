@@ -74,7 +74,7 @@ export default function RouteMap({
 
     return () => {
       if (timer) clearTimeout(timer);
-    };
+    }; // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // 경로 그리기
@@ -210,7 +210,9 @@ export default function RouteMap({
     return () => {
       ac.abort();
     };
-  }, [isMapReady, start?.lat, start?.lng, end?.lat, end?.lng, onPolylineReady]);
+
+    // [isMapReady, start.lng,start.lat, end.lng,end.lat, onPolylineReady]
+  }, [isMapReady, start, end, onPolylineReady]);
 
   const styleHeight =
     typeof height === "number" ? `${height}px` : height || "260px";
