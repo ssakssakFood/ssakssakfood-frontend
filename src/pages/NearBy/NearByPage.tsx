@@ -6,11 +6,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import Marker from "@/assets/icons/map-marker.svg?url";
 import SearchInput from "@/components/SearchInput";
 import RoutesModal from "@/components/nearby/RoutesModal";
-import {
-  useAlongRoute,
-  useGetNearby,
-  useStoreMenus,
-} from "@/api/nearby/nearby";
+import { useAlongRoute, useGetNearby } from "@/api/nearby/nearby";
 import NearMarker from "@/assets/icons/marker.svg?url";
 import { LatLng, NearbyResponseDto } from "@/types/nearby";
 import RouteMap from "@/pages/NearBy/NearbyMap";
@@ -105,6 +101,9 @@ export default function NearbyPage() {
 
       const map = new kakao.maps.Map(mapRef.current, mapOption);
       mapInstanceRef.current = map;
+      kakao.maps.event.addListener(map, "click", () => {
+        setSelectedMarker(undefined);
+      });
 
       // 내 위치 마커
       new kakao.maps.Marker({
@@ -173,6 +172,8 @@ export default function NearbyPage() {
   const showRoute = !!selectedRoute;
   console.log(typeof selectedMarker);
 
+  const isStoreOpen = selectedMarker !== undefined;
+
   return (
     <div className="relative h-dvh -mx-6">
       <div ref={mapRef} className="absolute inset-0 z-10" />
@@ -226,13 +227,7 @@ export default function NearbyPage() {
         />
       )}
 
-      {/* 가게이름 */}
-      {/* <div
-        className="fixed left-1/2 bottom-0 -translate-x-1/2 w-full max-w-[401px]
-                       pt-5 pb-8 bg-white rounded-t-2xl z-[1101] min-h-64 flex  justify-center px-6"
-      > */}
-      <NearbyStorePage id={selectedMarker} />
-      {/* </div> */}
+      {isStoreOpen && <NearbyStorePage id={selectedMarker} />}
 
       <footer className="fixed bottom-0 w-full max-w-[401px] bg-white border-t border-gray-100 z-10 mx-auto">
         <FooterNav />
