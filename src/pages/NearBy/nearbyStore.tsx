@@ -5,7 +5,7 @@ import { StoreMenus } from "@/types/nearby";
 import NearMenuCard from "@/pages/NearBy/nearByMenu";
 import { useNavigate } from "react-router-dom";
 
-export const MENUS = [
+const MENUS = [
   // 🥖 breads
   {
     id: 1,
