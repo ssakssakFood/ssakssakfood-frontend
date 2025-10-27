@@ -3,19 +3,58 @@ import { Outlet, useLocation } from "react-router-dom";
 import { LocationHeader } from "../components/Headers";
 import SearchInput from "@/components/SearchInput";
 import useGeolocation from "@/hooks/useGeolocation";
-import { getMemberType } from "@/utils/getUserInfo";
+import { getMemberType, isLoggedIn } from "@/utils/getUserInfo";
+import { useGetMyPrimaryLocation } from "@/api/location/location";
 
 export default function Layout() {
-  const { fullAdress, loading, error } = useGeolocation();
+  const { fullAdress, loading: geoLoading, error: geoError } = useGeolocation();
   const location = useLocation();
   const memberType = getMemberType();
+  const loggedIn = isLoggedIn();
 
-  const displayLocation = loading
-    ? "위치 정보를 불러오는 중..."
-    : error
-      ? "위치 정보를 가져올 수 없습니다."
-      : fullAdress || "위치를 확인할 수 없음";
+  // 로그인한 경우 대표 주소 조회
+  const { data: primaryLocationData, isLoading: isPrimaryLoading } =
+    useGetMyPrimaryLocation();
 
+  const primaryLocation = primaryLocationData;
+
+  // 디버깅용 콘솔 로그
+  console.log("===== Location Debug =====");
+  console.log("로그인 여부:", loggedIn);
+  console.log("현재 경로:", location.pathname);
+  console.log("memberType:", memberType);
+  console.log("primaryLocationData:", primaryLocationData);
+  console.log("primaryLocation:", primaryLocation);
+  console.log("isPrimaryLoading:", isPrimaryLoading);
+  console.log("geolocation fullAdress:", fullAdress);
+  console.log("========================");
+
+  // 표시할 위치 결정 로직
+  const getDisplayLocation = () => {
+    // 로그인하지 않은 경우: geolocation 사용
+    if (!loggedIn) {
+      if (geoLoading) return "위치 정보를 불러오는 중...";
+      if (geoError) return "위치 정보를 가져올 수 없습니다.";
+      return fullAdress || "위치를 확인할 수 없음";
+    }
+
+    // 로그인한 경우: 대표 주소가 있으면 사용, 없으면 geolocation 사용
+    if (isPrimaryLoading) return "위치 정보를 불러오는 중...";
+
+    if (primaryLocation) {
+      // 대표 주소가 있는 경우: jibunAddress 사용
+      return primaryLocation.jibunAddress || primaryLocation.displayName || primaryLocation.buildingName;
+    }
+
+    // 대표 주소가 없는 경우: geolocation 사용
+    if (geoLoading) return "위치 정보를 불러오는 중...";
+    if (geoError) return "위치 정보를 가져올 수 없습니다.";
+    return fullAdress || "위치를 확인할 수 없음";
+  };
+
+  const displayLocation = getDisplayLocation();
+
+  // OWNER이고 루트 경로("/")인 경우 헤더를 보여주지 않음
   const shouldShowHeader = !(memberType === "OWNER" && location.pathname === "/");
 
   return (
