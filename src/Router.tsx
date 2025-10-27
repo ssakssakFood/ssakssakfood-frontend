@@ -1,6 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import LoginPage from "./pages/login/LoginPage";
-import Home from "./Home";
+import HomePage from "./pages/HomePage";
 import Layout from "./layout/HomePage";
 import ErrorPage from "./pages/ErrorPage";
 import TermPage from "./pages/login/TermPage";
@@ -22,7 +22,6 @@ import StorePage from "./pages/Store/StorePage";
 import ReservePage from "./pages/Reserve/ReservePage";
 import OwnerInformation from "@/pages/onBoarding/onBoardingOwner";
 import StoreInformation from "@/pages/onBoarding/onBoardingStore";
-import ManagerHome from "./pages/ManagerHome/ManagerHome";
 import AllfoodsPage from "./pages/ManagerHome/AllFoodsPage";
 import AddFoodPage from "./pages/ManagerHome/AddFoodPage";
 import AddfoodEditPage from "./pages/ManagerHome/AddFoodEditPage";
@@ -32,7 +31,7 @@ const router = createBrowserRouter([
     path: "/",
     element: <Layout />,
     children: [
-      { index: true, element: <Home /> },
+      { index: true, element: <HomePage /> },
       { path: "search", element: <SearchResultPage /> },
       { path: "nearby", element: <NearByPage /> },
       { path: "category/:slug", element: <CategoryPage /> },
@@ -63,8 +62,6 @@ const router = createBrowserRouter([
       { path: "/store/:id", element: <StorePage /> },
       //예약
       { path: "/menu/:id/reserve", element: <ReservePage /> },
-      //임시 사장님 홈 화면 -> ROLE 기반 라우팅 후 변경 예정
-      { path: "/manager-home", element: <ManagerHome /> },
       { path: "/allfoods", element: <AllfoodsPage /> },
       { path: "/addfood", element: <AddFoodPage /> },
     ],
