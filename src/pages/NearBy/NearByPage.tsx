@@ -27,7 +27,7 @@ export default function NearbyPage() {
   const [ismodal, setIsModal] = useState(false);
   // const [storeModal, setStoreModal] = useState(false);
   const [selectedMarker, setSelectedMarker] = useState<number | undefined>(
-    undefined
+    undefined,
   );
 
   const mapRef = useRef<HTMLDivElement>(null);
@@ -41,7 +41,7 @@ export default function NearbyPage() {
   };
 
   const [selectedRoute, setSelectedRoute] = useState<NearbyResponseDto | null>(
-    null
+    null,
   );
 
   //출발지,목적지 상태
@@ -59,7 +59,7 @@ export default function NearbyPage() {
       lng: number;
       storeName?: string;
       distanceMeters?: number;
-    }>
+    }>,
   ) => {
     const kakao = window.kakao;
     if (!mapInstanceRef.current || !kakao) return;
@@ -130,7 +130,7 @@ export default function NearbyPage() {
             console.log(res, "근처경로조회");
             renderStoreMarkers(res?.markers ?? []);
           },
-        }
+        },
       );
     }); // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loading, error, latitude, longitude]);
@@ -164,7 +164,7 @@ export default function NearbyPage() {
           console.log("근처경로조회,루트임");
           renderStoreMarkers(res?.markers ?? []);
         },
-      }
+      },
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
