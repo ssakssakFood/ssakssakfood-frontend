@@ -32,7 +32,13 @@ const Home: React.FC = () => {
             onClick={() => navigate(`/category/${category.slug}`)}
             className="w-[72px] cursor-pointer"
           >
-            <div className="w-[72px] h-[72px] bg-[#D9D9D9]"></div>
+            <div className="w-[72px] h-[72px] flex items-center justify-center">
+              <img
+                src={category.icon}
+                alt={category.label}
+                className="w-full h-full object-contain"
+              />
+            </div>
             <span className="text-[14px] font-[500] flex justify-center mt-[8px]">
               {category.label}
             </span>
