@@ -87,10 +87,36 @@ export const getHomeMenus = async (): Promise<MenuDto[]> => {
   return data.result;
 };
 
-export const useGetHomeMenus = () => {
+export const useGetHomeMenus = (enabled: boolean = true) => {
   return useQuery({
     queryKey: ["homeMenus"],
     queryFn: getHomeMenus,
+    enabled: enabled,
+  });
+};
+
+/*
+비회원 또는 대표 주소가 없는 사용자를 위한 홈 메뉴 조회 API입니다.
+쿼리 파라미터로 현재 위치의 위도(lat), 경도(lon)를 전달합니다.
+위도 경도를 기준으로 반경 2km의 가게들이 조회됩니다.
+정렬 기준: 할인율 높은 순
+반환 제한: 최대 6개 메뉴
+ */
+export const getHomeMenusGuest = async (
+  lat: number,
+  lon: number,
+): Promise<MenuDto[]> => {
+  const { data } = await api.get<ApiResponse<MenuDto[]>>("/menus/home/guest", {
+    params: { lat, lon },
+  });
+  return data.result;
+};
+
+export const useGetHomeMenusGuest = (lat: number, lon: number, enabled: boolean = true) => {
+  return useQuery({
+    queryKey: ["homeMenusGuest", lat, lon],
+    queryFn: () => getHomeMenusGuest(lat, lon),
+    enabled: enabled && !!lat && !!lon,
   });
 };
 

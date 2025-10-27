@@ -5,16 +5,45 @@ import MenuCard from "./components/MenuCard";
 import Carousel from "./components/Carousel";
 import { useNavigate } from "react-router-dom";
 import FooterNav from "./layout/FooterNav";
-import { useGetHomeMenus } from "@/api/menu/menu";
+import { useGetHomeMenus, useGetHomeMenusGuest } from "@/api/menu/menu";
+import { isLoggedIn } from "@/utils/getUserInfo";
+import { useGetMyPrimaryLocation } from "@/api/location/location";
+import useGeolocation from "@/hooks/useGeolocation";
 
 const Home: React.FC = () => {
   const navigate = useNavigate();
+  const loggedIn = isLoggedIn();
 
-  // 할인율 높은 음식 리스트 조회
-  const { data: homeMenus, isLoading } = useGetHomeMenus();
+  // 로그인한 경우에만 대표 주소 조회
+  const { data: primaryLocation } = useGetMyPrimaryLocation(loggedIn);
+
+  // geolocation 정보 가져오기 (비회원이거나 대표 주소가 없을 때 사용)
+  const { latitude, longitude } = useGeolocation();
+
+  // 비회원이거나 대표 주소가 없는 경우
+  const shouldUseGuestApi = !loggedIn || !primaryLocation;
+
+  // 회원용 API (대표 주소가 있는 경우만 호출)
+  const { data: memberMenus, isLoading: memberLoading } = useGetHomeMenus(!shouldUseGuestApi);
+
+  // 게스트용 API (비회원이거나 대표 주소가 없는 경우만 호출)
+  const { data: guestMenus, isLoading: guestLoading } = useGetHomeMenusGuest(
+    latitude,
+    longitude,
+    shouldUseGuestApi,
+  );
+
+  // 최종 데이터와 로딩 상태 결정
+  const homeMenus = shouldUseGuestApi ? guestMenus : memberMenus;
+  const isLoading = shouldUseGuestApi ? guestLoading : memberLoading;
 
   // 디버깅용 콘솔 로그
   console.log("===== Home Menus Debug =====");
+  console.log("loggedIn:", loggedIn);
+  console.log("primaryLocation:", primaryLocation);
+  console.log("shouldUseGuestApi:", shouldUseGuestApi);
+  console.log("latitude:", latitude);
+  console.log("longitude:", longitude);
   console.log("homeMenus:", homeMenus);
   console.log("isLoading:", isLoading);
   console.log("homeMenus 개수:", homeMenus?.length);

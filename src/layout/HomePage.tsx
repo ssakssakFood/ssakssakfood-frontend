@@ -12,9 +12,9 @@ export default function Layout() {
   const memberType = getMemberType();
   const loggedIn = isLoggedIn();
 
-  // 로그인한 경우 대표 주소 조회
+  // 로그인한 경우에만 대표 주소 조회
   const { data: primaryLocationData, isLoading: isPrimaryLoading } =
-    useGetMyPrimaryLocation();
+    useGetMyPrimaryLocation(loggedIn);
 
   const primaryLocation = primaryLocationData;
 
