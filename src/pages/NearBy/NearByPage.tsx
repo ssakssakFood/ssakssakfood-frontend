@@ -184,7 +184,12 @@ export default function NearbyPage() {
             start={selectedRoute?.start}
             end={selectedRoute?.end}
             height="100%"
-            onMapReady={(map) => (mapInstanceRef.current = map)}
+            onMapReady={(map) => {
+              mapInstanceRef.current = map;
+              window.kakao.maps.event.addListener(map, "click", () => {
+                setSelectedMarker(undefined);
+              });
+            }}
             onPolylineReady={handlePolylineReady}
           />
         </div>

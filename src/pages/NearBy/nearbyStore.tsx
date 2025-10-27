@@ -1,7 +1,6 @@
 import StoreImg from "@/assets/images/logo.png";
 
 import { useStoreMenus } from "@/api/nearby/nearby";
-import MenuCard from "@/components/MenuCard";
 import { StoreMenus } from "@/types/nearby";
 import NearMenuCard from "@/pages/NearBy/nearByMenu";
 import { useNavigate } from "react-router-dom";
