@@ -55,7 +55,7 @@ export const useGetStoreMenus = (storeId: number) => {
 };
 
 /*
-키워드(식품명 또는 가게명) 또는 카테고리명으로 메뉴를 검색합니다.
+키워드(식품명 또는 가게명) 또는 카테고리명으로 메뉴를 검색합니다. (회원용)
 기본 반경 5km → 없으면 10km → 그래도 없으면 전체 검색
 정렬 기준: 거리 오름차순 → 할인율 내림차순
  */
@@ -68,11 +68,13 @@ export const searchMenus = async (
   return data.result;
 };
 
-export const useSearchMenus = (params: MenuSearchParams, enabled: boolean = true) => {
+export const useSearchMenus = (
+  params: MenuSearchParams,
+  enabled: boolean = true
+) => {
   return useQuery({
     queryKey: ["searchMenus", params],
     queryFn: () => searchMenus(params),
-    // keyword나 category가 있거나, 둘 다 없어도(전체 검색) 호출
     enabled: enabled,
   });
 };
@@ -113,7 +115,11 @@ export const getHomeMenusGuest = async (
   return data.result;
 };
 
-export const useGetHomeMenusGuest = (lat: number, lon: number, enabled: boolean = true) => {
+export const useGetHomeMenusGuest = (
+  lat: number,
+  lon: number,
+  enabled: boolean = true
+) => {
   return useQuery({
     queryKey: ["homeMenusGuest", lat, lon],
     queryFn: () => getHomeMenusGuest(lat, lon),
