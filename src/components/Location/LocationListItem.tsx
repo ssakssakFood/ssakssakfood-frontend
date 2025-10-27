@@ -64,7 +64,7 @@ export default function LocationList({
               : undefined,
           routeId,
         },
-      }
+      },
     );
     console.log(isNearbyStart);
     console.log(`지도에서 보기 클릭: ${place}, ${address}`);

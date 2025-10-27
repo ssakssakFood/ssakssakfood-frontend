@@ -31,7 +31,7 @@ export default function NearbyEdit() {
   // console.log(endJibunAddress, startJibunAddress);
 
   const [routeValue, setRouteValue] = useState(
-    draft.routeName ?? data?.routeName ?? ""
+    draft.routeName ?? data?.routeName ?? "",
   );
   const [polyline, setPolyline] = useState<LatLng[]>([]);
 

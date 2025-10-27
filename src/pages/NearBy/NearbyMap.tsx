@@ -103,7 +103,7 @@ export default function RouteMap({
           const image = new kakao.maps.MarkerImage(
             url,
             new kakao.maps.Size(40, 40),
-            { offset: new kakao.maps.Point(20, 20) }
+            { offset: new kakao.maps.Point(20, 20) },
           );
           return new kakao.maps.Marker({ map, position, image });
         }
