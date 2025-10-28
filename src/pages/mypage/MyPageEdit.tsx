@@ -5,7 +5,7 @@ export default function MyPageEdit() {
     <div>
       <PageHeader title="내 정보 수정" />
       <div>
-        <img src="" alt="" />
+        <img src={ImgUrl} alt="" />
       </div>
     </div>
   );
