@@ -14,9 +14,7 @@ import type {
 같은 매장의 다른 추천 메뉴 최대 3개까지 함께 반환
 추천 메뉴 정렬 기준: 마감기한 빠른 순 → 수량 많은 순
  */
-export const getMenuDetail = async (
-  menuId: number,
-): Promise<MenuDetailDto> => {
+export const getMenuDetail = async (menuId: number): Promise<MenuDetailDto> => {
   const { data } = await api.get<ApiResponse<MenuDetailDto>>(
     `/menus/${menuId}/details`,
   );
@@ -70,7 +68,7 @@ export const searchMenus = async (
 
 export const useSearchMenus = (
   params: MenuSearchParams,
-  enabled: boolean = true
+  enabled: boolean = true,
 ) => {
   return useQuery({
     queryKey: ["searchMenus", params],
@@ -118,7 +116,7 @@ export const getHomeMenusGuest = async (
 export const useGetHomeMenusGuest = (
   lat: number,
   lon: number,
-  enabled: boolean = true
+  enabled: boolean = true,
 ) => {
   return useQuery({
     queryKey: ["homeMenusGuest", lat, lon],
@@ -136,11 +134,14 @@ export const useGetHomeMenusGuest = (
 export const searchMenusGuest = async (
   lat: number,
   lon: number,
-  params: MenuSearchParams
+  params: MenuSearchParams,
 ): Promise<MenuDto[]> => {
-  const { data } = await api.get<ApiResponse<MenuDto[]>>("/menus/search/guest", {
-    params: { lat, lon, ...params },
-  });
+  const { data } = await api.get<ApiResponse<MenuDto[]>>(
+    "/menus/search/guest",
+    {
+      params: { lat, lon, ...params },
+    },
+  );
   return data.result;
 };
 
@@ -148,7 +149,7 @@ export const useSearchMenusGuest = (
   lat: number,
   lon: number,
   params: MenuSearchParams,
-  enabled: boolean = true
+  enabled: boolean = true,
 ) => {
   return useQuery({
     queryKey: ["searchMenusGuest", lat, lon, params],

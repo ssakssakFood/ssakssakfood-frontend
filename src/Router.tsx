@@ -46,7 +46,7 @@ const router = createBrowserRouter([
       { index: true, element: <HomePage /> },
       { path: "search", element: <SearchResultPage /> },
       // { path: "nearby", element: withAuthGuard(NearbyPage) },
-      {path: "nearby", element: <NearbyPage/>},
+      { path: "nearby", element: <NearbyPage /> },
       { path: "category/:slug", element: <CategoryPage /> },
     ],
   },

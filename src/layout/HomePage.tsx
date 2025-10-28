@@ -11,7 +11,6 @@ export default function Layout() {
   const memberType = getMemberType();
   const loggedIn = isLoggedIn();
 
-
   // 로그인한 경우에만 대표 주소 조회
   const { data: primaryLocationData, isLoading: isPrimaryLoading } =
     useGetMyPrimaryLocation(loggedIn);
@@ -32,7 +31,11 @@ export default function Layout() {
 
     if (primaryLocation) {
       // 대표 주소가 있는 경우: jibunAddress 사용
-      return primaryLocation.jibunAddress || primaryLocation.displayName || primaryLocation.buildingName;
+      return (
+        primaryLocation.jibunAddress ||
+        primaryLocation.displayName ||
+        primaryLocation.buildingName
+      );
     }
 
     // 대표 주소가 없는 경우: geolocation 사용
@@ -44,7 +47,9 @@ export default function Layout() {
   const displayLocation = getDisplayLocation();
 
   // OWNER이고 루트 경로("/")인 경우 헤더를 보여주지 않음
-  const shouldShowHeader = !(memberType === "OWNER" && location.pathname === "/");
+  const shouldShowHeader = !(
+    memberType === "OWNER" && location.pathname === "/"
+  );
 
   return (
     <div className="w-full max-w-[401px] mx-auto overflow-x-hidden">

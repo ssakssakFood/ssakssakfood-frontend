@@ -40,7 +40,7 @@ const useGeolocation = (): GeoLocationResult => {
         console.log("✅ 캐시된 위치 정보 사용");
         return;
       } catch (err) {
-        console.log("캐시 파싱 실패, 새로운 위치 정보를 가져옵니다.",err);
+        console.log("캐시 파싱 실패, 새로운 위치 정보를 가져옵니다.", err);
       }
     }
 
@@ -95,7 +95,10 @@ const useGeolocation = (): GeoLocationResult => {
             address: addressValue,
             fullAdress: fullAddressValue,
           };
-          sessionStorage.setItem(GEOLOCATION_CACHE_KEY, JSON.stringify(cacheData));
+          sessionStorage.setItem(
+            GEOLOCATION_CACHE_KEY,
+            JSON.stringify(cacheData),
+          );
           console.log("위치 정보 캐시 저장 완료");
         } catch (err) {
           setError("주소 변환 중 오류가 발생했습니다.");

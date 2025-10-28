@@ -59,7 +59,10 @@ export default function AuthGuard({ children }: AuthGuardProps) {
       <>
         {showModal && (
           <div className="fixed inset-0 z-[9999] flex justify-center bg-gray-50">
-            <div className="w-full max-w-[401px] flex items-center justify-center bg-main1" style={{ height: "100dvh" }}>
+            <div
+              className="w-full max-w-[401px] flex items-center justify-center bg-main1"
+              style={{ height: "100dvh" }}
+            >
               <Modal
                 closeModal={handleCloseModal}
                 title="로그인이 필요합니다"

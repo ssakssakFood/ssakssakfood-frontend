@@ -1,7 +1,7 @@
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import main1 from '@/assets/images/main1.png';
+import main1 from "@/assets/images/main1.png";
 
 export default function Carousel() {
   const settings = {
@@ -19,17 +19,29 @@ export default function Carousel() {
       <Slider {...settings}>
         <div className="px-0">
           <div className="bg-amber-200 flex justify-center items-center h-[160px] shadow cursor-pointer overflow-hidden">
-            <img src={main1} alt='메인' className='w-full h-full object-cover'/>
+            <img
+              src={main1}
+              alt="메인"
+              className="w-full h-full object-cover"
+            />
           </div>
         </div>
         <div className="px-0">
           <div className="bg-amber-500 flex justify-center items-center h-[160px] shadow cursor-pointer overflow-hidden">
-            <img src={main1} alt='메인' className='w-full h-full object-cover'/>
+            <img
+              src={main1}
+              alt="메인"
+              className="w-full h-full object-cover"
+            />
           </div>
         </div>
         <div className="px-0">
           <div className="bg-amber-700 flex justify-center items-center h-[160px] shadow cursor-pointer overflow-hidden">
-            <img src={main1} alt='메인' className='w-full h-full object-cover'/>
+            <img
+              src={main1}
+              alt="메인"
+              className="w-full h-full object-cover"
+            />
           </div>
         </div>
       </Slider>

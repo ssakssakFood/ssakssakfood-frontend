@@ -108,7 +108,9 @@ export default function MenuDetailPage() {
               </p>
               <p>
                 픽업 가능시간{" "}
-                <span className="font-[400] ml-[8px]">{formatDeadline(menu.deadline)}</span>
+                <span className="font-[400] ml-[8px]">
+                  {formatDeadline(menu.deadline)}
+                </span>
               </p>
             </div>
 

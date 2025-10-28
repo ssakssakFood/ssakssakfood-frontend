@@ -24,7 +24,8 @@ const Home: React.FC = () => {
   const shouldUseGuestApi = !loggedIn || !primaryLocation;
 
   // 회원용 API (대표 주소가 있는 경우만 호출)
-  const { data: memberMenus, isLoading: memberLoading } = useGetHomeMenus(!shouldUseGuestApi);
+  const { data: memberMenus, isLoading: memberLoading } =
+    useGetHomeMenus(!shouldUseGuestApi);
 
   // 게스트용 API (비회원이거나 대표 주소가 없는 경우만 호출)
   const { data: guestMenus, isLoading: guestLoading } = useGetHomeMenusGuest(
@@ -83,9 +84,7 @@ const Home: React.FC = () => {
         <span className="text-[20px] font-bold">할인율 높은 음식</span>
         <div className="flex flex-col gap-[24px]">
           {isLoading ? (
-            <div className="text-center text-gray-500 py-8">
-              로딩 중...
-            </div>
+            <div className="text-center text-gray-500 py-8">로딩 중...</div>
           ) : !homeMenus || homeMenus.length === 0 ? (
             <div className="text-center text-gray-500 py-8">
               아직 근처에 등록된 식품이 없어요

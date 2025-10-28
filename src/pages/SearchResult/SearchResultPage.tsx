@@ -19,7 +19,7 @@ export default function SearchResultPage() {
   // 회원용 API
   const { data: memberResults, isLoading: memberLoading } = useSearchMenus(
     { keyword: query },
-    !shouldUseGuestApi
+    !shouldUseGuestApi,
   );
 
   // 게스트용 API
@@ -27,7 +27,7 @@ export default function SearchResultPage() {
     latitude,
     longitude,
     { keyword: query },
-    shouldUseGuestApi
+    shouldUseGuestApi,
   );
 
   const searchResults = shouldUseGuestApi ? guestResults : memberResults;

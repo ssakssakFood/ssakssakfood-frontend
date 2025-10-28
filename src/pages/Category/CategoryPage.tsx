@@ -68,7 +68,7 @@ export default function CategoryPage() {
   // 회원용 API
   const { data: memberResults, isLoading: memberLoading } = useSearchMenus(
     selectedSlug === "all" ? {} : { category },
-    !shouldUseGuestApi
+    !shouldUseGuestApi,
   );
 
   // 게스트용 API
@@ -76,7 +76,7 @@ export default function CategoryPage() {
     latitude,
     longitude,
     selectedSlug === "all" ? {} : { category },
-    shouldUseGuestApi
+    shouldUseGuestApi,
   );
 
   const searchResults = shouldUseGuestApi ? guestResults : memberResults;
