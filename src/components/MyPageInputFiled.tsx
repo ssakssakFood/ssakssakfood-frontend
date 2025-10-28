@@ -1,7 +1,6 @@
-import { useState, type InputHTMLAttributes } from "react";
+import { type InputHTMLAttributes } from "react";
 import type { UseFormRegisterReturn } from "react-hook-form";
-import CloseEye from "@/assets/icons/close-eye.svg";
-import OpenEye from "@/assets/icons/eye.svg";
+
 import CornorArrow from "@/assets/icons/corner-down-right.svg";
 interface InputFieldProps extends InputHTMLAttributes<HTMLInputElement> {
   placeholder?: string;
@@ -31,8 +30,8 @@ export default function MyPageInputField({
   type = "text",
   //   icon = false,
   // imgSrc = "",
-  showPwd,
-  openEye,
+  // showPwd,
+  // openEye,
   onChangeClick,
   inputClassName,
   isChange,

@@ -1,4 +1,4 @@
-import React, { useEffect, useId, useState, forwardRef } from "react";
+import { useEffect, useId, useState, forwardRef } from "react";
 import Camera from "@assets/icons/camera.svg";
 
 type Props = {
@@ -16,7 +16,6 @@ const ImagePickerBox2 = forwardRef<HTMLInputElement, Props>(
   (
     {
       boxClass = "w-full h-[240px]",
-      file,
       previewUrl,
       onChange,
       accept = "image/*",
@@ -24,7 +23,7 @@ const ImagePickerBox2 = forwardRef<HTMLInputElement, Props>(
       label = "이미지 업로드",
       editing = false,
     },
-    ref
+    ref,
   ) => {
     const id = useId();
     const [innerPreview, setInnerPreview] = useState<string>("");
@@ -96,7 +95,7 @@ const ImagePickerBox2 = forwardRef<HTMLInputElement, Props>(
         />
       </div>
     );
-  }
+  },
 );
 
 ImagePickerBox2.displayName = "ImagePickerBox2";

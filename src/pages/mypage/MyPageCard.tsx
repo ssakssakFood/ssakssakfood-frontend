@@ -1,4 +1,4 @@
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { useState } from "react";
 import PageHeader from "@/components/PageHeader";
 import { useUploadImg } from "@/api/mamber/onboarding";

@@ -5,7 +5,6 @@ import { useState } from "react";
 import PageHeader from "@/components/PageHeader";
 import { useUploadImg } from "@/api/mamber/onboarding";
 import ImagePickerBox from "@/components/ImagePickerBox";
-import { useOnboardingState } from "@/store/useOnboardingStore";
 
 export default function OnBoardingCardPage() {
   const navigate = useNavigate();

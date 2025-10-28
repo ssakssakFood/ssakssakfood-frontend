@@ -6,8 +6,8 @@ import {
   useMyProfile,
   usePatchNickname,
   usePatchPhone,
-  usePatchPw,
-  usePatchUserId,
+  // usePatchPw,
+  // usePatchUserId,
 } from "@/api/mypage/mypage";
 import { useState } from "react";
 import { useOwnerImg } from "@/api/mamber/onboarding";
@@ -31,11 +31,10 @@ export default function MyPageEdit() {
     password: "",
     phone: "",
   });
-  const onChangeField =
-    (key: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement>) =>
-      setForm((prev) => ({ ...prev, [key]: e.target.value }));
+  // const onChangeField =
+  //   (key: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement>) =>
+  //     setForm((prev) => ({ ...prev, [key]: e.target.value }));
 
-  // const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState("");
   //닉넴
   const handleNickName = usePatchNickname();
@@ -53,7 +52,7 @@ export default function MyPageEdit() {
   };
 
   //아디
-  const handleUserId = usePatchUserId();
+  // const handleUserId = usePatchUserId();
   //비번
   // const handlePw = usePatchPw();
 
@@ -164,7 +163,7 @@ export default function MyPageEdit() {
           labelName="전화번호 "
           placeholder={data?.phone?.replace(
             /^(\d{3})(\d{3,4})(\d{4})$/,
-            "$1-$2-$3"
+            "$1-$2-$3",
           )}
           value={form.phone}
           onChangeClick={() => toggle("phone")}
