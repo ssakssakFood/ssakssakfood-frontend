@@ -1,4 +1,4 @@
-import ImgUrl from "@/assets/images/logo.png";
+import ImgUrl from "@/assets/images/progile.png";
 import Arrow from "@/assets/icons/chevron-right.svg";
 import FooterNav from "@/layout/FooterNav";
 import { useNavigate } from "react-router-dom";
@@ -19,7 +19,7 @@ export default function MyPage() {
 
       <div className="flex items-center flex-col justify-center">
         <img
-          src={ImgUrl}
+          src={data?.profileImageUrl || ImgUrl}
           alt=""
           className="size-27 rounded-full shrink-0 mb-4"
         />
