@@ -5,24 +5,24 @@ import FooterNav from "@/layout/FooterNav";
 export default function MyPage() {
   return (
     <div className="min-h-dvh flex flex-col ">
-      <p className="text-xl font-bold mt-6 mb-8">마이페이지</p>
+      <p className="text-xl font-bold mt-6 mb-6">마이페이지</p>
 
       <div className="flex items-center flex-col justify-center">
         <img
           src={ImgUrl}
           alt=""
-          className="size-30 rounded-full shrink-0 mb-6"
+          className="size-27 rounded-full shrink-0 mb-4"
         />
-        <p className="text-2xl font-bold mb-3">싹싹푸드</p>
-        <p className="body-r-16 text-grey-2 mb-4">saksakfood25@gmail.com</p>
+        <p className="text-[20px] font-bold mb-2">싹싹푸드</p>
+        <p className="body-r-16 text-grey-2 mb-3">saksakfood25@gmail.com</p>
 
-        <button className="px-4 py-2 rounded-[20px] bg-grey-5 mb-8">
+        <button className="px-4 py-2 rounded-[20px] bg-grey-5 mb-6 text-sm">
           내 정보 수정
         </button>
       </div>
 
       <section>
-        <div className="p-6 bg-grey-5 mb-2 rounded-xl flex flex-col gap-4">
+        <div className="p-5 bg-grey-5 mb-2 rounded-xl flex flex-col gap-3">
           <p className="button-sb-14">설정</p>
           <div className="flex">
             <p>계정 관리</p>
@@ -32,10 +32,14 @@ export default function MyPage() {
             <p>알림 설정</p>
             <img src={Arrow} alt="보기" className="ml-auto" />
           </div>
+          <div className="flex">
+            <p>아동 급식 카드 관리</p>
+            <img src={Arrow} alt="보기" className="ml-auto" />
+          </div>
         </div>
 
-        <div className="p-6 bg-grey-5 rounded-xl">
-          <p className="button-sb-14 mb-4">고객지원</p>
+        <div className="p-5 bg-grey-5 rounded-xl">
+          <p className="button-sb-14 mb-3">고객지원</p>
           <div className="flex">
             <p>약관 및 정책</p>
             <img src={Arrow} alt="보기" className="ml-auto" />
