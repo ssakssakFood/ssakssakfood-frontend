@@ -76,7 +76,8 @@ const router = createBrowserRouter([
       { path: "/onBoarding/store", element: <StoreInformation /> },
       //위치수정
       { path: "/location/edit", element: withAuthGuard(LocationEdit) },
-      { path: "/location/search", element: withAuthGuard(LocationSearch) },
+      // { path: "/location/search", element: withAuthGuard(LocationSearch) },
+      { path: "/location/search", element: <LocationSearch /> },
       { path: "/location/map", element: withAuthGuard(LocationMap) },
       //내주변
       { path: "/nearby/register", element: <NearbyRegister /> },
@@ -88,7 +89,7 @@ const router = createBrowserRouter([
       { path: "/allfoods", element: withAuthGuard(AllfoodsPage) },
       { path: "/addfood", element: withAuthGuard(AddFoodPage) },
       //마이페이지
-      { path: "/mypage", element: <MyPage /> },
+      { path: "/mypage", element: withAuthGuard(MyPage) },
       { path: "/mypage/edit", element: <MyPageEdit /> },
       { path: "/mypage/account", element: <MyPageAccount /> },
       { path: "/mypage/leave", element: <MyPageLeave /> },
