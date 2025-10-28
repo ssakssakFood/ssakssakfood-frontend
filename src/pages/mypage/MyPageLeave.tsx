@@ -3,8 +3,16 @@ import PageHeader from "@/components/PageHeader";
 import Check from "@/assets/icons/check-circle.svg";
 import CheckFull from "@/assets/icons/check-full.svg";
 import { useState } from "react";
+import { useLeaveUser } from "@/api/nearby/nearby";
+
 export default function MyPageLeave() {
   const [click, setClick] = useState(false);
+
+  const leave = useLeaveUser();
+
+  const handleLeave = () => {
+    leave.mutate();
+  };
   return (
     <div className="min-h-dvh flex flex-col">
       <PageHeader title="회원탈퇴" />
@@ -57,7 +65,7 @@ export default function MyPageLeave() {
         labelName="회원탈퇴하기"
         className="mb-8"
         disabled={!click}
-        //   onClick={}
+        onClick={handleLeave}
       />
     </div>
   );

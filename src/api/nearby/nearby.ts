@@ -1,4 +1,5 @@
 import api from "@/api/apiMember";
+import useUserStore from "@/store/useUserStore";
 import {
   NearbyAlongRouteRequest,
   NearbyEditRequest,
@@ -144,4 +145,24 @@ export const Logout = () => {
     onError: (err) => console.log(err),
   });
 };
+
 //탈퇴
+export const deleteUser = async () => {
+  const { data } = await api.delete("/users/me");
+  return { data };
+};
+
+export const useLeaveUser = () => {
+  const navigate = useNavigate();
+  const { resetUser } = useUserStore();
+  return useMutation({
+    mutationFn: deleteUser,
+    onSuccess: () => {
+      sessionStorage.removeItem("cached_geolocation");
+      localStorage.removeItem("user");
+      resetUser();
+      navigate("/login");
+    },
+    onError: (err) => console.log(err),
+  });
+};
