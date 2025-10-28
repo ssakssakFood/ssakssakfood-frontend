@@ -1,4 +1,3 @@
-// Layout.tsx
 import { Outlet, useLocation } from "react-router-dom";
 import { LocationHeader } from "../components/Headers";
 import SearchInput from "@/components/SearchInput";
@@ -11,6 +10,7 @@ export default function Layout() {
   const location = useLocation();
   const memberType = getMemberType();
   const loggedIn = isLoggedIn();
+
 
   // 로그인한 경우에만 대표 주소 조회
   const { data: primaryLocationData, isLoading: isPrimaryLoading } =
