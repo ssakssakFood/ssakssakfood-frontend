@@ -72,7 +72,7 @@ export default function MyPageInputField({
             <div className="relative w-full">
               <input
                 type={type}
-                className={`w-full px-4 flex body-r-14 items-center py-4 border-1 rounded-xl  focus:border-main1
+                className={`w-full pl-4 pr-20 flex body-r-14 items-center py-4 border-1 rounded-xl  focus:border-main1
           bg-grey-5 border-grey-5 focus:outline-none ${inputClassName}`}
                 {...(register ?? {})}
                 {...props}

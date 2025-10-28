@@ -40,6 +40,18 @@ export default function MyPageEdit() {
   //닉넴
   const handleNickName = usePatchNickname();
 
+  const onChangePhone = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let v = e.target.value.replace(/\D/g, ""); // 숫자만
+    if (v.length > 11) v = v.slice(0, 11); // 최대 11자리
+    setForm((prev) => ({ ...prev, phone: v }));
+  };
+  const onChangeNickname = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value
+      .slice(0, 20)
+      .replace(/[^가-힣a-zA-Z\s\u1100-\u11FF\u3130-\u318F\uAC00-\uD7AF]/g, "");
+    setForm((prev) => ({ ...prev, nickname: value }));
+  };
+
   //아디
   const handleUserId = usePatchUserId();
   //비번
@@ -66,6 +78,9 @@ export default function MyPageEdit() {
       body: formData,
     });
   };
+
+  const isValidPhone = (v: string) => /^010\d{8}$/.test(v);
+  const isValidnickName = (v: string) => /^.{2,20}$/.test(v);
   return (
     <div className=" flex flex-col min-h-dvh">
       <PageHeader title="내 정보 수정" />
@@ -73,7 +88,7 @@ export default function MyPageEdit() {
         <label htmlFor="profile" className="relative cursor-pointer">
           <div className="relative flex items-center justify-center">
             <img
-              src={preview || data.profileImageUrl || ImgUrl}
+              src={preview || data?.profileImageUrl || ImgUrl}
               alt=""
               className="mt-6 size-28 rounded-full shrink-0"
             />
@@ -97,15 +112,20 @@ export default function MyPageEdit() {
           value={form.nickname}
           placeholder={data?.nickname}
           onChangeClick={() => toggle("nickname")}
-          onChange={onChangeField("nickname")}
+          onChange={onChangeNickname}
           isChange={open.nickname}
-          onChangeUser={() =>
+          onChangeUser={() => {
+            if (!isValidnickName(form.nickname)) {
+              alert("2글자에서 20글자 사이로 입력해주세요");
+              return;
+            }
+
             handleNickName.mutate(form.nickname, {
               onSuccess: () => {
                 setForm((pre) => ({ ...pre, nickname: "" }));
               },
-            })
-          }
+            });
+          }}
         />
 
         {/* <MyPageInputField
@@ -148,15 +168,20 @@ export default function MyPageEdit() {
           )}
           value={form.phone}
           onChangeClick={() => toggle("phone")}
-          onChange={onChangeField("phone")}
+          onChange={onChangePhone}
           isChange={open.phone}
-          onChangeUser={() =>
+          onChangeUser={() => {
+            if (!isValidPhone(form.phone)) {
+              alert("유효한 전화번호를 입력해주세요");
+              return;
+            }
+
             handlePhone.mutate(form.phone, {
               onSuccess: () => {
                 setForm((pre) => ({ ...pre, phone: "" }));
               },
-            })
-          }
+            });
+          }}
         />
       </div>
     </div>
