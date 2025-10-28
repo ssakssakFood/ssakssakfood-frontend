@@ -10,6 +10,7 @@ import {
   usePatchUserId,
 } from "@/api/mypage/mypage";
 import { useState } from "react";
+import { useOwnerImg } from "@/api/mamber/onboarding";
 export default function MyPageEdit() {
   const { data } = useMyProfile();
   console.log(data);
@@ -33,6 +34,9 @@ export default function MyPageEdit() {
   const onChangeField =
     (key: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement>) =>
       setForm((prev) => ({ ...prev, [key]: e.target.value }));
+
+  // const [file, setFile] = useState<File | null>(null);
+  const [preview, setPreview] = useState("");
   //닉넴
   const handleNickName = usePatchNickname();
 
@@ -44,21 +48,64 @@ export default function MyPageEdit() {
   //전번
   const handlePhone = usePatchPhone();
 
+  //프로필 이미지
+  const uploadStoreProfile = useOwnerImg();
+
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = () => setPreview(reader.result as string);
+    reader.readAsDataURL(file);
+
+    const formData = new FormData();
+    formData.append("image", file);
+    await uploadStoreProfile.mutateAsync({
+      memberId: data?.id,
+      body: formData,
+    });
+  };
   return (
     <div className=" flex flex-col min-h-dvh">
       <PageHeader title="내 정보 수정" />
       <div className="items-center flex justify-center flex-col ">
-        <img src={ImgUrl} alt="" className="mt-6 " />
-        {/* <img src="" alt="" /> */}
+        <label htmlFor="profile" className="relative cursor-pointer">
+          <div className="relative flex items-center justify-center">
+            <img
+              src={preview || ImgUrl}
+              alt=""
+              className="mt-6 size-28 rounded-full shrink-0"
+            />
+            <img
+              src={Camera}
+              alt=""
+              className="absolute right-0   bottom-0 size-9"
+            />
+          </div>
+          <input
+            type="file"
+            className="hidden"
+            id="profile"
+            accept="image/*"
+            onChange={handleImageChange}
+          />
+        </label>
         <MyPageInputField
-          className="w-full mb-6"
+          className="w-full mb-6 mt-8"
           labelName="닉네임"
           value={form.nickname}
           placeholder={data?.nickname}
           onChangeClick={() => toggle("nickname")}
           onChange={onChangeField("nickname")}
           isChange={open.nickname}
-          onChangeUser={() => handleNickName.mutate(form.nickname)}
+          onChangeUser={() =>
+            handleNickName.mutate(form.nickname, {
+              onSuccess: () => {
+                setForm((pre) => ({ ...pre, nickname: "" }));
+              },
+            })
+          }
         />
 
         <MyPageInputField

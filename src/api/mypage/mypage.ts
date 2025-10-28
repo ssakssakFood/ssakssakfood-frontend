@@ -15,16 +15,22 @@ export const useMyProfile = () => {
   });
 };
 
+//프로필 이미지 업로드
+export const postProfileImg = async (memberId: number) => {
+  const { data } = await api.post(`/images/profile/${memberId}`);
+  return data;
+};
+
 //닉네임 수정
-export const patchNickname = async (nickname: string) => {
-  const { data } = await api.patch("/users/me/nickname", nickname);
+export const patchNickname = async (body: { nickname: string }) => {
+  const { data } = await api.patch("/users/me/nickname", body);
   return data;
 };
 
 export const usePatchNickname = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (nickname: string) => patchNickname(nickname),
+    mutationFn: (nickname: string) => patchNickname({ nickname }),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["myProfile"],
@@ -81,15 +87,15 @@ export const usePatchPw = () => {
 };
 
 //휴대폰 번호 수정
-export const pathchPhone = async (phone: string) => {
-  const { data } = await api.patch("/users/me/phone", phone);
+export const pathchPhone = async (body: { phone: string }) => {
+  const { data } = await api.patch("/users/me/phone", body);
   return data;
 };
 
 export const usePatchPhone = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (phone: string) => pathchPhone(phone),
+    mutationFn: (phone: string) => pathchPhone({ phone }),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["myProfile"],
@@ -98,4 +104,25 @@ export const usePatchPhone = () => {
     },
     onError: (err) => console.log(err),
   });
+};
+
+//이미지 등록
+
+export const ownerImg = async ({
+  memberId,
+  body,
+}: {
+  memberId: number;
+  body: FormData;
+}) => {
+  const { data } = await api.post(`/images/profile/${memberId}`, body, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+  return data;
+};
+
+export const useOwnerImg = () => {
+  return useMutation((vars: { memberId: number; body: FormData }) =>
+    ownerImg(vars)
+  );
 };
