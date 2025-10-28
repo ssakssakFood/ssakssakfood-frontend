@@ -73,7 +73,7 @@ export default function MyPageEdit() {
         <label htmlFor="profile" className="relative cursor-pointer">
           <div className="relative flex items-center justify-center">
             <img
-              src={preview || ImgUrl}
+              src={preview || data.profileImageUrl || ImgUrl}
               alt=""
               className="mt-6 size-28 rounded-full shrink-0"
             />
