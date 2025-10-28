@@ -1,8 +1,10 @@
 import ImgUrl from "@/assets/images/logo.png";
 import Arrow from "@/assets/icons/chevron-right.svg";
 import FooterNav from "@/layout/FooterNav";
+import { useNavigate } from "react-router-dom";
 
 export default function MyPage() {
+  const navigete = useNavigate();
   return (
     <div className="min-h-dvh flex flex-col ">
       <p className="text-xl font-bold mt-6 mb-6">마이페이지</p>
@@ -16,7 +18,10 @@ export default function MyPage() {
         <p className="text-[20px] font-bold mb-2">싹싹푸드</p>
         <p className="body-r-16 text-grey-2 mb-3">saksakfood25@gmail.com</p>
 
-        <button className="px-4 py-2 rounded-[20px] bg-grey-5 mb-6 text-sm">
+        <button
+          className="px-4 py-2 rounded-[20px] bg-grey-5 mb-6 text-sm cursor-pointer"
+          onClick={() => navigete("/mypage/edit")}
+        >
           내 정보 수정
         </button>
       </div>

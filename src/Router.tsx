@@ -29,6 +29,7 @@ import AuthGuard from "@/components/AuthGuard";
 import NearbyPage from "./pages/NearBy/NearByPage";
 import NearbyRegister from "./pages/NearBy/NearByRegister";
 import MyPage from "@/pages/mypage/MyPage";
+import MyPageEdit from "@/pages/mypage/MyPageEdit";
 
 // 비회원 접근을 막습니다.
 const withAuthGuard = (Component: React.ComponentType) => {
@@ -83,6 +84,7 @@ const router = createBrowserRouter([
       { path: "/addfood", element: withAuthGuard(AddFoodPage) },
       //마이페이지
       { path: "/mypage", element: <MyPage /> },
+      { path: "/mypage/edit", element: <MyPageEdit /> },
     ],
   },
   //메뉴 상세 페이지 (로그인 필수)
