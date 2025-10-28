@@ -72,7 +72,12 @@ export default function MyPage() {
           <p className="button-sb-14 mb-3">고객지원</p>
           <div className="flex">
             <p>약관 및 정책</p>
-            <img src={Arrow} alt="보기" className="ml-auto cursor-pointer" />
+            <img
+              src={Arrow}
+              alt="보기"
+              className="ml-auto cursor-pointer"
+              onClick={() => navigete("/mypage/term")}
+            />
           </div>
         </div>
       </section>
