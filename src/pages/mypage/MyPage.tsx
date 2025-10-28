@@ -48,7 +48,12 @@ export default function MyPage() {
           </div>
           <div className="flex">
             <p>아동 급식 카드 관리</p>
-            <img src={Arrow} alt="보기" className="ml-auto" />
+            <img
+              src={Arrow}
+              alt="보기"
+              className="ml-auto cursor-pointer"
+              onClick={() => navigete("/mypage/card")}
+            />
           </div>
         </div>
 

@@ -43,7 +43,7 @@ export default function MyPageEdit() {
   //아디
   const handleUserId = usePatchUserId();
   //비번
-  const handlePw = usePatchPw();
+  // const handlePw = usePatchPw();
 
   //전번
   const handlePhone = usePatchPhone();
@@ -123,7 +123,7 @@ export default function MyPageEdit() {
             })
           }
         />
-        <MyPageInputField
+        {/* <MyPageInputField
           className="w-full mb-6"
           labelName="비밀번호"
           value={form.password}
@@ -137,7 +137,7 @@ export default function MyPageEdit() {
               currentPassword: String(data?.password),
             })
           }
-        />
+        /> */}
         <MyPageInputField
           className="w-full mb-6"
           labelName="전화번호 "
