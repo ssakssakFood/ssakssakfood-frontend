@@ -163,6 +163,7 @@ export default function MenuDetailPage() {
                     discountRate={item.discountRate}
                     stockCount={item.surplusQuantity}
                     imageUrl={item.imageUrl}
+                    isShared={item.shared}
                   />
                 ))}
               </div>

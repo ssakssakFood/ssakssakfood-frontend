@@ -46,6 +46,7 @@ export default function StorePage() {
                 discountRate={item.discountRate}
                 stockCount={item.surplusQuantity}
                 imageUrl={item.imageUrl}
+                isShared={item.shared}
               />
             ))
           ) : (

@@ -1,9 +1,9 @@
-import mockImg from "@/assets/icons/bread.svg";
-import basicImage from "@/assets/images/basic.svg";
-import StockBadge from "./StockBadge";
-import { useNavigate } from "react-router-dom";
-import closeImg from "@/assets/icons/x-circle.svg";
-import { formatDeadline } from "@/utils/dateFormatter";
+import mockImg from '@/assets/icons/bread.svg';
+import basicImage from '@/assets/images/basic.svg';
+import StockBadge from './StockBadge';
+import { useNavigate } from 'react-router-dom';
+import closeImg from '@/assets/icons/x-circle.svg';
+import { formatDeadline } from '@/utils/dateFormatter';
 interface MenuCardProps {
   id: number;
   title: string;
@@ -14,6 +14,7 @@ interface MenuCardProps {
   discountRate: number;
   stockCount: number;
   imageUrl?: string;
+  isShared?: boolean;
 }
 
 //일반 홈 화면에서 보이는 메뉴 카드 컴포넌트입니다.
@@ -27,6 +28,7 @@ export default function MenuCard({
   discountRate,
   stockCount,
   imageUrl,
+  isShared = false,
 }: MenuCardProps) {
   const navigate = useNavigate();
 
@@ -35,8 +37,8 @@ export default function MenuCard({
   };
 
   return (
-    <div className="flex gap-[18px] cursor-pointer" onClick={handleClick}>
-      <div className="relative w-[100px] h-[100px] flex-shrink-0">
+    <div className="flex gap-[18px] items-center cursor-pointer" onClick={handleClick}>
+      <div className="relative w-[108px] h-[108px] flex-shrink-0">
         <img
           src={imageUrl || basicImage}
           alt={title}
@@ -49,15 +51,22 @@ export default function MenuCard({
       <div className="w-full">
         <div>
           <div className="flex items-center gap-[10px]">
-            <span className="text-[18px] font-bold">{title}</span>
-            <span className="text-[14px] font-[600] text-[#7F7F7F]">
+            <span className="text-[16px] font-bold">{title}</span>
+            <span className="text-[13px] font-[600] text-[#7F7F7F]">
               {storeName}
             </span>
           </div>
-          <div className="flex gap-[10px] text-[14px] font-[600] text-[#7F7F7F]">
+          <div className="flex gap-[10px] text-[13px] font-[600] text-[#7F7F7F]">
             픽업 가능시간
             <span>{formatDeadline(pickupTime)}</span>
           </div>
+          {isShared ? (
+            <div className="text-[13px] font-semibold text-[#496FF8] bg-[#EDF1FF] w-fit px-0.5 mt-[2px]">
+              급식카드 소지자 무료 식품
+            </div>
+          ) : (
+            <div className="h-[21px] mt-[2px]" />
+          )}
         </div>
         <div className="flex justify-end w-full">
           <div className="flex flex-col">
@@ -68,7 +77,7 @@ export default function MenuCard({
               <div className="text-[16px] font-semibold text-[#F30000]">
                 <span>{discountRate}</span>%
               </div>
-              <div className="text-[20px] font-bold">
+              <div className="text-[18px] font-bold">
                 <span>{salePrice.toLocaleString()}</span>원
               </div>
             </div>
@@ -152,13 +161,13 @@ export function MenuAddCard({
           <div className="text-[18px] font-bold">{name}</div>
           <div className="flex flex-col text-[14px] font-normal text-[#7F7F7F]">
             <div>
-              원가{" "}
+              원가{' '}
               <span className="font-semibold">
                 {originalPrice.toLocaleString()}원
               </span>
             </div>
             <div>
-              판매가{" "}
+              판매가{' '}
               <span className="font-semibold">
                 {salePrice.toLocaleString()}원
               </span>
