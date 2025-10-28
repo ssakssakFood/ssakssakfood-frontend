@@ -39,16 +39,16 @@ const Home: React.FC = () => {
   const isLoading = shouldUseGuestApi ? guestLoading : memberLoading;
 
   // 디버깅용 콘솔 로그
-  console.log("===== Home Menus Debug =====");
-  console.log("loggedIn:", loggedIn);
-  console.log("primaryLocation:", primaryLocation);
-  console.log("shouldUseGuestApi:", shouldUseGuestApi);
-  console.log("latitude:", latitude);
-  console.log("longitude:", longitude);
-  console.log("homeMenus:", homeMenus);
-  console.log("isLoading:", isLoading);
-  console.log("homeMenus 개수:", homeMenus?.length);
-  console.log("==========================");
+  // console.log("===== Home Menus Debug =====");
+  // console.log("loggedIn:", loggedIn);
+  // console.log("primaryLocation:", primaryLocation);
+  // console.log("shouldUseGuestApi:", shouldUseGuestApi);
+  // console.log("latitude:", latitude);
+  // console.log("longitude:", longitude);
+  // console.log("homeMenus:", homeMenus);
+  // console.log("isLoading:", isLoading);
+  // console.log("homeMenus 개수:", homeMenus?.length);
+  // console.log("==========================");
 
   return (
     <div className="relative">
