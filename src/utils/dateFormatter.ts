@@ -20,6 +20,7 @@ export const formatDeadline = (isoDateString: string): string => {
     return `~${month}/${day} ${hours}:${minutes} 까지`;
   } catch (error) {
     // 에러 발생 시 원본 문자열 반환
+    console.log(error);
     return isoDateString;
   }
 };

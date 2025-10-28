@@ -37,7 +37,7 @@ export default function SearchResultPage() {
   return (
     <div className="pt-4 pb-20">
       <h2 className="text-lg font-semibold mb-3">
-        "{query}" 검색 결과 ({filteredMenus.length}개)
+        &quot;{query}&quot; 검색 결과 ({filteredMenus.length}개)
       </h2>
 
       {isLoading ? (

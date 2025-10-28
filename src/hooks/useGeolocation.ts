@@ -40,7 +40,7 @@ const useGeolocation = (): GeoLocationResult => {
         console.log("✅ 캐시된 위치 정보 사용");
         return;
       } catch (err) {
-        console.log("캐시 파싱 실패, 새로운 위치 정보를 가져옵니다.");
+        console.log("캐시 파싱 실패, 새로운 위치 정보를 가져옵니다.",err);
       }
     }
 
