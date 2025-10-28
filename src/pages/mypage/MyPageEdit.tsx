@@ -108,7 +108,7 @@ export default function MyPageEdit() {
           }
         />
 
-        <MyPageInputField
+        {/* <MyPageInputField
           className="w-full mb-6"
           labelName="아이디"
           value={form.loginId}
@@ -122,7 +122,8 @@ export default function MyPageEdit() {
               currentPassword: String(data?.password),
             })
           }
-        />
+        /> */}
+
         {/* <MyPageInputField
           className="w-full mb-6"
           labelName="비밀번호"

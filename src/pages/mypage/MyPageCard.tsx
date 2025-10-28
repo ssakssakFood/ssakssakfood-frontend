@@ -1,16 +1,19 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import Button from "../../components/Button";
 import { useState } from "react";
 import PageHeader from "@/components/PageHeader";
 import { useUploadImg } from "@/api/mamber/onboarding";
 import ImagePickerBox from "@/components/ImagePickerBox";
-import { useOnboardingState } from "@/store/useOnboardingStore";
 
 export default function MyPageCard() {
-  const navigate = useNavigate();
   const location = useLocation();
   console.log(location);
-  const memberId = location.state?.memberId;
+
+  const raw = localStorage.getItem("user");
+  const memberId: number | undefined = raw
+    ? JSON.parse(raw)?.state?.user?.memberId
+    : undefined;
+
+  console.log(memberId);
   const upLoadCardImg = useUploadImg(Number(memberId));
   const [preview, setPreview] = useState("");
   const [file, setFile] = useState<File | null>(null);
@@ -19,7 +22,8 @@ export default function MyPageCard() {
     setFile(f);
     setPreview(url);
   };
-  const { cardUrl } = useOnboardingState();
+
+  const cardUrl = localStorage.getItem("cardUrl") || undefined;
 
   const handleNext = () => {
     if (file) {
@@ -27,8 +31,9 @@ export default function MyPageCard() {
       formData.append("image", file);
 
       upLoadCardImg.mutate(formData, {
-        onSuccess: () => {
-          navigate("/onBoarding/complete");
+        onSuccess: (res) => {
+          localStorage.setItem("cardImg", res.data.imageUrl);
+          console.log(res);
         },
       });
     }

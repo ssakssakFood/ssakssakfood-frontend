@@ -21,7 +21,7 @@ export default function OnBoardingCardPage() {
     setPreview(url);
   };
 
-  const { setTemp } = useOnboardingState();
+  const cardUrl = localStorage.getItem("cardUrl") || undefined;
   const handleNext = () => {
     if (file) {
       const formData = new FormData();
@@ -30,7 +30,7 @@ export default function OnBoardingCardPage() {
       upLoadCardImg.mutate(formData, {
         onSuccess: (res) => {
           console.log(res);
-          setTemp({ cardUrl: res.data.imageUrl });
+          localStorage.setItem("cardImg", res.data.imageUrl);
           navigate("/onBoarding/complete");
         },
       });
@@ -56,7 +56,7 @@ export default function OnBoardingCardPage() {
 
         <ImagePickerBox
           file={file}
-          previewUrl={preview}
+          previewUrl={preview || cardUrl}
           onChange={handlePick}
           boxClass="w-full h-[240px]"
         />
