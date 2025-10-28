@@ -35,7 +35,12 @@ export default function MyPage() {
           <p className="button-sb-14">설정</p>
           <div className="flex">
             <p>계정 관리</p>
-            <img src={Arrow} alt="보기" className="ml-auto" />
+            <img
+              src={Arrow}
+              alt="보기"
+              className="ml-auto cursor-pointer"
+              onClick={() => navigete("/mypage/account")}
+            />
           </div>
           <div className="flex">
             <p>알림 설정</p>
