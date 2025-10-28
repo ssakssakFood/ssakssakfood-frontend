@@ -8,6 +8,10 @@ export default function MyPage() {
   const navigete = useNavigate();
 
   const { data } = useMyProfile();
+
+  const isCard = Boolean(localStorage.getItem("cardImg"));
+  console.log(isCard);
+
   console.log(data);
   return (
     <div className="min-h-dvh flex flex-col ">
@@ -46,15 +50,17 @@ export default function MyPage() {
             <p>알림 설정</p>
             <img src={Arrow} alt="보기" className="ml-auto" />
           </div>
-          <div className="flex">
-            <p>아동 급식 카드 관리</p>
-            <img
-              src={Arrow}
-              alt="보기"
-              className="ml-auto cursor-pointer"
-              onClick={() => navigete("/mypage/card")}
-            />
-          </div>
+          {isCard && (
+            <div className="flex">
+              <p>아동 급식 카드 관리</p>
+              <img
+                src={Arrow}
+                alt="보기"
+                className="ml-auto cursor-pointer"
+                onClick={() => navigete("/mypage/card")}
+              />
+            </div>
+          )}
         </div>
 
         <div className="p-5 bg-grey-5 rounded-xl">

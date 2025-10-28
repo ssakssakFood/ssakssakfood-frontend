@@ -2,7 +2,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import PageHeader from "@/components/PageHeader";
 import { useUploadImg } from "@/api/mamber/onboarding";
-import ImagePickerBox from "@/components/ImagePickerBox";
+import ImagePickerBox2 from "@/components/ImagePickerBox2";
 
 export default function MyPageCard() {
   const location = useLocation();
@@ -22,10 +22,14 @@ export default function MyPageCard() {
     setFile(f);
     setPreview(url);
   };
-
-  const cardUrl = localStorage.getItem("cardUrl") || undefined;
+  const [editing, setEditing] = useState(false);
+  const cardUrl = localStorage.getItem("cardImg") || undefined;
 
   const handleNext = () => {
+    if (!editing) {
+      setEditing(true);
+      return;
+    }
     if (file) {
       const formData = new FormData();
       formData.append("image", file);
@@ -33,9 +37,14 @@ export default function MyPageCard() {
       upLoadCardImg.mutate(formData, {
         onSuccess: (res) => {
           localStorage.setItem("cardImg", res.data.imageUrl);
+          setPreview(res.data.imageUrl);
+          setFile(null);
+          setEditing(false);
           console.log(res);
         },
       });
+    } else {
+      setEditing(false);
     }
   };
 
@@ -48,26 +57,20 @@ export default function MyPageCard() {
         <div className="flex justify-between mb-4 items-center mt-3">
           <p className="subtitle-b-18">등록된 급식카드</p>
           <button
-            className="text-sm font-medium py-[6px] px-2 rounded-sm bg-grey-5"
+            className="text-sm font-medium py-[6px] px-3 rounded-sm bg-grey-5 "
             onClick={handleNext}
           >
-            사진변경
+            {editing ? "저장" : "사진변경"}
           </button>
         </div>
-        <ImagePickerBox
+        <ImagePickerBox2
           file={file}
           previewUrl={preview || cardUrl}
           onChange={handlePick}
           boxClass="w-full h-[240px]"
+          editing={editing}
         />
       </section>
-
-      {/* <Button
-        labelName={preview ? "회원가입 완료하기" : "등록없이 회원가입하기"}
-        className="mb-8"
-        disabled={false}
-        onClick={handleNext}
-      /> */}
     </div>
   );
 }
