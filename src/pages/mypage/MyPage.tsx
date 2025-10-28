@@ -48,7 +48,12 @@ export default function MyPage() {
           </div>
           <div className="flex">
             <p>알림 설정</p>
-            <img src={Arrow} alt="보기" className="ml-auto" />
+            <img
+              src={Arrow}
+              alt="보기"
+              className="ml-auto cursor-pointer"
+              onClick={() => navigete("/mypage/alarm")}
+            />
           </div>
           {isCard && (
             <div className="flex">
@@ -67,7 +72,7 @@ export default function MyPage() {
           <p className="button-sb-14 mb-3">고객지원</p>
           <div className="flex">
             <p>약관 및 정책</p>
-            <img src={Arrow} alt="보기" className="ml-auto" />
+            <img src={Arrow} alt="보기" className="ml-auto cursor-pointer" />
           </div>
         </div>
       </section>

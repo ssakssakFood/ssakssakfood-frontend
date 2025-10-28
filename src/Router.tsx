@@ -33,6 +33,7 @@ import MyPageEdit from "@/pages/mypage/MyPageEdit";
 import MyPageAccount from "@/pages/mypage/MyPageAccount";
 import MyPageLeave from "@/pages/mypage/MyPageLeave";
 import MyPageCard from "@/pages/mypage/MyPageCard";
+import MypageAlarm from "@/pages/mypage/MyPageAlarm";
 
 // 비회원 접근을 막습니다.
 const withAuthGuard = (Component: React.ComponentType) => {
@@ -91,6 +92,7 @@ const router = createBrowserRouter([
       { path: "/mypage/account", element: <MyPageAccount /> },
       { path: "/mypage/leave", element: <MyPageLeave /> },
       { path: "/mypage/card", element: <MyPageCard /> },
+      { path: "/mypage/alarm", element: <MypageAlarm /> },
     ],
   },
   //메뉴 상세 페이지 (로그인 필수)
