@@ -1,5 +1,5 @@
+import { Logout } from "@/api/nearby/nearby";
 import useUserStore from "@/store/useUserStore";
-import { NearbyResponseDto } from "@/types/nearby";
 import { useNavigate } from "react-router-dom";
 
 interface MyPageModalProps {
@@ -9,14 +9,19 @@ interface MyPageModalProps {
 export default function MyPageModal({ onCloseModal }: MyPageModalProps) {
   const navigate = useNavigate();
   const { resetUser } = useUserStore();
-
-  const handleLogout = () => {
-    localStorage.removeItem("user");
-    sessionStorage.removeItem("cached_geolocation");
-    resetUser();
-    navigate("/login");
+  const LogoutApi = Logout();
+  const handleLogout = async () => {
+    try {
+      await LogoutApi.mutateAsync();
+    } catch (e) {
+      console.log("로그아웃에러", e);
+    } finally {
+      localStorage.removeItem("user");
+      sessionStorage.removeItem("cached_geolocation");
+      resetUser();
+      navigate("/login", { replace: true });
+    }
   };
-
   return (
     <>
       <div

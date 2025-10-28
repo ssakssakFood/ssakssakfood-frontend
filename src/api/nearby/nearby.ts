@@ -127,3 +127,21 @@ export const useStoreMenus = (storeId: number | undefined) => {
     select: (res) => res.result,
   });
 };
+
+//로그아웃
+
+export const postLogout = async () => {
+  const { data } = await api.post("/users/me/logout");
+  return { data };
+};
+
+export const Logout = () => {
+  return useMutation({
+    mutationFn: postLogout,
+    onSuccess: () => {
+      console.log("로그아웃성공");
+    },
+    onError: (err) => console.log(err),
+  });
+};
+//탈퇴

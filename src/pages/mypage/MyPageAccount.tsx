@@ -2,11 +2,12 @@ import { useMyProfile } from "@/api/mypage/mypage";
 import PageHeader from "@/components/PageHeader";
 import MyPageModal from "@/pages/mypage/myPageModal";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function MyPageAccount() {
   const { data } = useMyProfile();
-  const [modal, setModal] = useState(true);
-
+  const [modal, setModal] = useState(false);
+  const navigate = useNavigate();
   return (
     <div>
       <PageHeader title="계정 관리" />
@@ -18,7 +19,9 @@ export default function MyPageAccount() {
       <p className="py-6 cursor-pointer" onClick={() => setModal(true)}>
         로그아웃
       </p>
-      <p>회원탈퇴</p>
+      <p className="cursor-pointer" onClick={() => navigate("/mypage/leave")}>
+        회원탈퇴
+      </p>
       {modal && <MyPageModal onCloseModal={() => setModal(false)} />}
     </div>
   );
