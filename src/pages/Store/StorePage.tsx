@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import { MenuHeader } from "@/components/Headers";
 import MenuCard from "@/components/MenuCard";
 import { useGetStoreMenus } from "@/api/menu/menu";
+import basicImage from "@/assets/images/basic.svg";
 
 export default function StorePage() {
   const { id } = useParams<{ id: string }>();
@@ -19,13 +20,11 @@ export default function StorePage() {
       <div className="flex flex-col gap-[24px]">
         <div className="flex gap-[16px] items-center border-b border-gray-200 pb-[16px] mx-[-24px] px-[24px] py-[16px]">
           <div className="w-[80px] h-[80px] bg-gray-300 rounded-full overflow-hidden">
-            {imageUrl && (
-              <img
-                src={imageUrl}
-                alt={storeName}
-                className="w-full h-full object-cover"
-              />
-            )}
+            <img
+              src={imageUrl || basicImage}
+              alt={storeName}
+              className="w-full h-full object-cover"
+            />
           </div>
           <div className="flex flex-col">
             <span className="text-[20px] font-bold">{storeName}</span>
@@ -46,6 +45,7 @@ export default function StorePage() {
                 salePrice={item.discountPrice}
                 discountRate={item.discountRate}
                 stockCount={item.surplusQuantity}
+                imageUrl={item.imageUrl}
               />
             ))
           ) : (

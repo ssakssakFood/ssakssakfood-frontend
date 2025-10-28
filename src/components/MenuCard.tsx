@@ -1,4 +1,5 @@
 import mockImg from "@/assets/icons/bread.svg";
+import basicImage from "@/assets/images/basic.svg";
 import StockBadge from "./StockBadge";
 import { useNavigate } from "react-router-dom";
 import closeImg from "@/assets/icons/x-circle.svg";
@@ -12,6 +13,7 @@ interface MenuCardProps {
   salePrice: number;
   discountRate: number;
   stockCount: number;
+  imageUrl?: string;
 }
 
 //일반 홈 화면에서 보이는 메뉴 카드 컴포넌트입니다.
@@ -24,6 +26,7 @@ export default function MenuCard({
   salePrice,
   discountRate,
   stockCount,
+  imageUrl,
 }: MenuCardProps) {
   const navigate = useNavigate();
 
@@ -35,8 +38,8 @@ export default function MenuCard({
     <div className="flex gap-[18px] cursor-pointer" onClick={handleClick}>
       <div className="relative w-[100px] h-[100px] flex-shrink-0">
         <img
-          src={mockImg}
-          alt="임시"
+          src={imageUrl || basicImage}
+          alt={title}
           className="w-full h-full object-cover rounded-[8px]"
         />
         <div className="absolute top-[8px] left-[8px]">

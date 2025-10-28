@@ -66,6 +66,7 @@ export default function MenuDetailPage() {
         salePrice: menu.discountPrice,
         storeName: store.name,
         pickupTime: menu.deadline,
+        imageUrl: menu.imageUrl,
       },
     });
   };
@@ -90,8 +91,16 @@ export default function MenuDetailPage() {
       </div>
 
       <div>
-        <div className="w-full h-[240px] bg-gray-400 text-center">
-          이미지 자리
+        <div className="w-full h-[240px] bg-gray-400 text-center flex items-center justify-center overflow-hidden">
+          {menu.imageUrl ? (
+            <img
+              src={menu.imageUrl}
+              alt={menu.name}
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            <span className="text-white text-lg">이미지 없음</span>
+          )}
         </div>
 
         <div className="px-6 pb-[100px]">
@@ -131,6 +140,7 @@ export default function MenuDetailPage() {
 
           <StoreInfoCard
             id={store.id}
+            img={store.imageUrl}
             name={store.name}
             address={store.roadAddress}
           />
@@ -152,6 +162,7 @@ export default function MenuDetailPage() {
                     salePrice={item.discountPrice}
                     discountRate={item.discountRate}
                     stockCount={item.surplusQuantity}
+                    imageUrl={item.imageUrl}
                   />
                 ))}
               </div>
@@ -180,6 +191,7 @@ export default function MenuDetailPage() {
           stockCount={menu.surplusQuantity}
           buyQuantity={buyQuantity}
           setBuyQuantity={setBuyQuantity}
+          imageUrl={menu.imageUrl}
         />
       </div>
     </div>

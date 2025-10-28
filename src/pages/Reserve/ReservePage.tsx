@@ -7,6 +7,7 @@ import DialPicker from "@/components/DialPicker";
 import { formatDeadline } from "@/utils/dateFormatter";
 import { useCreateReservation } from "@/api/reservation/reservation";
 import type { PaymentRequest, PaymentResponse } from "@/types/portone";
+import basicImage from "@/assets/images/basic.svg";
 
 interface ReserveState {
   quantity: number;
@@ -14,6 +15,7 @@ interface ReserveState {
   salePrice?: number;
   storeName?: string;
   pickupTime?: string;
+  imageUrl?: string;
 }
 
 const formatToTwoDigits = (num: number) => String(num).padStart(2, "0");
@@ -86,7 +88,7 @@ export default function ReservePage() {
     return null;
   }
 
-  const { quantity, title, salePrice, storeName, pickupTime } = state;
+  const { quantity, title, salePrice, storeName, pickupTime, imageUrl } = state;
   const totalPrice = (salePrice || 0) * quantity;
 
   const selectedDateLabel =
@@ -112,7 +114,11 @@ export default function ReservePage() {
   };
 
   // 포트원 결제 처리
-  const handlePayment = (reservationId: number, amount: number) => {
+  const handlePayment = (
+    reservationId: number,
+    amount: number,
+    memberEmail: string,
+  ) => {
     const IMP = window.IMP;
     if (!IMP) {
       alert("결제 모듈을 불러오는데 실패했습니다.");
@@ -127,11 +133,14 @@ export default function ReservePage() {
       merchant_uid: `reservation_${reservationId}`,
       name: "싹싹푸드 예약 결제",
       amount: amount,
-      buyer_email: "fhsjdvs@gmail.com",
+      buyer_email: memberEmail,
       buyer_name: "고객",
       notice_url:
         "http://saksakfood-api-gateway-s-da7e9-110329723-31b4b99c070a.kr.lb.naverncp.com/api/payments/webhook",
     };
+
+    console.log("==== 결제 요청 데이터 ====");
+    console.log("buyer_email:", memberEmail);
 
     IMP.request_pay(paymentData, (response: PaymentResponse) => {
       console.log("==== PortOne 결제 응답 ====");
@@ -139,7 +148,7 @@ export default function ReservePage() {
 
       if (response.success) {
         alert("결제가 완료되었습니다!");
-        navigate("/"); // 결제 성공 시 홈으로 이동
+        navigate("/");
       } else {
         alert(`결제 실패: ${response.error_msg}`);
       }
@@ -183,7 +192,11 @@ export default function ReservePage() {
       onSuccess: (reservationData) => {
         console.log("예약 생성 성공:", reservationData);
         //예약 생성 성공 시 결제
-        handlePayment(reservationData.reservationId, reservationData.totalAmount);
+        handlePayment(
+          reservationData.reservationId,
+          reservationData.totalAmount,
+          reservationData.memberEmail,
+        );
       },
       onError: (error: any) => {
         console.error("==== 예약 생성 실패 ====");
@@ -211,7 +224,13 @@ export default function ReservePage() {
 
       {/* 메뉴 정보 */}
       <div className="flex gap-[16px] bg-[#F3F3F3] p-[24px] mx-[-24px]">
-        <div className="w-[72px] h-[72px] bg-gray-400 rounded-2xl"></div>
+        <div className="w-[72px] h-[72px] bg-gray-300 rounded-2xl overflow-hidden">
+          <img
+            src={imageUrl || basicImage}
+            alt={title}
+            className="w-full h-full object-cover"
+          />
+        </div>
         <div className="flex flex-col justify-center">
           <div className="flex gap-4 items-center">
             <span className="text-[16px] font-bold">{title}</span>

@@ -16,6 +16,7 @@ export interface ReservationDto {
   totalAmount: number;
   foodQuantity: number;
   status: ReservationStatus;
+  memberEmail: string;
 }
 
 // API 응답 타입

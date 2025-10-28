@@ -1,6 +1,7 @@
 import { useRef, useState, useEffect, SetStateAction, Dispatch } from "react";
 import Minus from "@/assets/icons/minus.svg";
 import Plus from "@/assets/icons/plus.svg";
+import basicImage from "@/assets/images/basic.svg";
 import { formatDeadline } from "@/utils/dateFormatter";
 
 interface OrderBottomSheetProps {
@@ -13,6 +14,7 @@ interface OrderBottomSheetProps {
   salePrice: number;
   buyQuantity: number;
   setBuyQuantity?: Dispatch<SetStateAction<number>>;
+  imageUrl?: string;
 }
 
 export default function OrderBottomSheet({
@@ -25,6 +27,7 @@ export default function OrderBottomSheet({
   salePrice,
   buyQuantity = 1,
   setBuyQuantity,
+  imageUrl,
 }: OrderBottomSheetProps) {
   const sheetRef = useRef<HTMLDivElement>(null);
   const startY = useRef(0);
@@ -147,8 +150,12 @@ export default function OrderBottomSheet({
 
         <div className="px-6 pt-6 flex flex-col gap-6">
           <div className="flex gap-4">
-            <div className="w-[72px] h-[72px] bg-gray-500 rounded-2xl flex justify-center items-center">
-              이미지
+            <div className="w-[72px] h-[72px] bg-gray-300 rounded-2xl overflow-hidden flex justify-center items-center">
+              <img
+                src={imageUrl || basicImage}
+                alt={title}
+                className="w-full h-full object-cover"
+              />
             </div>
             <div className="flex flex-col justify-center">
               <div className="flex items-center gap-2">
