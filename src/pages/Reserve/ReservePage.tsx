@@ -5,6 +5,8 @@ import chevronDownImg from "@/assets/icons/chevron-down.svg";
 import Button from "@/components/Button";
 import DialPicker from "@/components/DialPicker";
 import { formatDeadline } from "@/utils/dateFormatter";
+import { useCreateReservation } from "@/api/reservation/reservation";
+import type { PaymentRequest, PaymentResponse } from "@/types/portone";
 
 interface ReserveState {
   quantity: number;
@@ -52,6 +54,7 @@ export default function ReservePage() {
   const location = useLocation();
   const navigate = useNavigate();
   const state = location.state as ReserveState | null;
+  const createReservationMutation = useCreateReservation();
 
   const pickupTimeRange = state?.pickupTime?.match(
     /(\d{2}):\d{2}\s*~\s*(\d{2}):\d{2}/,
@@ -90,6 +93,117 @@ export default function ReservePage() {
     dateItems.find((item) => item.value === selectedDate)?.label || "";
   const formattedHour = formatToTwoDigits(selectedHour);
   const formattedMinute = formatToTwoDigits(selectedMinute);
+
+
+  const getPickupDateTime = (): string => {
+    const baseDate = selectedDate === "today" ? today : tomorrow;
+    const pickupDate = new Date(baseDate);
+    pickupDate.setHours(selectedHour, selectedMinute, 0, 0);
+
+    const year = pickupDate.getFullYear();
+    const month = formatToTwoDigits(pickupDate.getMonth() + 1);
+    const day = formatToTwoDigits(pickupDate.getDate());
+    const hours = formatToTwoDigits(pickupDate.getHours());
+    const minutes = formatToTwoDigits(pickupDate.getMinutes());
+    const seconds = formatToTwoDigits(pickupDate.getSeconds());
+
+
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+  };
+
+  // 포트원 결제 처리
+  const handlePayment = (reservationId: number, amount: number) => {
+    const IMP = window.IMP;
+    if (!IMP) {
+      alert("결제 모듈을 불러오는데 실패했습니다.");
+      return;
+    }
+
+    IMP.init("imp35572833");
+
+    const paymentData: PaymentRequest = {
+      pg: "html5_inicis",
+      pay_method: "card",
+      merchant_uid: `reservation_${reservationId}`,
+      name: "싹싹푸드 예약 결제",
+      amount: amount,
+      buyer_email: "fhsjdvs@gmail.com",
+      buyer_name: "고객",
+      notice_url:
+        "http://saksakfood-api-gateway-s-da7e9-110329723-31b4b99c070a.kr.lb.naverncp.com/api/payments/webhook",
+    };
+
+    IMP.request_pay(paymentData, (response: PaymentResponse) => {
+      console.log("==== PortOne 결제 응답 ====");
+      console.log(response);
+
+      if (response.success) {
+        alert("결제가 완료되었습니다!");
+        navigate("/"); // 결제 성공 시 홈으로 이동
+      } else {
+        alert(`결제 실패: ${response.error_msg}`);
+      }
+    });
+  };
+
+  const handleReserveAndPay = () => {
+    if (!id) {
+      alert("메뉴 ID가 없습니다.");
+      return;
+    }
+
+    const userDataString = localStorage.getItem("user");
+    console.log("==== 로그인 상태 확인 ====");
+    console.log("localStorage user:", userDataString);
+
+    if (!userDataString) {
+      alert("로그인이 필요합니다.");
+      navigate("/login");
+      return;
+    }
+
+    const pickupDateTime = getPickupDateTime();
+
+    const requestData = {
+      menuId: Number(id),
+      body: {
+        foodQuantity: quantity,
+        pickupTime: pickupDateTime,
+      },
+    };
+
+    console.log("==== 예약 생성 요청 데이터 ====");
+    console.log("menuId:", requestData.menuId);
+    console.log("foodQuantity:", requestData.body.foodQuantity);
+    console.log("pickupTime:", requestData.body.pickupTime);
+    console.log("전체 요청 body:", JSON.stringify(requestData.body, null, 2));
+
+    // 예약 생성 API
+    createReservationMutation.mutate(requestData, {
+      onSuccess: (reservationData) => {
+        console.log("예약 생성 성공:", reservationData);
+        //예약 생성 성공 시 결제
+        handlePayment(reservationData.reservationId, reservationData.totalAmount);
+      },
+      onError: (error: any) => {
+        console.error("==== 예약 생성 실패 ====");
+        console.error("전체 에러:", error);
+        console.error("에러 응답 데이터:", error.response?.data);
+        console.error("에러 상태 코드:", error.response?.status);
+        console.error("에러 헤더:", error.response?.headers);
+
+        const errorMessage = error.response?.data?.message || error.message;
+        const errorCode = error.response?.data?.code;
+
+        alert(
+          `예약 생성에 실패했습니다.\n\n` +
+          `상태 코드: ${error.response?.status}\n` +
+          `에러 코드: ${errorCode || 'N/A'}\n` +
+          `메시지: ${errorMessage}`
+        );
+      },
+    });
+  };
 
   return (
     <div className="relative min-h-screen">
@@ -176,8 +290,9 @@ export default function ReservePage() {
         <div className="p-4">
           <Button
             className="w-full text-lg py-6 cursor-pointer"
-            labelName="결제하기"
-            disabled={false}
+            labelName={createReservationMutation.isLoading ? "처리 중..." : "결제하기"}
+            disabled={createReservationMutation.isLoading}
+            onClick={handleReserveAndPay}
           />
         </div>
       </footer>
