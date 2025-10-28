@@ -148,7 +148,7 @@ export const Logout = () => {
 
 //탈퇴
 export const deleteUser = async () => {
-  const { data } = await api.delete("/users/me");
+  const { data } = await api.delete("/users/me", { data: {} });
   return { data };
 };
 
