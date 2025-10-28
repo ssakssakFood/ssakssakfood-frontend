@@ -160,6 +160,7 @@ export const useLeaveUser = () => {
     onSuccess: () => {
       sessionStorage.removeItem("cached_geolocation");
       localStorage.removeItem("user");
+      localStorage.removeItem("cardImg");
       resetUser();
       navigate("/login");
     },
