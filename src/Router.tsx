@@ -28,6 +28,7 @@ import AllfoodsPage from "./pages/ManagerHome/AllFoodsPage";
 import NearbyEdit from "@/pages/NearBy/NearByEdit";
 import AddFoodPage from "./pages/ManagerHome/AddFoodPage";
 import AddfoodEditPage from "./pages/ManagerHome/AddFoodEditPage";
+import MyPage from "@/pages/mypage/MyPage";
 
 const router = createBrowserRouter([
   {
@@ -73,6 +74,9 @@ const router = createBrowserRouter([
       { path: "/manager-home", element: <ManagerHome /> },
       { path: "/allfoods", element: <AllfoodsPage /> },
       { path: "/addfood", element: <AddFoodPage /> },
+
+      //마이페이지
+      { path: "/mypage", element: <MyPage /> },
     ],
   },
   //메뉴 상세 페이지
