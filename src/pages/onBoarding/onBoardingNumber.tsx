@@ -3,7 +3,7 @@ import Button from "../../components/Button";
 import InputField2 from "../../components/InputField2";
 import { ProgressBar } from "../../components/ProgressBar";
 import { useOnboardingState } from "../../store/useOnboardingStore";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import PageHeader from "@/components/PageHeader";
 
 export default function OnboardingNumber() {
@@ -17,7 +17,7 @@ export default function OnboardingNumber() {
     navigate("/onBoarding/pass", { state: "s" });
   };
   const phoneRegex = /^01[0-9]-[0-9]{4}-[0-9]{4}$/;
-  const isValid = useMemo(() => phoneRegex.test(phone), [phone]);
+  const isValid = phoneRegex.test(phone);
 
   const handleInputPhone = (e: React.ChangeEvent<HTMLInputElement>) => {
     const phoneNum = e.target.value.replace(/\D/g, "").slice(0, 11); // 숫자만, 최대 11자리

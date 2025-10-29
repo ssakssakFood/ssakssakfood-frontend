@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronLeft, ChevronRight, X } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 export default function DateFilterModal({
   open,
@@ -41,7 +41,7 @@ export default function DateFilterModal({
 
   const weeks = useMemo(
     () => buildMonthMatrix(visibleYear, visibleMonth),
-    [visibleYear, visibleMonth]
+    [visibleYear, visibleMonth],
   );
 
   const headerLabel = showYearInHeader
@@ -141,7 +141,7 @@ export default function DateFilterModal({
               {/* Dates */}
               <div className="p-5 pt-2 grid grid-cols-7 gap-y-3 text-center select-none">
                 {weeks.map((week, wi) =>
-                  week.map((cell, ci) => {
+                  week.map((cell) => {
                     const key = `${wi}-${cell.year}-${cell.month}-${cell.date}`;
                     const isThisMonth = cell.month === visibleMonth;
                     const disabled = !isThisMonth;
@@ -149,13 +149,13 @@ export default function DateFilterModal({
                       today,
                       cell.year,
                       cell.month,
-                      cell.date
+                      cell.date,
                     );
                     const selected = isSameDay(
                       selectedDate,
                       cell.year,
                       cell.month,
-                      cell.date
+                      cell.date,
                     );
 
                     // 바깥달 숨김
@@ -189,7 +189,7 @@ export default function DateFilterModal({
                         )}
                       </button>
                     );
-                  })
+                  }),
                 )}
               </div>
             </div>

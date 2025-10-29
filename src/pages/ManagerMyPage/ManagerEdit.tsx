@@ -102,7 +102,7 @@ export default function ManagerEdit() {
         <label htmlFor="profile" className="relative cursor-pointer">
           <div className="relative flex items-center justify-center">
             <img
-              src={preview || data?.profileImageUrl || ImgUrl}
+              src={data?.profileImageUrl || ImgUrl}
               alt=""
               className="mt-6 size-28 rounded-full shrink-0"
             />
@@ -112,13 +112,13 @@ export default function ManagerEdit() {
               className="absolute right-0   bottom-0 size-9"
             />
           </div>
-          <input
+          {/* <input
             type="file"
             className="hidden"
             id="profile"
             accept="image/*"
             onChange={handleImageChange}
-          />
+          /> */}
         </label>
 
         {/* 대표자명 */}
@@ -142,7 +142,7 @@ export default function ManagerEdit() {
                 onSuccess: () => {
                   setForm((pre) => ({ ...pre, nickname: "" }));
                 },
-              }
+              },
             );
           }}
         />
@@ -168,7 +168,7 @@ export default function ManagerEdit() {
                 onSuccess: () => {
                   setForm((pre) => ({ ...pre, storeName: "" }));
                 },
-              }
+              },
             );
           }}
         />
@@ -198,7 +198,7 @@ export default function ManagerEdit() {
                 onSuccess: () => {
                   setForm((pre) => ({ ...pre, storeName: "" }));
                 },
-              }
+              },
             );
           }}
         />
@@ -208,7 +208,7 @@ export default function ManagerEdit() {
           labelName="전화번호 "
           placeholder={data?.phone?.replace(
             /^(\d{3})(\d{3,4})(\d{4})$/,
-            "$1-$2-$3"
+            "$1-$2-$3",
           )}
           value={form.phone}
           onChangeClick={() => toggle("phone")}
@@ -226,7 +226,7 @@ export default function ManagerEdit() {
                 onSuccess: () => {
                   setForm((pre) => ({ ...pre, phone: "" }));
                 },
-              }
+              },
             );
           }}
         />
