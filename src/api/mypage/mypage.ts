@@ -141,7 +141,7 @@ export const ownerImg = async ({
 
 export const useOwnerImg = () => {
   return useMutation((vars: { memberId: number; body: FormData }) =>
-    ownerImg(vars)
+    ownerImg(vars),
   );
 };
 

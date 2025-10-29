@@ -119,7 +119,7 @@ export default function ManagerEdit() {
                 onSuccess: () => {
                   setForm((pre) => ({ ...pre, nickname: "" }));
                 },
-              }
+              },
             );
           }}
         />
@@ -149,7 +149,7 @@ export default function ManagerEdit() {
           labelName="전화번호 "
           placeholder={data?.phone?.replace(
             /^(\d{3})(\d{3,4})(\d{4})$/,
-            "$1-$2-$3"
+            "$1-$2-$3",
           )}
           value={form.phone}
           onChangeClick={() => toggle("phone")}
@@ -167,7 +167,7 @@ export default function ManagerEdit() {
                 onSuccess: () => {
                   setForm((pre) => ({ ...pre, phone: "" }));
                 },
-              }
+              },
             );
           }}
         />
