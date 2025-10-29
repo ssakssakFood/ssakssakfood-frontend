@@ -18,6 +18,14 @@ export default function ManagerMyPage() {
   const { data } = useGetOwnerProfile();
   console.log(data);
   const navigate = useNavigate();
+  const today = new Date();
+  const month = today.getMonth() + 1;
+  const date = today.getDate();
+  const day = `${month.toString().padStart(2, "0")}.${date
+    .toString()
+    .padStart(2, "0")}`;
+  const dayday = DAY[today.getDay()];
+  console.log(today);
 
   // console.log(data);
   return (
@@ -73,7 +81,9 @@ export default function ManagerMyPage() {
 
         <div className="p-4 bg-grey-5 rounded-lg flex flex-col mb-6">
           <div className="flex mb-3">
-            <p>날짜</p>
+            <p>
+              {day} ({dayday})
+            </p>
             <img src={ArrowD} alt="" />
           </div>
           <div className="flex subtitle-b-18 gap-1 mb-4">
