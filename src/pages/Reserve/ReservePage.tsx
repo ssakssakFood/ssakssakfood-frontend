@@ -17,6 +17,7 @@ interface ReserveState {
   storeName?: string;
   pickupTime?: string;
   imageUrl?: string;
+  useMealCard?: boolean;
 }
 
 const formatToTwoDigits = (num: number) => String(num).padStart(2, "0");
@@ -89,8 +90,8 @@ export default function ReservePage() {
     return null;
   }
 
-  const { quantity, title, salePrice, storeName, pickupTime, imageUrl } = state;
-  const totalPrice = (salePrice || 0) * quantity;
+  const { quantity, title, salePrice, storeName, pickupTime, imageUrl, useMealCard } = state;
+  const totalPrice = useMealCard ? 0 : (salePrice || 0) * quantity;
 
   const selectedDateLabel =
     dateItems.find((item) => item.value === selectedDate)?.label || "";
@@ -309,6 +310,10 @@ export default function ReservePage() {
           <span className="text-[18px] font-bold">
             {totalPrice.toLocaleString()} 원
           </span>
+        </div>
+        <div className="text-[14px] text-[#7f7f7f]">
+          * 급식 카드 사용 <br />
+          무료 아동 급식카드는 월 3회에 한해 사용 가능합니다.
         </div>
       </div>
       <footer className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[401px] bg-white border-t border-gray-100 z-50">

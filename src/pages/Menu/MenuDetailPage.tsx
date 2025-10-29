@@ -14,6 +14,7 @@ export default function MenuDetailPage() {
   const navigate = useNavigate();
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [buyQuantity, setBuyQuantity] = useState<number>(1);
+  const [useMealCard, setUseMealCard] = useState<boolean>(false);
 
   // API를 통해 메뉴 상세 정보 조회
   const { data: menuDetail, isLoading } = useGetMenuDetail(Number(id));
@@ -67,6 +68,7 @@ export default function MenuDetailPage() {
         storeName: store.name,
         pickupTime: menu.deadline,
         imageUrl: menu.imageUrl,
+        useMealCard: useMealCard,
       },
     });
   };
@@ -193,6 +195,7 @@ export default function MenuDetailPage() {
           buyQuantity={buyQuantity}
           setBuyQuantity={setBuyQuantity}
           imageUrl={menu.imageUrl}
+          onUseMealCardChange={setUseMealCard}
         />
       </div>
     </div>
