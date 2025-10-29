@@ -68,11 +68,17 @@ export default function ReservePage() {
   const startHour = pickupTimeRange ? parseInt(pickupTimeRange[1], 10) : 9;
   const endHour = pickupTimeRange ? parseInt(pickupTimeRange[2], 10) : 18;
 
-  const hourItems = generateTimeItems(startHour, endHour);
   const [isPickerOpen, setIsPickerOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<"today" | "tomorrow">(
     dateItems[0].value as "today" | "tomorrow",
   );
+
+  // 오늘인 경우 현재 시간 이후만 선택 가능하도록
+  const currentHour = today.getHours();
+  const currentMinute = today.getMinutes();
+  const availableStartHour = selectedDate === "today" ? Math.max(startHour, currentHour) : startHour;
+  const hourItems = generateTimeItems(availableStartHour, endHour);
+
   const [selectedHour, setSelectedHour] = useState<number>(
     hourItems[0].value as number,
   );
@@ -80,11 +86,41 @@ export default function ReservePage() {
     minuteItems[0].value as number,
   );
 
+  // 오늘이고 현재 시간과 같은 시를 선택한 경우, 현재 분 이후만 선택 가능
+  const isCurrentHour = selectedDate === "today" && selectedHour === currentHour;
+  const availableStartMinute = isCurrentHour ? Math.ceil(currentMinute / MINUTE_STEP) * MINUTE_STEP : 0;
+  const availableMinuteItems = generateTimeItems(availableStartMinute, 59, MINUTE_STEP);
+
   useEffect(() => {
     if (!state || !state.quantity) {
       navigate(`/menu/${id}`, { replace: true });
     }
   }, [state, id, navigate]);
+
+  // 날짜 변경 시 선택된 시간이 유효한지 확인하고 조정
+  useEffect(() => {
+    const currentHour = today.getHours();
+    const availableStartHour = selectedDate === "today" ? Math.max(startHour, currentHour) : startHour;
+
+    // 선택된 시간이 유효 범위보다 작으면 최소값으로 설정
+    if (selectedHour < availableStartHour) {
+      setSelectedHour(availableStartHour);
+    }
+  }, [selectedDate, selectedHour, startHour]);
+
+  // 시간 변경 시 선택된 분이 유효한지 확인하고 조정
+  useEffect(() => {
+    const currentHour = today.getHours();
+    const currentMinute = today.getMinutes();
+    const isCurrentHour = selectedDate === "today" && selectedHour === currentHour;
+
+    if (isCurrentHour) {
+      const availableStartMinute = Math.ceil(currentMinute / MINUTE_STEP) * MINUTE_STEP;
+      if (selectedMinute < availableStartMinute) {
+        setSelectedMinute(availableStartMinute);
+      }
+    }
+  }, [selectedDate, selectedHour, selectedMinute]);
 
   if (!state) {
     return null;
@@ -295,7 +331,7 @@ export default function ReservePage() {
                 unit="시"
               />
               <DialPicker
-                items={minuteItems}
+                items={availableMinuteItems}
                 selectedValue={selectedMinute}
                 onValueChange={(val) => setSelectedMinute(val as number)}
                 unit="분"
