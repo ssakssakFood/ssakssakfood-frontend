@@ -21,7 +21,7 @@ export default function ManagerMyPage() {
   const DAY = ["일", "월", "화", "수", "목", "금", "토"];
 
   const { data } = useGetOwnerProfile();
-  // console.log(data);
+  console.log(data);
   const navigate = useNavigate();
 
   const current = dateTime ?? new Date();
@@ -32,6 +32,10 @@ export default function ManagerMyPage() {
     .padStart(2, "0")}`;
   const dayday = DAY[current.getDay()];
 
+  const businessNum = data?.store.businessRegistrationNumber
+    ? `${data.store.businessRegistrationNumber.slice(0, 3)}-${data.store.businessRegistrationNumber.slice(3, 5)}-${data.store.businessRegistrationNumber.slice(5, 10)}`
+    : "";
+  // console.log(businessNum);
   // console.log(data);
   return (
     <div className="min-h-dvh flex flex-col pb-20">
@@ -52,7 +56,7 @@ export default function ManagerMyPage() {
         />
         <p className="text-[20px] font-bold mb-2">{data?.nickname}</p>
         <p className="body-r-16 text-grey-2 mb-4">
-          {data?.store.name} | 12389+
+          {data?.store.name} | {businessNum}
         </p>
       </div>
       <div className="py-2 border-b border-grey-5 mb-6">
