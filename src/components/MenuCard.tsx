@@ -154,7 +154,20 @@ export function MenuAddCard({
   const navigate = useNavigate();
 
   const handleCardClick = () => {
-    if (!isEditMode) {
+    if (isEditMode) {
+      // 편집 모드: /addfood/:id/edit 로 이동
+      navigate(`/addfood/${id}/edit`, {
+        state: {
+          id,
+          name,
+          originalPrice,
+          salePrice,
+          imgUrl,
+          category,
+        },
+      });
+    } else {
+      // 일반 모드: /addfood/:id 로 이동
       navigate(`/addfood/${id}`, {
         state: {
           id,

@@ -7,23 +7,29 @@ import OwnerFooterNav from '@/layout/OwnerFooterNav';
 import { useNavigate } from 'react-router-dom';
 import StartSaleBottomSheet from './UI/StartSaleBottomSheet';
 import Modal from '@/components/onBoarding/Modal';
+import DeleteConfirmModal from '@/components/DeleteConfirmModal';
 import { useGetOwnerProfile } from '@/api/mypage/mypage';
-import { useGetTodayMenus, useGetAllStoreMenus } from '@/api/menu/menu';
+import { useGetTodayMenus, useGetAllStoreMenus, useDeleteMenu } from '@/api/menu/menu';
 import basicImage from '@/assets/images/basic.svg';
+import { useQueryClient } from 'react-query';
 
 export default function ManagerHome() {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const [isEditMode, setIsEditMode] = useState(false);
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [selectedMenuId, setSelectedMenuId] = useState<number | null>(null);
   const [quantity, setQuantity] = useState<number>(1);
   const [modal, setModal] = useState(false);
+  const [deleteModal, setDeleteModal] = useState(false);
+  const [menuToDelete, setMenuToDelete] = useState<{ id: number; name: string } | null>(null);
 
   // API 호출
   const { data: ownerProfile } = useGetOwnerProfile();
   const storeId = ownerProfile?.store.id;
   const { data: todayMenus } = useGetTodayMenus(storeId || 0);
   const { data: allMenus } = useGetAllStoreMenus(storeId || 0);
+  const deleteMenuMutation = useDeleteMenu();
 
   const handleStartSale = (menuId: number) => {
     setSelectedMenuId(menuId);
@@ -44,6 +50,35 @@ export default function ManagerHome() {
     setModal(false);
     setSelectedMenuId(null);
     setQuantity(1);
+  };
+
+  const handleDeleteClick = (menuId: number, menuName: string) => {
+    setMenuToDelete({ id: menuId, name: menuName });
+    setDeleteModal(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!menuToDelete) return;
+
+    try {
+      await deleteMenuMutation.mutateAsync(menuToDelete.id);
+
+      // 삭제 성공 후 목록 갱신
+      queryClient.invalidateQueries(['allStoreMenus']);
+      queryClient.invalidateQueries(['todayMenus']);
+
+      // 모달 닫기 (편집 모드는 유지)
+      setDeleteModal(false);
+      setMenuToDelete(null);
+    } catch (error) {
+      console.error('메뉴 삭제 실패:', error);
+      alert('메뉴 삭제에 실패했습니다. 다시 시도해주세요.');
+    }
+  };
+
+  const handleCancelDelete = () => {
+    setDeleteModal(false);
+    setMenuToDelete(null);
   };
 
   return (
@@ -112,12 +147,6 @@ export default function ManagerHome() {
               >
                 취소
               </div>
-              <div
-                className="w-[50px] h-[24px] bg-[#FE7549] text-white rounded-md flex items-center justify-center cursor-pointer text-[14px]"
-                onClick={() => setIsEditMode(false)}
-              >
-                저장
-              </div>
             </div>
           ) : (
             <div
@@ -147,6 +176,7 @@ export default function ManagerHome() {
               salePrice={menu.discountPrice}
               isEditMode={isEditMode}
               onStartSale={handleStartSale}
+              onDelete={() => handleDeleteClick(menu.id, menu.name)}
               imgUrl={menu.imageUrl}
               category={menu.category}
             />
@@ -166,7 +196,7 @@ export default function ManagerHome() {
         menuId={selectedMenuId || undefined}
       />
 
-      {/* 모달 */}
+      {/* 판매 시작 완료 모달 */}
       {modal && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center">
           <div
@@ -183,6 +213,14 @@ export default function ManagerHome() {
           </div>
         </div>
       )}
+
+      {/* 삭제 확인 모달 */}
+      <DeleteConfirmModal
+        isOpen={deleteModal}
+        menuName={menuToDelete?.name || ''}
+        onConfirm={handleConfirmDelete}
+        onCancel={handleCancelDelete}
+      />
     </>
   );
 }

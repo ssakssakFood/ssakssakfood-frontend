@@ -1,13 +1,14 @@
-import { useParams, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
-import StockBadge from "@/components/StockBadge";
-import StoreInfoCard from "@/components/StoreInfoCard";
-import MenuCard from "@/components/MenuCard";
-import Button from "@/components/Button";
-import chevronLeft from "@/assets/icons/floating-checvron-left.svg";
-import OrderBottomSheet from "./UI/OrderBottomSheet";
-import { useGetMenuDetail } from "@/api/menu/menu";
-import { formatDeadline } from "@/utils/dateFormatter";
+import { useParams, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import StockBadge from '@/components/StockBadge';
+import StoreInfoCard from '@/components/StoreInfoCard';
+import MenuCard from '@/components/MenuCard';
+import Button from '@/components/Button';
+import chevronLeft from '@/assets/icons/floating-checvron-left.svg';
+import OrderBottomSheet from './UI/OrderBottomSheet';
+import { useGetMenuDetail } from '@/api/menu/menu';
+import { formatDeadline } from '@/utils/dateFormatter';
+import BasicImg from '@/assets/images/basic.svg';
 
 export default function MenuDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -101,7 +102,7 @@ export default function MenuDetailPage() {
               className="w-full h-full object-cover"
             />
           ) : (
-            <span className="text-white text-lg">이미지 없음</span>
+            <img src={BasicImg} alt="기본이미지" className="w-full" />
           )}
         </div>
 
@@ -114,11 +115,11 @@ export default function MenuDetailPage() {
           <div className="flex justify-between items-center mt-[16px] my-[24px]">
             <div className="flex flex-col gap-[8px] text-[14px] text-[#7F7F7F] font-semibold">
               <p>
-                카테고리{" "}
+                카테고리{' '}
                 <span className="font-[400] ml-[8px]">{categoryLabel}</span>
               </p>
               <p>
-                픽업 가능시간{" "}
+                픽업 가능시간{' '}
                 <span className="font-[400] ml-[8px]">
                   {formatDeadline(menu.deadline)}
                 </span>

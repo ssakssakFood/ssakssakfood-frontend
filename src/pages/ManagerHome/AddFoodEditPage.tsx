@@ -4,20 +4,42 @@ import ImagePickerBox from '@/components/ImagePickerBox';
 import InputField2 from '@/components/InputField2';
 import { CATEGORY } from '@/constants/Category';
 import { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import cornorImg from '@/assets/icons/corner-down-right.svg';
 
+interface MenuState {
+  id: number;
+  name: string;
+  originalPrice: number;
+  salePrice: number;
+  imgUrl: string;
+  category?: string;
+}
+
 export default function AddFoodEditPage() {
-  // 기존 데이터 (실제로는 API에서 가져온 데이터)
-  const [foodName, setFoodName] = useState<string>('크림빵');
-  const [selectedCategory, setSelectedCategory] = useState<string>('breads');
+  const location = useLocation();
+  const menuData = location.state as MenuState | null;
+
+  // 기존 데이터 (location state에서 받아온 데이터로 초기화)
+  const [foodName, setFoodName] = useState<string>(menuData?.name || '');
+  const [selectedCategory, setSelectedCategory] = useState<string>(
+    // category 이름을 slug로 변환 (예: "빵/디저트" -> "breads")
+    CATEGORY.find((cat) => cat.label === menuData?.category)?.slug || 'breads'
+  );
   const [imageFile, setImageFile] = useState<File | null>(null);
-  const [costPrice, setCostPrice] = useState<string>('9000');
-  const [sellingPrice, setSellingPrice] = useState<string>('4500');
+  const [imagePreviewUrl, setImagePreviewUrl] = useState<string>(menuData?.imgUrl || '');
+  const [costPrice, setCostPrice] = useState<string>(
+    menuData?.originalPrice.toString() || ''
+  );
+  const [sellingPrice, setSellingPrice] = useState<string>(
+    menuData?.salePrice.toString() || ''
+  );
 
   // 수정 중인 임시 데이터
   const [editingFoodName, setEditingFoodName] = useState<string>('');
   const [editingCategory, setEditingCategory] = useState<string>('');
   const [editingImageFile, setEditingImageFile] = useState<File | null>(null);
+  const [editingImagePreviewUrl, setEditingImagePreviewUrl] = useState<string>('');
   const [editingCostPrice, setEditingCostPrice] = useState<string>('');
   const [editingSellingPrice, setEditingSellingPrice] = useState<string>('');
 
@@ -69,8 +91,9 @@ export default function AddFoodEditPage() {
   };
 
   const handleSaveImage = () => {
-    if (editingImageFile) {
+    if (editingImageFile && editingImagePreviewUrl) {
       setImageFile(editingImageFile);
+      setImagePreviewUrl(editingImagePreviewUrl);
       setIsEditingImage(false);
     }
   };
@@ -190,6 +213,7 @@ export default function AddFoodEditPage() {
           className="mt-[16px]"
           onChange={() => {}}
           disabled
+          previewUrl={imagePreviewUrl}
         />
         <div
           className="text-orange-500 absolute top-0 right-0 cursor-pointer bg-[#F3F3F3] px-[16px] py-[6px] rounded-md"
@@ -209,7 +233,10 @@ export default function AddFoodEditPage() {
             <ImagePickerBox
               boxClass="w-[160px] h-[160px]"
               className="mt-[16px]"
-              onChange={(file) => setEditingImageFile(file)}
+              onChange={(file, previewUrl) => {
+                setEditingImageFile(file);
+                setEditingImagePreviewUrl(previewUrl);
+              }}
             />
           </div>
           <div

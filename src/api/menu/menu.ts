@@ -296,3 +296,19 @@ export const useUploadTodayMenu = () => {
       uploadTodayMenu(menuId, body),
   });
 };
+
+/*
+특정 메뉴를 삭제합니다.
+ */
+export const deleteMenu = async (menuId: number): Promise<string> => {
+  const { data } = await api.delete<ApiResponse<string>>(
+    `/menus/${menuId}`,
+  );
+  return data.result;
+};
+
+export const useDeleteMenu = () => {
+  return useMutation({
+    mutationFn: (menuId: number) => deleteMenu(menuId),
+  });
+};
