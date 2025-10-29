@@ -9,7 +9,7 @@ import Graph from "@/assets/images/bar-graph.png";
 import foodImgUrl from "@/assets/images/logo.png";
 
 import { useNavigate } from "react-router-dom";
-import { useMyProfile, useMySoreMenus } from "@/api/mypage/mypage";
+import { useMyProfile } from "@/api/mypage/mypage";
 import OwnerFooterNav from "@/layout/OwnerFooterNav";
 
 export default function ManagerMyPage() {
@@ -17,9 +17,6 @@ export default function ManagerMyPage() {
 
   const { data } = useMyProfile();
   const navigate = useNavigate();
-
-  const { data: storeData } = useMySoreMenus(data?.id);
-  console.log(storeData);
 
   console.log(data);
   return (

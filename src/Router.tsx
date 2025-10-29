@@ -34,12 +34,11 @@ import MyPageLeave from "@/pages/mypage/MyPageLeave";
 import MyPageCard from "@/pages/mypage/MyPageCard";
 import MypageAlarm from "@/pages/mypage/MyPageAlarm";
 import MypageTerm from "@/pages/mypage/MyPageTerm";
-import UserMyPage from "@/pages/mypage/UserMyPage";
-import ManagerHome from "@/pages/ManagerHome/ManagerHome";
-import ManagerMyPage from "@/pages/ManagerMyPage/ManagerMypage";
+
 import RoleMyPage from "@/pages/Mypage";
 import ManagerTerm from "@/pages/ManagerMyPage/ManagerTerm";
 import AiInsight from "@/pages/ManagerMyPage/AiInsight";
+import ManagerEdit from "@/pages/ManagerMyPage/ManagerEdit";
 
 // 비회원 접근을 막습니다.
 const withAuthGuard = (Component: React.ComponentType) => {
@@ -103,6 +102,7 @@ const router = createBrowserRouter([
       { path: "/mypage/term", element: <MypageTerm /> },
       { path: "/mypage/manager/term", element: <ManagerTerm /> },
       { path: "/mypage/insight", element: <AiInsight /> },
+      { path: "/mypage/manager/edit", element: <ManagerEdit /> },
       //사장 마페
       // { path: "/mypage", element: withAuthGuard(ManagerMyPage) },
     ],

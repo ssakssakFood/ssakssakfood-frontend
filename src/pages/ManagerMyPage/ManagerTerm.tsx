@@ -8,7 +8,12 @@ export default function ManagerTerm() {
       <PageHeader title="설정" />
       <div className="mb-4 flex justify-between mt-6">
         <p>내 정보 수정</p>
-        <img src={Arrow} alt="더보기" className="cursor-pointer" />
+        <img
+          src={Arrow}
+          alt="더보기"
+          className="cursor-pointer"
+          onClick={() => navigate("/mypage/manager/edit")}
+        />
       </div>
       <div className="mb-4 flex justify-between">
         <p>계정 관리</p>
