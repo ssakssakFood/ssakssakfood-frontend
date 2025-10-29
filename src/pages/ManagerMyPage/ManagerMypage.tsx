@@ -54,7 +54,10 @@ export default function ManagerMyPage() {
       </div>
       {/* 인사이트 */}
       <section className="flex flex-col gap-2">
-        <div className="p-4 bg-grey-5 rounded-lg flex items-center gap-4">
+        <div
+          className="p-4 cursor-pointer bg-grey-5 rounded-lg flex items-center gap-4"
+          onClick={() => navigate("/mypage/insight")}
+        >
           <img src={Ai} alt="" />
           <div className="flex items-center justify-between w-full">
             <div className="flex flex-col gap-2">

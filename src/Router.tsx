@@ -39,6 +39,7 @@ import ManagerHome from "@/pages/ManagerHome/ManagerHome";
 import ManagerMyPage from "@/pages/ManagerMyPage/ManagerMypage";
 import RoleMyPage from "@/pages/Mypage";
 import ManagerTerm from "@/pages/ManagerMyPage/ManagerTerm";
+import AiInsight from "@/pages/ManagerMyPage/AiInsight";
 
 // 비회원 접근을 막습니다.
 const withAuthGuard = (Component: React.ComponentType) => {
@@ -101,6 +102,7 @@ const router = createBrowserRouter([
       { path: "/mypage/alarm", element: <MypageAlarm /> },
       { path: "/mypage/term", element: <MypageTerm /> },
       { path: "/mypage/manager/term", element: <ManagerTerm /> },
+      { path: "/mypage/insight", element: <AiInsight /> },
       //사장 마페
       // { path: "/mypage", element: withAuthGuard(ManagerMyPage) },
     ],
