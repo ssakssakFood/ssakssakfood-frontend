@@ -2,13 +2,7 @@ import PageHeader from "@/components/PageHeader";
 import ImgUrl from "@/assets/images/progile.png";
 import Camera from "@/assets/images/camera.png";
 import MyPageInputField from "@/components/MyPageInputFiled";
-import {
-  useGetOwnerProfile,
-  useMyProfile,
-  usePatchNickname,
-  usePatchOwnerProfile,
-  usePatchPhone,
-} from "@/api/mypage/mypage";
+import { useGetOwnerProfile, usePatchOwnerProfile } from "@/api/mypage/mypage";
 import { useState } from "react";
 import { useOwnerImg } from "@/api/mamber/onboarding";
 export default function ManagerEdit() {
@@ -33,8 +27,8 @@ export default function ManagerEdit() {
   });
 
   const [preview, setPreview] = useState("");
-  //폰번호 변경
-  const handlePhone = usePatchOwnerProfile();
+  //폰번호 변경 + 대표자명변경
+  const handleProfile = usePatchOwnerProfile();
 
   const phoneRegex = /^01[0-9]-[0-9]{4}-[0-9]{4}$/;
   const handleInputPhone = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -119,11 +113,14 @@ export default function ManagerEdit() {
               return;
             }
 
-            handleNickName.mutate(form.nickname, {
-              onSuccess: () => {
-                setForm((pre) => ({ ...pre, nickname: "" }));
-              },
-            });
+            handleProfile.mutate(
+              { phoneNumber: form.phone, ownerName: form.nickname },
+              {
+                onSuccess: () => {
+                  setForm((pre) => ({ ...pre, nickname: "" }));
+                },
+              }
+            );
           }}
         />
         <MyPageInputField
@@ -139,12 +136,11 @@ export default function ManagerEdit() {
               alert("2글자에서 20글자 사이로 입력해주세요");
               return;
             }
-
-            handleNickName.mutate(form.nickname, {
-              onSuccess: () => {
-                setForm((pre) => ({ ...pre, nickname: "" }));
-              },
-            });
+            // handleNickName.mutate(form.nickname, {
+            //   onSuccess: () => {
+            //     setForm((pre) => ({ ...pre, nickname: "" }));
+            //   },
+            // });
           }}
         />
 
@@ -165,7 +161,7 @@ export default function ManagerEdit() {
               return;
             }
 
-            handlePhone.mutate(
+            handleProfile.mutate(
               { phoneNumber: form.phone },
               {
                 onSuccess: () => {
