@@ -83,8 +83,9 @@ const router = createBrowserRouter([
       //위치수정
       { path: '/location/edit', element: withAuthGuard(LocationEdit) },
       // { path: "/location/search", element: withAuthGuard(LocationSearch) },
-      { path: '/location/search', element: <LocationSearch /> },
-      { path: '/location/map', element: withAuthGuard(LocationMap) },
+      { path: "/location/search", element: <LocationSearch /> },
+      // { path: "/location/map", element: withAuthGuard(LocationMap) },
+      { path: "/location/map", element: <LocationMap /> },
       //내주변
       { path: '/nearby/register', element: <NearbyRegister /> },
       { path: '/nearby/edit/:routeId', element: <NearbyEdit /> },
