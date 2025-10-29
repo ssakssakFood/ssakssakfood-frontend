@@ -11,21 +11,26 @@ import foodImgUrl from "@/assets/images/logo.png";
 import { useNavigate } from "react-router-dom";
 import { useGetOwnerProfile } from "@/api/mypage/mypage";
 import OwnerFooterNav from "@/layout/OwnerFooterNav";
+import { useState } from "react";
+import DateFilterModal from "@/components/MonthCalendar";
 
 export default function ManagerMyPage() {
+  const [open, setOpen] = useState(false);
+  const [dateTime, setDateTime] = useState<Date | undefined>(new Date());
+
   const DAY = ["일", "월", "화", "수", "목", "금", "토"];
 
   const { data } = useGetOwnerProfile();
-  console.log(data);
+  // console.log(data);
   const navigate = useNavigate();
-  const today = new Date();
-  const month = today.getMonth() + 1;
-  const date = today.getDate();
+
+  const current = dateTime ?? new Date();
+  const month = current.getMonth() + 1;
+  const date = current.getDate();
   const day = `${month.toString().padStart(2, "0")}.${date
     .toString()
     .padStart(2, "0")}`;
-  const dayday = DAY[today.getDay()];
-  console.log(today);
+  const dayday = DAY[current.getDay()];
 
   // console.log(data);
   return (
@@ -84,7 +89,7 @@ export default function ManagerMyPage() {
             <p>
               {day} ({dayday})
             </p>
-            <img src={ArrowD} alt="" />
+            <img src={ArrowD} alt="" onClick={() => setOpen(true)} />
           </div>
           <div className="flex subtitle-b-18 gap-1 mb-4">
             <p>판매량</p>
@@ -119,6 +124,16 @@ export default function ManagerMyPage() {
           </div>
         </div>
       </section>
+      <DateFilterModal
+        open={open}
+        onClose={() => setOpen(false)}
+        selectedDate={dateTime}
+        onSelect={(d) => {
+          setDateTime(d);
+          setOpen(false);
+        }}
+        markedDates={["2025-10-14", "2025-10-21"]} // 빨간 점 표시(옵션)
+      />
 
       <footer className="fixed bottom-0 left-0 right-0 w-full max-w-[401px] bg-white border-t border-gray-100 z-10 mx-auto">
         <OwnerFooterNav />
