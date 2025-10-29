@@ -133,26 +133,27 @@ export default function NearbyPage() {
         }),
       });
 
-      getNearbyAlong.mutate(
-        {
-          polyline: [
-            { lat: latitude, lng: longitude },
-            { lat: latitude, lng: longitude },
-          ],
-          radiusMeters: 2000,
-          category: [0],
-        },
-        {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          onSuccess: (res: any) => {
-            // res.markers 사용
-            console.log(res, "근처경로조회");
-            renderStoreMarkers(res?.markers ?? []);
+      if (!selectedRoute) {
+        getNearbyAlong.mutate(
+          {
+            polyline: [
+              { lat: latitude, lng: longitude },
+              { lat: latitude, lng: longitude },
+            ],
+            radiusMeters: 2000,
+            category: [0],
           },
-        }
-      );
+          {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            onSuccess: (res: any) => {
+              console.log(res, "근처경로조회");
+              renderStoreMarkers(res?.markers ?? []);
+            },
+          }
+        );
+      }
     }); // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loading, error, latitude, longitude]);
+  }, [loading, error, latitude, longitude, selectedRoute]);
   const { data } = useGetNearby();
   // console.log(data);
 
@@ -221,7 +222,7 @@ export default function NearbyPage() {
 
         <div className="flex">
           <div
-            className="ml-6 mr-2 flex rounded-4xl h-6 w-22 py-1 px-3 gap-2 pointer-events-auto"
+            className="ml-6 mr-2 flex rounded-4xl h-6  py-1 px-3 gap-2 pointer-events-auto"
             style={{ background: "var(--color-gradient-main1)" }}
             onClick={handleModal}
           >
