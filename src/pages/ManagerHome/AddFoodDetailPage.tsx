@@ -1,7 +1,7 @@
 // AddfoodEditPage.tsx
 import chevronLeft from "@/assets/icons/floating-checvron-left.svg";
 import Button from "@/components/Button";
-import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import StartSaleBottomSheet from "./UI/StartSaleBottomSheet";
 import { useState } from "react";
 import Modal from "@/components/onBoarding/Modal";
@@ -17,7 +17,7 @@ interface MenuState {
 }
 
 export default function AddFoodDetailPage() {
-  const { id } = useParams<{ id: string }>();
+  //const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const location = useLocation();
   const [isSheetOpen, setIsSheetOpen] = useState(false);
@@ -41,6 +41,19 @@ export default function AddFoodDetailPage() {
   const closeModal = () => {
     setModal(false);
     navigate(-1);
+  };
+
+  const handleEditClick = () => {
+    navigate(`/addfood/${menu?.id}/edit`, {
+      state: {
+        id: menu?.id,
+        name: menu?.name,
+        originalPrice: menu?.originalPrice,
+        salePrice: menu?.salePrice,
+        imgUrl: menu?.imgUrl,
+        category: menu?.category,
+      },
+    });
   };
 
   // 메뉴를 찾지 못한 경우 처리
@@ -81,7 +94,10 @@ export default function AddFoodDetailPage() {
         <div className="px-6 pb-[100px] flex flex-col gap-[24px]">
           <div className="flex justify-between items-center mt-[24px]">
             <span className="text-[24px] font-bold">{menu.name}</span>
-            <div className="w-[50px] h-[24px] bg-[#F3F3F3] rounded-md flex items-center justify-center cursor-pointer text-[14px]">
+            <div
+              className="w-[50px] h-[24px] bg-[#F3F3F3] rounded-md flex items-center justify-center cursor-pointer text-[14px]"
+              onClick={handleEditClick}
+            >
               수정
             </div>
           </div>
@@ -89,7 +105,9 @@ export default function AddFoodDetailPage() {
             <div className="text-[14px] font-semibold text-[#A8A8A8]">
               카테고리
             </div>
-            <div className="text-[16px] font-semibold">{menu.category || '-'}</div>
+            <div className="text-[16px] font-semibold">
+              {menu.category || "-"}
+            </div>
           </div>
           <div className="flex flex-col gap-[12px]">
             <div className="text-[14px] font-semibold text-[#A8A8A8]">가격</div>

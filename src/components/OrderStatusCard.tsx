@@ -1,14 +1,14 @@
-import BasicImg from '@/assets/images/basic.svg';
-interface OrderStatusCardProps {
-  menuName: string;
-  storeName: string;
-  menuImageUrl: string;
-  foodQuantity: number;
-  totalAmount: number;
-  reservedAt: string;
-  pickupTime: string;
-  status: string;
-}
+import BasicImg from "@/assets/images/basic.svg";
+// interface OrderStatusCardProps {
+//   menuName: string;
+//   storeName: string;
+//   menuImageUrl: string;
+//   foodQuantity: number;
+//   totalAmount: number;
+//   reservedAt: string;
+//   pickupTime: string;
+//   status: string;
+// }
 
 //status가 "PENDING" 이면, "예약 확인 중"
 //status가 "COMPLETED"면 "예약 확정"

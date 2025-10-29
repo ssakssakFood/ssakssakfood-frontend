@@ -9,7 +9,7 @@ type ImagePickerBoxProps = {
   accept?: string;
   className?: string;
   label?: string;
-  disabled? : boolean;
+  disabled?: boolean;
 };
 
 const ImagePickerBox = forwardRef<HTMLInputElement, ImagePickerBoxProps>(

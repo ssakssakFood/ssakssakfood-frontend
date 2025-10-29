@@ -57,9 +57,6 @@ export default function StartSaleBottomSheet({
   quantity,
   setQuantity,
   onConfirm,
-  menuName,
-  originalPrice,
-  salePrice,
   menuId,
 }: OrderBottomSheetProps) {
   const sheetRef = useRef<HTMLDivElement>(null);
@@ -82,7 +79,9 @@ export default function StartSaleBottomSheet({
   const [selectedDate, setSelectedDate] = useState<"today" | "tomorrow">(
     oneHourLater.getDate() !== now.getDate() ? "tomorrow" : "today",
   );
-  const [selectedHour, setSelectedHour] = useState<number>(oneHourLater.getHours());
+  const [selectedHour, setSelectedHour] = useState<number>(
+    oneHourLater.getHours(),
+  );
   const [selectedMinute, setSelectedMinute] = useState<number>(
     oneHourLater.getMinutes(),
   );
@@ -185,7 +184,8 @@ export default function StartSaleBottomSheet({
       setIsLoading(true);
 
       // 마감기한 포맷 생성
-      const baseDate = selectedDate === "today" ? new Date(today) : new Date(tomorrow);
+      const baseDate =
+        selectedDate === "today" ? new Date(today) : new Date(tomorrow);
       baseDate.setHours(selectedHour);
       baseDate.setMinutes(selectedMinute);
       baseDate.setSeconds(0);
@@ -229,12 +229,21 @@ export default function StartSaleBottomSheet({
 
       // 성공 시 onConfirm 호출
       onConfirm?.();
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("판매 시작 실패:", error);
-      console.error("에러 응답:", error.response?.data);
-      console.error("에러 메시지:", error.response?.data?.message || error.message);
 
-      const errorMessage = error.response?.data?.message || "판매 시작에 실패했습니다.";
+      const axiosError = error as {
+        response?: { data?: { message?: string } };
+        message?: string;
+      };
+      console.error("에러 응답:", axiosError.response?.data);
+      console.error(
+        "에러 메시지:",
+        axiosError.response?.data?.message || axiosError.message,
+      );
+
+      const errorMessage =
+        axiosError.response?.data?.message || "판매 시작에 실패했습니다.";
       alert(`${errorMessage}\n\n다시 시도해주세요.`);
     } finally {
       setIsLoading(false);

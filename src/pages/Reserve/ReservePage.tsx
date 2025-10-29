@@ -60,26 +60,14 @@ export default function ReservePage() {
   const state = location.state as ReserveState | null;
   const createReservationMutation = useCreateReservation();
 
-  // state가 없으면 메뉴 상세 페이지로 리다이렉트
-  useEffect(() => {
-    if (!state || !state.quantity) {
-      navigate(`/menu/${id}`, { replace: true });
-    }
-  }, [state, id, navigate]);
-
-  // state가 없으면 렌더링하지 않음
-  if (!state || !state.quantity) {
-    return null;
-  }
-
+  // pickupTime 파싱 및 기본값 설정
   const pickupTimeRange = state?.pickupTime?.match(
     /(\d{2}):\d{2}\s*~\s*(\d{2}):\d{2}/,
   );
-
-  // 파싱 실패시 기본값
   const startHour = pickupTimeRange ? parseInt(pickupTimeRange[1], 10) : 9;
   const endHour = pickupTimeRange ? parseInt(pickupTimeRange[2], 10) : 18;
 
+  // 모든 Hook 호출은 early return 전에 위치
   const [isPickerOpen, setIsPickerOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<"today" | "tomorrow">(
     dateItems[0].value as "today" | "tomorrow",
@@ -93,10 +81,10 @@ export default function ReservePage() {
   const hourItems = generateTimeItems(availableStartHour, endHour);
 
   const [selectedHour, setSelectedHour] = useState<number>(
-    hourItems[0]?.value as number || startHour,
+    (hourItems[0]?.value as number) || startHour,
   );
   const [selectedMinute, setSelectedMinute] = useState<number>(
-    minuteItems[0]?.value as number || 0,
+    (minuteItems[0]?.value as number) || 0,
   );
 
   // 오늘이고 현재 시간과 같은 시를 선택한 경우, 현재 분 이후만 선택 가능
@@ -138,6 +126,18 @@ export default function ReservePage() {
       }
     }
   }, [selectedDate, selectedHour, selectedMinute]);
+
+  // state가 없으면 메뉴 상세 페이지로 리다이렉트
+  useEffect(() => {
+    if (!state || !state.quantity) {
+      navigate(`/menu/${id}`, { replace: true });
+    }
+  }, [state, id, navigate]);
+
+  // state가 없으면 렌더링하지 않음
+  if (!state || !state.quantity) {
+    return null;
+  }
 
   if (!state) {
     return null;

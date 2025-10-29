@@ -293,8 +293,13 @@ export const uploadTodayMenu = async (
 
 export const useUploadTodayMenu = () => {
   return useMutation({
-    mutationFn: ({ menuId, body }: { menuId: number; body: UploadTodayMenuDto }) =>
-      uploadTodayMenu(menuId, body),
+    mutationFn: ({
+      menuId,
+      body,
+    }: {
+      menuId: number;
+      body: UploadTodayMenuDto;
+    }) => uploadTodayMenu(menuId, body),
   });
 };
 
@@ -302,9 +307,7 @@ export const useUploadTodayMenu = () => {
 특정 메뉴를 삭제합니다.
  */
 export const deleteMenu = async (menuId: number): Promise<string> => {
-  const { data } = await api.delete<ApiResponse<string>>(
-    `/menus/${menuId}`,
-  );
+  const { data } = await api.delete<ApiResponse<string>>(`/menus/${menuId}`);
   return data.result;
 };
 

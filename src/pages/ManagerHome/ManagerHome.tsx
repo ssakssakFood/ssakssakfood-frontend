@@ -1,17 +1,21 @@
-import { useState } from 'react';
-import CurrentDateDisplayWithDateObject from '@/utils/CurrentDate';
-import chevronL from '@/assets/icons/chevron-right.svg';
-import { MenuAddCard, MenuImgCard } from '@/components/MenuCard';
-import addImg from '@/assets/icons/plus-orange.svg';
-import OwnerFooterNav from '@/layout/OwnerFooterNav';
-import { useNavigate } from 'react-router-dom';
-import StartSaleBottomSheet from './UI/StartSaleBottomSheet';
-import Modal from '@/components/onBoarding/Modal';
-import DeleteConfirmModal from '@/components/DeleteConfirmModal';
-import { useGetOwnerProfile } from '@/api/mypage/mypage';
-import { useGetTodayMenus, useGetAllStoreMenus, useDeleteMenu } from '@/api/menu/menu';
-import basicImage from '@/assets/images/basic.svg';
-import { useQueryClient } from 'react-query';
+import { useState } from "react";
+import CurrentDateDisplayWithDateObject from "@/utils/CurrentDate";
+import chevronL from "@/assets/icons/chevron-right.svg";
+import { MenuAddCard, MenuImgCard } from "@/components/MenuCard";
+import addImg from "@/assets/icons/plus-orange.svg";
+import OwnerFooterNav from "@/layout/OwnerFooterNav";
+import { useNavigate } from "react-router-dom";
+import StartSaleBottomSheet from "./UI/StartSaleBottomSheet";
+import Modal from "@/components/onBoarding/Modal";
+import DeleteConfirmModal from "@/components/DeleteConfirmModal";
+import { useGetOwnerProfile } from "@/api/mypage/mypage";
+import {
+  useGetTodayMenus,
+  useGetAllStoreMenus,
+  useDeleteMenu,
+} from "@/api/menu/menu";
+import basicImage from "@/assets/images/basic.svg";
+import { useQueryClient } from "react-query";
 
 export default function ManagerHome() {
   const navigate = useNavigate();
@@ -22,7 +26,10 @@ export default function ManagerHome() {
   const [quantity, setQuantity] = useState<number>(1);
   const [modal, setModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
-  const [menuToDelete, setMenuToDelete] = useState<{ id: number; name: string } | null>(null);
+  const [menuToDelete, setMenuToDelete] = useState<{
+    id: number;
+    name: string;
+  } | null>(null);
 
   // API 호출
   const { data: ownerProfile } = useGetOwnerProfile();
@@ -64,15 +71,15 @@ export default function ManagerHome() {
       await deleteMenuMutation.mutateAsync(menuToDelete.id);
 
       // 삭제 성공 후 목록 갱신
-      queryClient.invalidateQueries(['allStoreMenus']);
-      queryClient.invalidateQueries(['todayMenus']);
+      queryClient.invalidateQueries(["allStoreMenus"]);
+      queryClient.invalidateQueries(["todayMenus"]);
 
       // 모달 닫기 (편집 모드는 유지)
       setDeleteModal(false);
       setMenuToDelete(null);
     } catch (error) {
-      console.error('메뉴 삭제 실패:', error);
-      alert('메뉴 삭제에 실패했습니다. 다시 시도해주세요.');
+      console.error("메뉴 삭제 실패:", error);
+      alert("메뉴 삭제에 실패했습니다. 다시 시도해주세요.");
     }
   };
 
@@ -94,10 +101,10 @@ export default function ManagerHome() {
         />
         <div className="flex flex-col">
           <span className="text-[20px] font-bold">
-            {ownerProfile?.store.name || ''}
+            {ownerProfile?.store.name || ""}
           </span>
           <span className="text-[14px] text-gray-600">
-            {ownerProfile?.store.roadAddress || ''}
+            {ownerProfile?.store.roadAddress || ""}
           </span>
         </div>
       </div>
@@ -109,7 +116,7 @@ export default function ManagerHome() {
           </h2>
           <div
             className="flex items-center text-[16px] text-[#7F7F7F] cursor-pointer gap-1"
-            onClick={() => navigate('/allfoods')}
+            onClick={() => navigate("/allfoods")}
           >
             전체보기
             <img src={chevronL} alt="전체보기 아이콘" />
@@ -118,8 +125,8 @@ export default function ManagerHome() {
         <div
           className="flex gap-2 overflow-x-auto pb-[12px] mt-[24px]"
           style={{
-            msOverflowStyle: 'none',
-            scrollbarWidth: 'none',
+            msOverflowStyle: "none",
+            scrollbarWidth: "none",
           }}
         >
           {todayMenus?.menus.slice(0, 5).map((menu) => (
@@ -136,7 +143,7 @@ export default function ManagerHome() {
       <section className="mt-[24px] mb-[100px]">
         <div className="flex justify-between items-center">
           <h2 className="flex gap-2 text-[20px] font-bold">
-            내 식품{' '}
+            내 식품{" "}
             <span className="text-red">{allMenus?.totalMenuCount || 0}</span>
           </h2>
           {isEditMode ? (
@@ -160,13 +167,13 @@ export default function ManagerHome() {
         {!isEditMode && (
           <div
             className="text-[16px] font-semibold text-[#FE7549] flex gap-2 justify-center items-center border-1 border-dashed border-[#FE7549] rounded-lg h-[48px] mt-[24px] cursor-pointer mb-[16px]"
-            onClick={() => navigate('/addfood')}
+            onClick={() => navigate("/addfood")}
           >
             <img src={addImg} alt="식품 추가 아이콘" />
             식품 추가하기
           </div>
         )}
-        <div className={`flex flex-col gap-4 ${isEditMode ? 'mt-[24px]' : ''}`}>
+        <div className={`flex flex-col gap-4 ${isEditMode ? "mt-[24px]" : ""}`}>
           {allMenus?.menus.map((menu) => (
             <MenuAddCard
               key={menu.id}
@@ -217,7 +224,7 @@ export default function ManagerHome() {
       {/* 삭제 확인 모달 */}
       <DeleteConfirmModal
         isOpen={deleteModal}
-        menuName={menuToDelete?.name || ''}
+        menuName={menuToDelete?.name || ""}
         onConfirm={handleConfirmDelete}
         onCancel={handleCancelDelete}
       />

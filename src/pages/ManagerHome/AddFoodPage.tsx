@@ -4,7 +4,11 @@ import { MenuHeader } from "@/components/Headers";
 import ImagePickerBox from "@/components/ImagePickerBox";
 import InputField2 from "@/components/InputField2";
 import Modal from "@/components/onBoarding/Modal";
-import { CATEGORY, getCategoryId, CategorySlugType } from "@/constants/Category";
+import {
+  CATEGORY,
+  getCategoryId,
+  CategorySlugType,
+} from "@/constants/Category";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCreateMenu, useUploadMenuImage } from "@/api/menu/menu";

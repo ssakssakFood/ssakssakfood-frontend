@@ -1,9 +1,9 @@
-import UserOrdersPage from './UserOrderspage';
+import UserOrdersPage from "./UserOrderspage";
 
 export default function MyOrdersPage() {
-  return(
+  return (
     <div>
       <UserOrdersPage />
     </div>
-  )
+  );
 }

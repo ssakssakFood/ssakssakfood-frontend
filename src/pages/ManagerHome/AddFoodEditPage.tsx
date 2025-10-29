@@ -1,13 +1,17 @@
-import { CategoryMiniBadge } from '@/components/CategoryBadge';
-import { MenuHeader } from '@/components/Headers';
-import ImagePickerBox from '@/components/ImagePickerBox';
-import InputField2 from '@/components/InputField2';
-import { CATEGORY, getCategoryId, type CategorySlugType } from '@/constants/Category';
-import { useState } from 'react';
-import { useLocation } from 'react-router-dom';
-import cornorImg from '@/assets/icons/corner-down-right.svg';
-import { useUpdateMenu, useUploadMenuImage } from '@/api/menu/menu';
-import { useQueryClient } from 'react-query';
+import { CategoryMiniBadge } from "@/components/CategoryBadge";
+import { MenuHeader } from "@/components/Headers";
+import ImagePickerBox from "@/components/ImagePickerBox";
+import InputField2 from "@/components/InputField2";
+import {
+  CATEGORY,
+  getCategoryId,
+  type CategorySlugType,
+} from "@/constants/Category";
+import { useState } from "react";
+import { useLocation } from "react-router-dom";
+import cornorImg from "@/assets/icons/corner-down-right.svg";
+import { useUpdateMenu, useUploadMenuImage } from "@/api/menu/menu";
+import { useQueryClient } from "react-query";
 
 interface MenuState {
   id: number;
@@ -28,27 +32,30 @@ export default function AddFoodEditPage() {
   const uploadImageMutation = useUploadMenuImage();
 
   // 기존 데이터 (location state에서 받아온 데이터로 초기화)
-  const [foodName, setFoodName] = useState<string>(menuData?.name || '');
+  const [foodName, setFoodName] = useState<string>(menuData?.name || "");
   const [selectedCategory, setSelectedCategory] = useState<string>(
     // category 이름을 slug로 변환 (예: "빵/디저트" -> "breads")
-    CATEGORY.find((cat) => cat.label === menuData?.category)?.slug || 'breads'
+    CATEGORY.find((cat) => cat.label === menuData?.category)?.slug || "breads",
   );
-  const [imageFile, setImageFile] = useState<File | null>(null);
-  const [imagePreviewUrl, setImagePreviewUrl] = useState<string>(menuData?.imgUrl || '');
+  const [_imageFile, setImageFile] = useState<File | null>(null);
+  const [imagePreviewUrl, setImagePreviewUrl] = useState<string>(
+    menuData?.imgUrl || "",
+  );
   const [costPrice, setCostPrice] = useState<string>(
-    menuData?.originalPrice.toString() || ''
+    menuData?.originalPrice.toString() || "",
   );
   const [sellingPrice, setSellingPrice] = useState<string>(
-    menuData?.salePrice.toString() || ''
+    menuData?.salePrice.toString() || "",
   );
 
   // 수정 중인 임시 데이터
-  const [editingFoodName, setEditingFoodName] = useState<string>('');
-  const [editingCategory, setEditingCategory] = useState<string>('');
+  const [editingFoodName, setEditingFoodName] = useState<string>("");
+  const [editingCategory, setEditingCategory] = useState<string>("");
   const [editingImageFile, setEditingImageFile] = useState<File | null>(null);
-  const [editingImagePreviewUrl, setEditingImagePreviewUrl] = useState<string>('');
-  const [editingCostPrice, setEditingCostPrice] = useState<string>('');
-  const [editingSellingPrice, setEditingSellingPrice] = useState<string>('');
+  const [editingImagePreviewUrl, setEditingImagePreviewUrl] =
+    useState<string>("");
+  const [editingCostPrice, setEditingCostPrice] = useState<string>("");
+  const [editingSellingPrice, setEditingSellingPrice] = useState<string>("");
 
   // 각 필드의 수정 모드 상태
   const [isEditingName, setIsEditingName] = useState(false);
@@ -95,11 +102,11 @@ export default function AddFoodEditPage() {
       setIsEditingName(false);
 
       // 캐시 무효화로 목록 자동 새로고침
-      queryClient.invalidateQueries(['allStoreMenus']);
-      queryClient.invalidateQueries(['todayMenus']);
+      queryClient.invalidateQueries(["allStoreMenus"]);
+      queryClient.invalidateQueries(["todayMenus"]);
     } catch (error) {
-      console.error('식품 이름 수정 실패:', error);
-      alert('식품 이름 수정에 실패했습니다. 다시 시도해주세요.');
+      console.error("식품 이름 수정 실패:", error);
+      alert("식품 이름 수정에 실패했습니다. 다시 시도해주세요.");
     }
   };
 
@@ -116,11 +123,11 @@ export default function AddFoodEditPage() {
       setIsEditingCategoryField(false);
 
       // 캐시 무효화로 목록 자동 새로고침
-      queryClient.invalidateQueries(['allStoreMenus']);
-      queryClient.invalidateQueries(['todayMenus']);
+      queryClient.invalidateQueries(["allStoreMenus"]);
+      queryClient.invalidateQueries(["todayMenus"]);
     } catch (error) {
-      console.error('카테고리 수정 실패:', error);
-      alert('카테고리 수정에 실패했습니다. 다시 시도해주세요.');
+      console.error("카테고리 수정 실패:", error);
+      alert("카테고리 수정에 실패했습니다. 다시 시도해주세요.");
     }
   };
 
@@ -138,11 +145,11 @@ export default function AddFoodEditPage() {
       setIsEditingImage(false);
 
       // 캐시 무효화로 목록 자동 새로고침
-      queryClient.invalidateQueries(['allStoreMenus']);
-      queryClient.invalidateQueries(['todayMenus']);
+      queryClient.invalidateQueries(["allStoreMenus"]);
+      queryClient.invalidateQueries(["todayMenus"]);
     } catch (error) {
-      console.error('이미지 수정 실패:', error);
-      alert('이미지 수정에 실패했습니다. 다시 시도해주세요.');
+      console.error("이미지 수정 실패:", error);
+      alert("이미지 수정에 실패했습니다. 다시 시도해주세요.");
     }
   };
 
@@ -158,11 +165,11 @@ export default function AddFoodEditPage() {
       setIsEditingCost(false);
 
       // 캐시 무효화로 목록 자동 새로고침
-      queryClient.invalidateQueries(['allStoreMenus']);
-      queryClient.invalidateQueries(['todayMenus']);
+      queryClient.invalidateQueries(["allStoreMenus"]);
+      queryClient.invalidateQueries(["todayMenus"]);
     } catch (error) {
-      console.error('원가 수정 실패:', error);
-      alert('원가 수정에 실패했습니다. 다시 시도해주세요.');
+      console.error("원가 수정 실패:", error);
+      alert("원가 수정에 실패했습니다. 다시 시도해주세요.");
     }
   };
 
@@ -178,11 +185,11 @@ export default function AddFoodEditPage() {
       setIsEditingSelling(false);
 
       // 캐시 무효화로 목록 자동 새로고침
-      queryClient.invalidateQueries(['allStoreMenus']);
-      queryClient.invalidateQueries(['todayMenus']);
+      queryClient.invalidateQueries(["allStoreMenus"]);
+      queryClient.invalidateQueries(["todayMenus"]);
     } catch (error) {
-      console.error('판매가 수정 실패:', error);
-      alert('판매가 수정에 실패했습니다. 다시 시도해주세요.');
+      console.error("판매가 수정 실패:", error);
+      alert("판매가 수정에 실패했습니다. 다시 시도해주세요.");
     }
   };
 
@@ -199,9 +206,11 @@ export default function AddFoodEditPage() {
         />
         <div
           className="text-orange-500 absolute top-11 right-4 cursor-pointer"
-          onClick={isEditingName ? () => setIsEditingName(false) : handleEditName}
+          onClick={
+            isEditingName ? () => setIsEditingName(false) : handleEditName
+          }
         >
-          {isEditingName ? '변경 취소' : '변경'}
+          {isEditingName ? "변경 취소" : "변경"}
         </div>
       </div>
       {isEditingName && (
@@ -247,7 +256,7 @@ export default function AddFoodEditPage() {
               : handleEditCategory
           }
         >
-          {isEditingCategoryField ? '변경 취소' : '변경'}
+          {isEditingCategoryField ? "변경 취소" : "변경"}
         </div>
       </div>
       {isEditingCategoryField && (
@@ -291,9 +300,11 @@ export default function AddFoodEditPage() {
         />
         <div
           className="text-orange-500 absolute top-0 right-0 cursor-pointer bg-[#F3F3F3] px-[16px] py-[6px] rounded-md"
-          onClick={isEditingImage ? () => setIsEditingImage(false) : handleEditImage}
+          onClick={
+            isEditingImage ? () => setIsEditingImage(false) : handleEditImage
+          }
         >
-          {isEditingImage ? '변경 취소' : '변경'}
+          {isEditingImage ? "변경 취소" : "변경"}
         </div>
       </div>
       {isEditingImage && (
@@ -330,9 +341,11 @@ export default function AddFoodEditPage() {
         />
         <div
           className="text-orange-500 absolute top-11 right-4 cursor-pointer"
-          onClick={isEditingCost ? () => setIsEditingCost(false) : handleEditCost}
+          onClick={
+            isEditingCost ? () => setIsEditingCost(false) : handleEditCost
+          }
         >
-          {isEditingCost ? '변경 취소' : '변경'}
+          {isEditingCost ? "변경 취소" : "변경"}
         </div>
       </div>
       {isEditingCost && (
@@ -365,9 +378,13 @@ export default function AddFoodEditPage() {
         />
         <div
           className="text-orange-500 absolute top-11 right-4 cursor-pointer"
-          onClick={isEditingSelling ? () => setIsEditingSelling(false) : handleEditSelling}
+          onClick={
+            isEditingSelling
+              ? () => setIsEditingSelling(false)
+              : handleEditSelling
+          }
         >
-          {isEditingSelling ? '변경 취소' : '변경'}
+          {isEditingSelling ? "변경 취소" : "변경"}
         </div>
       </div>
       {isEditingSelling && (
