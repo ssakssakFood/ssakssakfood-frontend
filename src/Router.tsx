@@ -24,7 +24,6 @@ import StoreInformation from "@/pages/onBoarding/onBoardingStore";
 import AllfoodsPage from "./pages/ManagerHome/AllFoodsPage";
 import NearbyEdit from "@/pages/NearBy/NearByEdit";
 import AddFoodPage from "./pages/ManagerHome/AddFoodPage";
-import AddfoodEditPage from "./pages/ManagerHome/AddFoodEditPage";
 import AuthGuard from "@/components/AuthGuard";
 import NearbyPage from "./pages/NearBy/NearByPage";
 import NearbyRegister from "./pages/NearBy/NearByRegister";
@@ -35,6 +34,8 @@ import MyPageLeave from "@/pages/mypage/MyPageLeave";
 import MyPageCard from "@/pages/mypage/MyPageCard";
 import MypageAlarm from "@/pages/mypage/MyPageAlarm";
 import MypageTerm from "@/pages/mypage/MyPageTerm";
+import AddFoodDetailPage from "./pages/ManagerHome/AddFoodDetailPage";
+import AddFoodEditPage from "./pages/ManagerHome/AddFoodEditPage";
 
 // 비회원 접근을 막습니다.
 const withAuthGuard = (Component: React.ComponentType) => {
@@ -86,8 +87,12 @@ const router = createBrowserRouter([
       { path: "/store/:id", element: withAuthGuard(StorePage) },
       //예약
       { path: "/menu/:id/reserve", element: withAuthGuard(ReservePage) },
+      //사장님 Home 관련
+      //오늘의 판매식품 전체보기
       { path: "/allfoods", element: withAuthGuard(AllfoodsPage) },
+      //판매 시작하기
       { path: "/addfood", element: withAuthGuard(AddFoodPage) },
+      { path: "/addfood/:id/edit", element: withAuthGuard(AddFoodEditPage)},
       //마이페이지
       { path: "/mypage", element: withAuthGuard(MyPage) },
       { path: "/mypage/edit", element: <MyPageEdit /> },
@@ -100,7 +105,7 @@ const router = createBrowserRouter([
   },
   //메뉴 상세 페이지 (로그인 필수)
   { path: "menu/:id", element: withAuthGuard(MenuDetailPage) },
-  { path: "/addfood/:id", element: withAuthGuard(AddfoodEditPage) },
+  { path: "/addfood/:id", element: withAuthGuard(AddFoodDetailPage) },
 ]);
 
 export default router;
