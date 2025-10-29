@@ -123,6 +123,20 @@ export const ownerImg = async ({
 
 export const useOwnerImg = () => {
   return useMutation((vars: { memberId: number; body: FormData }) =>
-    ownerImg(vars),
+    ownerImg(vars)
   );
+};
+
+//사장 메뉴 조회
+
+export const getMyOwnerMenus = async (storeId: number) => {
+  const { data } = await api.get(`/menus/stores/${storeId}/menus`);
+  return data;
+};
+export const useMySoreMenus = (storeId: number) => {
+  return useQuery({
+    queryFn: () => getMyOwnerMenus(storeId),
+    queryKey: ["menus"],
+    select: (res) => res.result,
+  });
 };
