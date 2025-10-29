@@ -155,3 +155,10 @@ export interface ImageUploadResponseDto {
   targetId: number;
   imageUrl: string;
 }
+
+// 오늘의 등록식품으로 전환 요청
+export interface UploadTodayMenuDto {
+  surplusQuantity: number;
+  isShared: boolean;
+  deadline: string; // yyyy-MM-dd HH:mm:ss 형식
+}

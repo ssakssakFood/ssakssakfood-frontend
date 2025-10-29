@@ -12,6 +12,7 @@ import type {
   CreateMenuDto,
   CreateMenuResponseDto,
   ImageUploadResponseDto,
+  UploadTodayMenuDto,
 } from "@/types/menu";
 
 /*
@@ -272,5 +273,26 @@ export const useUploadMenuImage = () => {
   return useMutation({
     mutationFn: ({ menuId, imageFile }: { menuId: number; imageFile: File }) =>
       uploadMenuImage(menuId, imageFile),
+  });
+};
+
+/*
+이미 등록된 메뉴를 오늘의 등록식품으로 전환합니다.
+ */
+export const uploadTodayMenu = async (
+  menuId: number,
+  body: UploadTodayMenuDto,
+): Promise<MenuDto> => {
+  const { data } = await api.patch<ApiResponse<MenuDto>>(
+    `/menus/${menuId}/upload-today`,
+    body,
+  );
+  return data.result;
+};
+
+export const useUploadTodayMenu = () => {
+  return useMutation({
+    mutationFn: ({ menuId, body }: { menuId: number; body: UploadTodayMenuDto }) =>
+      uploadTodayMenu(menuId, body),
   });
 };

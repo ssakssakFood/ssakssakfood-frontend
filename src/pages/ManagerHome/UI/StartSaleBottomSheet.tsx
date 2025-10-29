@@ -5,6 +5,8 @@ import Minus from "@/assets/icons/minus.svg";
 import Plus from "@/assets/icons/plus.svg";
 import DialPicker from "@/components/DialPicker";
 import Button from "@/components/Button";
+import { useUploadTodayMenu } from "@/api/menu/menu";
+import { useQueryClient } from "react-query";
 
 interface OrderBottomSheetProps {
   isOpen: boolean;
@@ -15,6 +17,7 @@ interface OrderBottomSheetProps {
   menuName?: string;
   originalPrice?: number;
   salePrice?: number;
+  menuId?: number;
 }
 
 const formatToTwoDigits = (num: number) => String(num).padStart(2, "0");
@@ -57,6 +60,7 @@ export default function StartSaleBottomSheet({
   menuName,
   originalPrice,
   salePrice,
+  menuId,
 }: OrderBottomSheetProps) {
   const sheetRef = useRef<HTMLDivElement>(null);
   const startY = useRef(0);
@@ -66,15 +70,21 @@ export default function StartSaleBottomSheet({
 
   const [isPickerOpen, setIsPickerOpen] = useState(false);
   const [isFreeForCard, setIsFreeForCard] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  // 현재 시간으로 초기화
+  const queryClient = useQueryClient();
+  const uploadTodayMenuMutation = useUploadTodayMenu();
+
+  // 현재 시간 + 1시간으로 초기화
   const now = new Date();
+  const oneHourLater = new Date(now.getTime() + 60 * 60 * 1000);
+
   const [selectedDate, setSelectedDate] = useState<"today" | "tomorrow">(
-    "today",
+    oneHourLater.getDate() !== now.getDate() ? "tomorrow" : "today",
   );
-  const [selectedHour, setSelectedHour] = useState<number>(now.getHours());
+  const [selectedHour, setSelectedHour] = useState<number>(oneHourLater.getHours());
   const [selectedMinute, setSelectedMinute] = useState<number>(
-    now.getMinutes(),
+    oneHourLater.getMinutes(),
   );
 
   const ANIMATION_DURATION = 300;
@@ -166,6 +176,70 @@ export default function StartSaleBottomSheet({
   }
 
   const overlayOpacity = 1 - translateY / MAX_HEIGHT;
+
+  // 판매 시작하기 핸들러
+  const handleStartSale = async () => {
+    if (!menuId || isLoading) return;
+
+    try {
+      setIsLoading(true);
+
+      // 마감기한 포맷 생성
+      const baseDate = selectedDate === "today" ? new Date(today) : new Date(tomorrow);
+      baseDate.setHours(selectedHour);
+      baseDate.setMinutes(selectedMinute);
+      baseDate.setSeconds(0);
+      baseDate.setMilliseconds(0);
+
+      // yyyy-MM-dd HH:mm:ss 형식
+      const year = baseDate.getFullYear();
+      const month = String(baseDate.getMonth() + 1).padStart(2, "0");
+      const day = String(baseDate.getDate()).padStart(2, "0");
+      const hours = String(baseDate.getHours()).padStart(2, "0");
+      const minutes = String(baseDate.getMinutes()).padStart(2, "0");
+      const seconds = String(baseDate.getSeconds()).padStart(2, "0");
+      const deadline = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+
+      console.log("생성된 마감기한:", deadline);
+      console.log("현재 시간:", new Date().toISOString());
+      console.log("마감기한이 미래인가?", new Date(deadline) > new Date());
+
+      const requestBody = {
+        surplusQuantity: quantity,
+        isShared: isFreeForCard,
+        deadline,
+      };
+
+      console.log("판매 시작 요청:", {
+        menuId,
+        body: requestBody,
+      });
+
+      // API 요청
+      await uploadTodayMenuMutation.mutateAsync({
+        menuId,
+        body: requestBody,
+      });
+
+      console.log("판매 시작 성공");
+
+      // React Query 캐시 무효화 - 오늘의 판매식품 목록 자동 갱신
+      queryClient.invalidateQueries(["todayMenus"]);
+      queryClient.invalidateQueries(["allStoreMenus"]);
+
+      // 성공 시 onConfirm 호출
+      onConfirm?.();
+    } catch (error: any) {
+      console.error("판매 시작 실패:", error);
+      console.error("에러 응답:", error.response?.data);
+      console.error("에러 메시지:", error.response?.data?.message || error.message);
+
+      const errorMessage = error.response?.data?.message || "판매 시작에 실패했습니다.";
+      alert(`${errorMessage}\n\n다시 시도해주세요.`);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div
@@ -338,9 +412,9 @@ export default function StartSaleBottomSheet({
             <div className="p-4">
               <Button
                 className="w-full text-lg py-6 cursor-pointer"
-                labelName="판매 시작하기"
-                disabled={false}
-                onClick={onConfirm}
+                labelName={isLoading ? "등록 중..." : "판매 시작하기"}
+                disabled={isLoading}
+                onClick={handleStartSale}
               />
             </div>
           </footer>

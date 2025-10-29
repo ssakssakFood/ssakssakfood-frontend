@@ -163,6 +163,7 @@ export default function ManagerHome() {
         quantity={quantity}
         setQuantity={setQuantity}
         onConfirm={handleConfirmSale}
+        menuId={selectedMenuId || undefined}
       />
 
       {/* 모달 */}

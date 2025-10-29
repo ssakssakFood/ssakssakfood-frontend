@@ -134,6 +134,7 @@ export default function AddFoodDetailPage() {
         menuName={menu.name}
         originalPrice={menu.originalPrice}
         salePrice={menu.salePrice}
+        menuId={menu.id}
       />
 
       {modal && (
