@@ -1,4 +1,4 @@
-import { useQuery } from "react-query";
+import { useQuery, useMutation } from "react-query";
 import api from "../apiMember";
 import type {
   ApiResponse,
@@ -9,6 +9,9 @@ import type {
   StoreDetailMenuDto,
   TodayMenusDto,
   AllMenusDto,
+  CreateMenuDto,
+  CreateMenuResponseDto,
+  ImageUploadResponseDto,
 } from "@/types/menu";
 
 /*
@@ -221,5 +224,53 @@ export const useGetAllStoreMenus = (storeId: number) => {
     queryKey: ["allStoreMenus", storeId],
     queryFn: () => getAllStoreMenus(storeId),
     enabled: !!storeId,
+  });
+};
+
+/*
+사장님이 자신의 가게에 새로운 메뉴를 등록합니다.
+ */
+export const createMenu = async (
+  body: CreateMenuDto,
+): Promise<CreateMenuResponseDto> => {
+  const { data } = await api.post<ApiResponse<CreateMenuResponseDto>>(
+    "/menus",
+    body,
+  );
+  return data.result;
+};
+
+export const useCreateMenu = () => {
+  return useMutation({
+    mutationFn: (body: CreateMenuDto) => createMenu(body),
+  });
+};
+
+/*
+특정 메뉴에 이미지를 업로드합니다.
+ */
+export const uploadMenuImage = async (
+  menuId: number,
+  imageFile: File,
+): Promise<ImageUploadResponseDto> => {
+  const formData = new FormData();
+  formData.append("image", imageFile);
+
+  const { data } = await api.post<ApiResponse<ImageUploadResponseDto>>(
+    `/images/menus/${menuId}`,
+    formData,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    },
+  );
+  return data.result;
+};
+
+export const useUploadMenuImage = () => {
+  return useMutation({
+    mutationFn: ({ menuId, imageFile }: { menuId: number; imageFile: File }) =>
+      uploadMenuImage(menuId, imageFile),
   });
 };

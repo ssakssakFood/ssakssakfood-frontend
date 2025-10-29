@@ -138,6 +138,8 @@ export function MenuAddCard({
   isEditMode,
   onDelete,
   onStartSale,
+  imgUrl,
+  category,
 }: {
   id: number;
   name: string;
@@ -146,12 +148,23 @@ export function MenuAddCard({
   isEditMode?: boolean;
   onDelete?: () => void;
   onStartSale?: (id: number) => void;
+  imgUrl: string;
+  category?: string;
 }) {
   const navigate = useNavigate();
 
   const handleCardClick = () => {
     if (!isEditMode) {
-      navigate(`/addfood/${id}`);
+      navigate(`/addfood/${id}`, {
+        state: {
+          id,
+          name,
+          originalPrice,
+          salePrice,
+          imgUrl,
+          category,
+        },
+      });
     }
   };
 
@@ -161,7 +174,7 @@ export function MenuAddCard({
       onClick={handleCardClick}
     >
       <div className="flex gap-4 items-center">
-        <img src={mockImg} alt="식품 추가 아이콘" width={80} />
+        <img src={imgUrl || basicImage} alt="식품 추가 아이콘" width={80} />
         <div className="flex flex-col gap-2">
           <div className="text-[18px] font-bold">{name}</div>
           <div className="flex flex-col text-[14px] font-normal text-[#7F7F7F]">

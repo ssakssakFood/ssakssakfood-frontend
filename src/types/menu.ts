@@ -136,3 +136,22 @@ export interface AllMenusDto {
   totalMenuCount: number;
   menus: MenuDto[];
 }
+
+// 메뉴 생성 요청
+export interface CreateMenuDto {
+  categoryId: number;
+  name: string;
+  originalPrice: number;
+  discountPrice: number;
+}
+
+// 메뉴 생성 응답
+export interface CreateMenuResponseDto {
+  id: number;
+}
+
+// 이미지 업로드 응답
+export interface ImageUploadResponseDto {
+  targetId: number;
+  imageUrl: string;
+}

@@ -1,21 +1,31 @@
 // AddfoodEditPage.tsx
 import chevronLeft from "@/assets/icons/floating-checvron-left.svg";
 import Button from "@/components/Button";
-import { useParams, useNavigate } from "react-router-dom";
-import { ADDEDMENUS } from "@/Mock/ownerdatas";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import StartSaleBottomSheet from "./UI/StartSaleBottomSheet";
 import { useState } from "react";
 import Modal from "@/components/onBoarding/Modal";
+import basicImage from "@/assets/images/basic.svg";
+
+interface MenuState {
+  id: number;
+  name: string;
+  originalPrice: number;
+  salePrice: number;
+  imgUrl: string;
+  category?: string;
+}
 
 export default function AddFoodDetailPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const location = useLocation();
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [quantity, setQuantity] = useState<number>(1);
   const [modal, setModal] = useState(false);
 
-  // id로 해당 메뉴 찾기
-  const menu = ADDEDMENUS.find((item) => item.id === Number(id));
+  // location state에서 메뉴 정보 가져오기
+  const menu = location.state as MenuState | null;
 
   const handleStartSaleButton = () => {
     setIsSheetOpen(true);
@@ -63,9 +73,11 @@ export default function AddFoodDetailPage() {
         />
       </div>
       <div>
-        <div className="w-full h-[240px] bg-gray-400 text-center flex items-center justify-center text-white">
-          이미지 자리
-        </div>
+        <img
+          src={menu.imgUrl || basicImage}
+          alt={menu.name}
+          className="w-full h-[240px] object-cover"
+        />
         <div className="px-6 pb-[100px] flex flex-col gap-[24px]">
           <div className="flex justify-between items-center mt-[24px]">
             <span className="text-[24px] font-bold">{menu.name}</span>
@@ -77,7 +89,7 @@ export default function AddFoodDetailPage() {
             <div className="text-[14px] font-semibold text-[#A8A8A8]">
               카테고리
             </div>
-            <div className="text-[16px] font-semibold">{menu.categoryName}</div>
+            <div className="text-[16px] font-semibold">{menu.category || '-'}</div>
           </div>
           <div className="flex flex-col gap-[12px]">
             <div className="text-[14px] font-semibold text-[#A8A8A8]">가격</div>
@@ -91,7 +103,7 @@ export default function AddFoodDetailPage() {
               <div className="flex justify-center items-center gap-3">
                 판매가
                 <span className="text-[20px] font-bold text-black">
-                  {menu.discountPrice.toLocaleString()}원
+                  {menu.salePrice.toLocaleString()}원
                 </span>
               </div>
             </div>
@@ -119,6 +131,9 @@ export default function AddFoodDetailPage() {
         quantity={quantity}
         setQuantity={setQuantity}
         onConfirm={handleConfirmSale}
+        menuName={menu.name}
+        originalPrice={menu.originalPrice}
+        salePrice={menu.salePrice}
       />
 
       {modal && (

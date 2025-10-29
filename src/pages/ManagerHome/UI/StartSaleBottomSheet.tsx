@@ -12,6 +12,9 @@ interface OrderBottomSheetProps {
   quantity: number;
   setQuantity?: Dispatch<SetStateAction<number>>;
   onConfirm?: () => void;
+  menuName?: string;
+  originalPrice?: number;
+  salePrice?: number;
 }
 
 const formatToTwoDigits = (num: number) => String(num).padStart(2, "0");
@@ -51,6 +54,9 @@ export default function StartSaleBottomSheet({
   quantity,
   setQuantity,
   onConfirm,
+  menuName,
+  originalPrice,
+  salePrice,
 }: OrderBottomSheetProps) {
   const sheetRef = useRef<HTMLDivElement>(null);
   const startY = useRef(0);
@@ -221,6 +227,27 @@ export default function StartSaleBottomSheet({
         <div className="w-[40px] h-[4px] bg-gray-200 rounded-3xl mx-auto mt-2 cursor-grab"></div>
 
         <div className="px-6 pt-6 flex flex-col gap-6 pb-4">
+          {/* {menuName && (
+            <div className="flex flex-col gap-2 pb-4 border-b border-gray-200">
+              <div className="text-[18px] font-bold">{menuName}</div>
+              {originalPrice && salePrice && (
+                <div className="flex gap-4 text-[14px] text-[#7F7F7F]">
+                  <div>
+                    원가{" "}
+                    <span className="font-semibold">
+                      {originalPrice.toLocaleString()}원
+                    </span>
+                  </div>
+                  <div>
+                    판매가{" "}
+                    <span className="font-semibold">
+                      {salePrice.toLocaleString()}원
+                    </span>
+                  </div>
+                </div>
+              )}
+            </div>
+          )} */}
           <div className="flex justify-between">
             <div className="text-[16px] font-semibold">수량</div>
             <div className="flex items-center justify-center gap-4 bg-[#F3F3F3] w-[106px] rounded-lg py-2">

@@ -147,6 +147,8 @@ export default function ManagerHome() {
               salePrice={menu.discountPrice}
               isEditMode={isEditMode}
               onStartSale={handleStartSale}
+              imgUrl={menu.imageUrl}
+              category={menu.category}
             />
           ))}
         </div>
