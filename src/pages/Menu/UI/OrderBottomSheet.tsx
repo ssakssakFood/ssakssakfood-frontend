@@ -17,6 +17,7 @@ interface OrderBottomSheetProps {
   setBuyQuantity?: Dispatch<SetStateAction<number>>;
   imageUrl?: string;
   onUseMealCardChange?: (useMealCard: boolean) => void;
+  isShared?: boolean;
 }
 
 export default function OrderBottomSheet({
@@ -31,18 +32,18 @@ export default function OrderBottomSheet({
   setBuyQuantity,
   imageUrl,
   onUseMealCardChange,
+  isShared = false,
 }: OrderBottomSheetProps) {
   const sheetRef = useRef<HTMLDivElement>(null);
   const startY = useRef(0);
   const startTranslateY = useRef(0);
-  const [translateY, setTranslateY] = useState(292);
-  const [isDragging, setIsDragging] = useState(false);
-  const [useMealCard, setUseMealCard] = useState(false);
-
   const ANIMATION_DURATION = 340;
   const MAX_HEIGHT = 332;
   const MIN_HEIGHT = 0;
   const CLOSE_THRESHOLD = 100;
+  const [translateY, setTranslateY] = useState(MAX_HEIGHT);
+  const [isDragging, setIsDragging] = useState(false);
+  const [useMealCard, setUseMealCard] = useState(false);
 
   // zustand 스토어에서 급식 카드 유무 확인
   const user = useUserStore((state) => state.user);
@@ -217,28 +218,30 @@ export default function OrderBottomSheet({
               </div>
             </div>
           </div>
-          <div className="flex items-center gap-2">
-            <input
-              type="checkbox"
-              id="mealCard"
-              checked={useMealCard}
-              onChange={(e) => {
-                const checked = e.target.checked;
-                setUseMealCard(checked);
-                onUseMealCardChange?.(checked);
-              }}
-              disabled={!hasMealCard}
-              className="w-[18px] h-[18px] cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
-            />
-            <label
-              htmlFor="mealCard"
-              className={`text-[14px] font-semibold cursor-pointer select-none ${
-                !hasMealCard ? "text-gray-400 cursor-not-allowed" : ""
-              }`}
-            >
-              급식 카드 사용
-            </label>
-          </div>
+          {isShared && (
+            <div className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                id="mealCard"
+                checked={useMealCard}
+                onChange={(e) => {
+                  const checked = e.target.checked;
+                  setUseMealCard(checked);
+                  onUseMealCardChange?.(checked);
+                }}
+                disabled={!hasMealCard}
+                className="w-[18px] h-[18px] cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
+              />
+              <label
+                htmlFor="mealCard"
+                className={`text-[14px] font-semibold cursor-pointer select-none ${
+                  !hasMealCard ? "text-gray-400 cursor-not-allowed" : ""
+                }`}
+              >
+                급식 카드 사용
+              </label>
+            </div>
+          )}
         </div>
       </div>
     </div>

@@ -196,6 +196,7 @@ export default function MenuDetailPage() {
           setBuyQuantity={setBuyQuantity}
           imageUrl={menu.imageUrl}
           onUseMealCardChange={setUseMealCard}
+          isShared={menu.isShared}
         />
       </div>
     </div>
