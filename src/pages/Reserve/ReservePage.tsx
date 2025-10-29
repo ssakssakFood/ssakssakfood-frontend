@@ -16,6 +16,7 @@ interface ReserveState {
   storeName?: string;
   pickupTime?: string;
   imageUrl?: string;
+  useMealCard?: boolean;
 }
 
 const formatToTwoDigits = (num: number) => String(num).padStart(2, "0");
@@ -88,8 +89,8 @@ export default function ReservePage() {
     return null;
   }
 
-  const { quantity, title, salePrice, storeName, pickupTime, imageUrl } = state;
-  const totalPrice = (salePrice || 0) * quantity;
+  const { quantity, title, salePrice, storeName, pickupTime, imageUrl, useMealCard } = state;
+  const totalPrice = useMealCard ? 0 : (salePrice || 0) * quantity;
 
   const selectedDateLabel =
     dateItems.find((item) => item.value === selectedDate)?.label || "";
@@ -198,23 +199,23 @@ export default function ReservePage() {
           reservationData.memberEmail,
         );
       },
-      onError: (error: any) => {
-        console.error("==== 예약 생성 실패 ====");
-        console.error("전체 에러:", error);
-        console.error("에러 응답 데이터:", error.response?.data);
-        console.error("에러 상태 코드:", error.response?.status);
-        console.error("에러 헤더:", error.response?.headers);
+      // onError: (error: any) => {
+      //   console.error("==== 예약 생성 실패 ====");
+      //   console.error("전체 에러:", error);
+      //   console.error("에러 응답 데이터:", error.response?.data);
+      //   console.error("에러 상태 코드:", error.response?.status);
+      //   console.error("에러 헤더:", error.response?.headers);
 
-        const errorMessage = error.response?.data?.message || error.message;
-        const errorCode = error.response?.data?.code;
+      //   const errorMessage = error.response?.data?.message || error.message;
+      //   const errorCode = error.response?.data?.code;
 
-        alert(
-          `예약 생성에 실패했습니다.\n\n` +
-          `상태 코드: ${error.response?.status}\n` +
-          `에러 코드: ${errorCode || 'N/A'}\n` +
-          `메시지: ${errorMessage}`
-        );
-      },
+      //   alert(
+      //     `예약 생성에 실패했습니다.\n\n` +
+      //     `상태 코드: ${error.response?.status}\n` +
+      //     `에러 코드: ${errorCode || 'N/A'}\n` +
+      //     `메시지: ${errorMessage}`
+      //   );
+      // },
     });
   };
 
@@ -303,6 +304,10 @@ export default function ReservePage() {
           <span className="text-[18px] font-bold">
             {totalPrice.toLocaleString()} 원
           </span>
+        </div>
+        <div className="text-[14px] text-[#7f7f7f]">
+          * 급식 카드 사용 <br />
+          무료 아동 급식카드는 월 3회에 한해 사용 가능합니다.
         </div>
       </div>
       <footer className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[401px] bg-white border-t border-gray-100 z-50">

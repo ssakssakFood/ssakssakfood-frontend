@@ -3,6 +3,7 @@ import Minus from "@/assets/icons/minus.svg";
 import Plus from "@/assets/icons/plus.svg";
 import basicImage from "@/assets/images/basic.svg";
 import { formatDeadline } from "@/utils/dateFormatter";
+import useUserStore from "@/store/useUserStore";
 
 interface OrderBottomSheetProps {
   isOpen: boolean;
@@ -15,6 +16,7 @@ interface OrderBottomSheetProps {
   buyQuantity: number;
   setBuyQuantity?: Dispatch<SetStateAction<number>>;
   imageUrl?: string;
+  onUseMealCardChange?: (useMealCard: boolean) => void;
 }
 
 export default function OrderBottomSheet({
@@ -28,19 +30,25 @@ export default function OrderBottomSheet({
   buyQuantity = 1,
   setBuyQuantity,
   imageUrl,
+  onUseMealCardChange,
 }: OrderBottomSheetProps) {
   const sheetRef = useRef<HTMLDivElement>(null);
   const startY = useRef(0);
   const startTranslateY = useRef(0);
   const [translateY, setTranslateY] = useState(292);
   const [isDragging, setIsDragging] = useState(false);
+  const [useMealCard, setUseMealCard] = useState(false);
 
-  const ANIMATION_DURATION = 300;
-  const MAX_HEIGHT = 292;
+  const ANIMATION_DURATION = 340;
+  const MAX_HEIGHT = 332;
   const MIN_HEIGHT = 0;
   const CLOSE_THRESHOLD = 100;
 
-  const totalPrice = salePrice * buyQuantity;
+  // zustand 스토어에서 급식 카드 유무 확인
+  const user = useUserStore((state) => state.user);
+  const hasMealCard = user?.hasChildMealCard ?? false;
+
+  const totalPrice = useMealCard ? 0 : salePrice * buyQuantity;
 
   // 스크롤 막기 로직
   useEffect(() => {
@@ -208,6 +216,28 @@ export default function OrderBottomSheet({
                 <span>{totalPrice.toLocaleString()}</span>원
               </div>
             </div>
+          </div>
+          <div className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              id="mealCard"
+              checked={useMealCard}
+              onChange={(e) => {
+                const checked = e.target.checked;
+                setUseMealCard(checked);
+                onUseMealCardChange?.(checked);
+              }}
+              disabled={!hasMealCard}
+              className="w-[18px] h-[18px] cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
+            />
+            <label
+              htmlFor="mealCard"
+              className={`text-[14px] font-semibold cursor-pointer select-none ${
+                !hasMealCard ? "text-gray-400 cursor-not-allowed" : ""
+              }`}
+            >
+              급식 카드 사용
+            </label>
           </div>
         </div>
       </div>
