@@ -246,12 +246,19 @@ export default function ReservePage() {
     createReservationMutation.mutate(requestData, {
       onSuccess: (reservationData) => {
         console.log("예약 생성 성공:", reservationData);
-        //예약 생성 성공 시 결제
-        handlePayment(
-          reservationData.reservationId,
-          reservationData.totalAmount,
-          reservationData.memberEmail,
-        );
+
+        // 급식 카드 사용 시 결제 건너뛰고 바로 완료 처리
+        if (useMealCard) {
+          alert("예약이 완료되었습니다!");
+          navigate("/");
+        } else {
+          // 일반 결제 진행
+          handlePayment(
+            reservationData.reservationId,
+            reservationData.totalAmount,
+            reservationData.memberEmail,
+          );
+        }
       },
       onError: (error: unknown) => {
         console.error("==== 예약 생성 실패 ====");
@@ -364,10 +371,12 @@ export default function ReservePage() {
             {totalPrice.toLocaleString()} 원
           </span>
         </div>
-        <div className="text-[14px] text-[#7f7f7f]">
-          * 급식 카드 사용 <br />
-          무료 아동 급식카드는 월 3회에 한해 사용 가능합니다.
-        </div>
+        {useMealCard && (
+          <div className="text-[14px] text-[#7f7f7f]">
+            * 급식 카드 사용 <br />
+            무료 아동 급식카드는 월 3회에 한해 사용 가능합니다.
+          </div>
+        )}
       </div>
       <footer className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[401px] bg-white border-t border-gray-100 z-50">
         <div className="p-4">
