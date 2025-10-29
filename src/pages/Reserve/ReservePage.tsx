@@ -60,6 +60,18 @@ export default function ReservePage() {
   const state = location.state as ReserveState | null;
   const createReservationMutation = useCreateReservation();
 
+  // state가 없으면 메뉴 상세 페이지로 리다이렉트
+  useEffect(() => {
+    if (!state || !state.quantity) {
+      navigate(`/menu/${id}`, { replace: true });
+    }
+  }, [state, id, navigate]);
+
+  // state가 없으면 렌더링하지 않음
+  if (!state || !state.quantity) {
+    return null;
+  }
+
   const pickupTimeRange = state?.pickupTime?.match(
     /(\d{2}):\d{2}\s*~\s*(\d{2}):\d{2}/,
   );
@@ -81,10 +93,10 @@ export default function ReservePage() {
   const hourItems = generateTimeItems(availableStartHour, endHour);
 
   const [selectedHour, setSelectedHour] = useState<number>(
-    hourItems[0].value as number,
+    hourItems[0]?.value as number || startHour,
   );
   const [selectedMinute, setSelectedMinute] = useState<number>(
-    minuteItems[0].value as number,
+    minuteItems[0]?.value as number || 0,
   );
 
   // 오늘이고 현재 시간과 같은 시를 선택한 경우, 현재 분 이후만 선택 가능
@@ -98,12 +110,6 @@ export default function ReservePage() {
     59,
     MINUTE_STEP,
   );
-
-  useEffect(() => {
-    if (!state || !state.quantity) {
-      navigate(`/menu/${id}`, { replace: true });
-    }
-  }, [state, id, navigate]);
 
   // 날짜 변경 시 선택된 시간이 유효한지 확인하고 조정
   useEffect(() => {
