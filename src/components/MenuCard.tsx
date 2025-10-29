@@ -1,9 +1,9 @@
-import mockImg from '@/assets/icons/bread.svg';
-import basicImage from '@/assets/images/basic.svg';
-import StockBadge from './StockBadge';
-import { useNavigate } from 'react-router-dom';
-import closeImg from '@/assets/icons/x-circle.svg';
-import { formatDeadline } from '@/utils/dateFormatter';
+import mockImg from "@/assets/icons/bread.svg";
+import basicImage from "@/assets/images/basic.svg";
+import StockBadge from "./StockBadge";
+import { useNavigate } from "react-router-dom";
+import closeImg from "@/assets/icons/x-circle.svg";
+import { formatDeadline } from "@/utils/dateFormatter";
 interface MenuCardProps {
   id: number;
   title: string;
@@ -37,7 +37,10 @@ export default function MenuCard({
   };
 
   return (
-    <div className="flex gap-[18px] items-center cursor-pointer" onClick={handleClick}>
+    <div
+      className="flex gap-[18px] items-center cursor-pointer"
+      onClick={handleClick}
+    >
       <div className="relative w-[108px] h-[108px] flex-shrink-0">
         <img
           src={imageUrl || basicImage}
@@ -161,13 +164,13 @@ export function MenuAddCard({
           <div className="text-[18px] font-bold">{name}</div>
           <div className="flex flex-col text-[14px] font-normal text-[#7F7F7F]">
             <div>
-              원가{' '}
+              원가{" "}
               <span className="font-semibold">
                 {originalPrice.toLocaleString()}원
               </span>
             </div>
             <div>
-              판매가{' '}
+              판매가{" "}
               <span className="font-semibold">
                 {salePrice.toLocaleString()}원
               </span>

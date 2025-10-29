@@ -25,7 +25,12 @@ export const createReservation = async (
 
 export const useCreateReservation = () => {
   return useMutation({
-    mutationFn: ({ menuId, body }: { menuId: number; body: CreateReservationDto }) =>
-      createReservation(menuId, body),
+    mutationFn: ({
+      menuId,
+      body,
+    }: {
+      menuId: number;
+      body: CreateReservationDto;
+    }) => createReservation(menuId, body),
   });
 };

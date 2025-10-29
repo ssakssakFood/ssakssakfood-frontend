@@ -7,7 +7,10 @@ interface PageHeaderProps {
   fallbackPath?: string; // 뒤로갈 곳이 없을 때 이동할 경로
 }
 
-export default function PageHeader({ title, fallbackPath = "/" }: PageHeaderProps) {
+export default function PageHeader({
+  title,
+  fallbackPath = "/",
+}: PageHeaderProps) {
   const navigate = useNavigate();
 
   const handleBack = () => {

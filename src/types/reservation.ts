@@ -1,5 +1,9 @@
 // 예약 상태 타입
-export type ReservationStatus = "PENDING" | "CONFIRMED" | "COMPLETED" | "CANCELLED";
+export type ReservationStatus =
+  | "PENDING"
+  | "CONFIRMED"
+  | "COMPLETED"
+  | "CANCELLED";
 
 // 예약 생성 요청 DTO
 export interface CreateReservationDto {

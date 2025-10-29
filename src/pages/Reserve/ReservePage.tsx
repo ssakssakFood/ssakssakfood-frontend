@@ -76,7 +76,8 @@ export default function ReservePage() {
   // 오늘인 경우 현재 시간 이후만 선택 가능하도록
   const currentHour = today.getHours();
   const currentMinute = today.getMinutes();
-  const availableStartHour = selectedDate === "today" ? Math.max(startHour, currentHour) : startHour;
+  const availableStartHour =
+    selectedDate === "today" ? Math.max(startHour, currentHour) : startHour;
   const hourItems = generateTimeItems(availableStartHour, endHour);
 
   const [selectedHour, setSelectedHour] = useState<number>(
@@ -87,9 +88,16 @@ export default function ReservePage() {
   );
 
   // 오늘이고 현재 시간과 같은 시를 선택한 경우, 현재 분 이후만 선택 가능
-  const isCurrentHour = selectedDate === "today" && selectedHour === currentHour;
-  const availableStartMinute = isCurrentHour ? Math.ceil(currentMinute / MINUTE_STEP) * MINUTE_STEP : 0;
-  const availableMinuteItems = generateTimeItems(availableStartMinute, 59, MINUTE_STEP);
+  const isCurrentHour =
+    selectedDate === "today" && selectedHour === currentHour;
+  const availableStartMinute = isCurrentHour
+    ? Math.ceil(currentMinute / MINUTE_STEP) * MINUTE_STEP
+    : 0;
+  const availableMinuteItems = generateTimeItems(
+    availableStartMinute,
+    59,
+    MINUTE_STEP,
+  );
 
   useEffect(() => {
     if (!state || !state.quantity) {
@@ -100,7 +108,8 @@ export default function ReservePage() {
   // 날짜 변경 시 선택된 시간이 유효한지 확인하고 조정
   useEffect(() => {
     const currentHour = today.getHours();
-    const availableStartHour = selectedDate === "today" ? Math.max(startHour, currentHour) : startHour;
+    const availableStartHour =
+      selectedDate === "today" ? Math.max(startHour, currentHour) : startHour;
 
     // 선택된 시간이 유효 범위보다 작으면 최소값으로 설정
     if (selectedHour < availableStartHour) {
@@ -112,10 +121,12 @@ export default function ReservePage() {
   useEffect(() => {
     const currentHour = today.getHours();
     const currentMinute = today.getMinutes();
-    const isCurrentHour = selectedDate === "today" && selectedHour === currentHour;
+    const isCurrentHour =
+      selectedDate === "today" && selectedHour === currentHour;
 
     if (isCurrentHour) {
-      const availableStartMinute = Math.ceil(currentMinute / MINUTE_STEP) * MINUTE_STEP;
+      const availableStartMinute =
+        Math.ceil(currentMinute / MINUTE_STEP) * MINUTE_STEP;
       if (selectedMinute < availableStartMinute) {
         setSelectedMinute(availableStartMinute);
       }
@@ -126,14 +137,21 @@ export default function ReservePage() {
     return null;
   }
 
-  const { quantity, title, salePrice, storeName, pickupTime, imageUrl, useMealCard } = state;
+  const {
+    quantity,
+    title,
+    salePrice,
+    storeName,
+    pickupTime,
+    imageUrl,
+    useMealCard,
+  } = state;
   const totalPrice = useMealCard ? 0 : (salePrice || 0) * quantity;
 
   const selectedDateLabel =
     dateItems.find((item) => item.value === selectedDate)?.label || "";
   const formattedHour = formatToTwoDigits(selectedHour);
   const formattedMinute = formatToTwoDigits(selectedMinute);
-
 
   const getPickupDateTime = (): string => {
     const baseDate = selectedDate === "today" ? today : tomorrow;
@@ -146,7 +164,6 @@ export default function ReservePage() {
     const hours = formatToTwoDigits(pickupDate.getHours());
     const minutes = formatToTwoDigits(pickupDate.getMinutes());
     const seconds = formatToTwoDigits(pickupDate.getSeconds());
-
 
     return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
   };
@@ -250,9 +267,9 @@ export default function ReservePage() {
 
           alert(
             `예약 생성에 실패했습니다.\n\n` +
-            `상태 코드: ${error.response?.status}\n` +
-            `에러 코드: ${errorCode || 'N/A'}\n` +
-            `메시지: ${errorMessage}`
+              `상태 코드: ${error.response?.status}\n` +
+              `에러 코드: ${errorCode || "N/A"}\n` +
+              `메시지: ${errorMessage}`,
           );
         } else {
           alert("예약 생성에 실패했습니다.");
@@ -356,7 +373,9 @@ export default function ReservePage() {
         <div className="p-4">
           <Button
             className="w-full text-lg py-6 cursor-pointer"
-            labelName={createReservationMutation.isLoading ? "처리 중..." : "결제하기"}
+            labelName={
+              createReservationMutation.isLoading ? "처리 중..." : "결제하기"
+            }
             disabled={createReservationMutation.isLoading}
             onClick={handleReserveAndPay}
           />
