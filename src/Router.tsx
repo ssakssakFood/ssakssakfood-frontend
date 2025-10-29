@@ -27,7 +27,6 @@ import AddFoodPage from "./pages/ManagerHome/AddFoodPage";
 import AuthGuard from "@/components/AuthGuard";
 import NearbyPage from "./pages/NearBy/NearByPage";
 import NearbyRegister from "./pages/NearBy/NearByRegister";
-import MyPage from "@/pages/mypage/MyPage";
 import MyPageEdit from "@/pages/mypage/MyPageEdit";
 import MyPageAccount from "@/pages/mypage/MyPageAccount";
 import MyPageLeave from "@/pages/mypage/MyPageLeave";
@@ -36,6 +35,11 @@ import MypageAlarm from "@/pages/mypage/MyPageAlarm";
 import MypageTerm from "@/pages/mypage/MyPageTerm";
 import AddFoodDetailPage from "./pages/ManagerHome/AddFoodDetailPage";
 import AddFoodEditPage from "./pages/ManagerHome/AddFoodEditPage";
+
+import RoleMyPage from "@/pages/Mypage";
+import ManagerTerm from "@/pages/ManagerMyPage/ManagerTerm";
+import AiInsight from "@/pages/ManagerMyPage/AiInsight";
+import ManagerEdit from "@/pages/ManagerMyPage/ManagerEdit";
 
 // 비회원 접근을 막습니다.
 const withAuthGuard = (Component: React.ComponentType) => {
@@ -94,13 +98,18 @@ const router = createBrowserRouter([
       { path: "/addfood", element: withAuthGuard(AddFoodPage) },
       { path: "/addfood/:id/edit", element: withAuthGuard(AddFoodEditPage)},
       //마이페이지
-      { path: "/mypage", element: withAuthGuard(MyPage) },
+      { path: "/mypage", element: withAuthGuard(RoleMyPage) },
       { path: "/mypage/edit", element: <MyPageEdit /> },
       { path: "/mypage/account", element: <MyPageAccount /> },
       { path: "/mypage/leave", element: <MyPageLeave /> },
       { path: "/mypage/card", element: <MyPageCard /> },
       { path: "/mypage/alarm", element: <MypageAlarm /> },
       { path: "/mypage/term", element: <MypageTerm /> },
+      { path: "/mypage/manager/term", element: <ManagerTerm /> },
+      { path: "/mypage/insight", element: <AiInsight /> },
+      { path: "/mypage/manager/edit", element: <ManagerEdit /> },
+      //사장 마페
+      // { path: "/mypage", element: withAuthGuard(ManagerMyPage) },
     ],
   },
   //메뉴 상세 페이지 (로그인 필수)
