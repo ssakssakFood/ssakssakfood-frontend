@@ -2,10 +2,12 @@ import { CategoryMiniBadge } from '@/components/CategoryBadge';
 import { MenuHeader } from '@/components/Headers';
 import ImagePickerBox from '@/components/ImagePickerBox';
 import InputField2 from '@/components/InputField2';
-import { CATEGORY } from '@/constants/Category';
+import { CATEGORY, getCategoryId, type CategorySlugType } from '@/constants/Category';
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import cornorImg from '@/assets/icons/corner-down-right.svg';
+import { useUpdateMenu, useUploadMenuImage } from '@/api/menu/menu';
+import { useQueryClient } from 'react-query';
 
 interface MenuState {
   id: number;
@@ -19,6 +21,11 @@ interface MenuState {
 export default function AddFoodEditPage() {
   const location = useLocation();
   const menuData = location.state as MenuState | null;
+  const queryClient = useQueryClient();
+
+  // API hooks
+  const updateMenuMutation = useUpdateMenu();
+  const uploadImageMutation = useUploadMenuImage();
 
   // 기존 데이터 (location state에서 받아온 데이터로 초기화)
   const [foodName, setFoodName] = useState<string>(menuData?.name || '');
@@ -76,39 +83,106 @@ export default function AddFoodEditPage() {
   };
 
   // 변경 완료 버튼 핸들러
-  const handleSaveName = () => {
-    if (editingFoodName.trim()) {
+  const handleSaveName = async () => {
+    if (!editingFoodName.trim() || !menuData) return;
+
+    try {
+      await updateMenuMutation.mutateAsync({
+        menuId: menuData.id,
+        body: { name: editingFoodName },
+      });
       setFoodName(editingFoodName);
       setIsEditingName(false);
+
+      // 캐시 무효화로 목록 자동 새로고침
+      queryClient.invalidateQueries(['allStoreMenus']);
+      queryClient.invalidateQueries(['todayMenus']);
+    } catch (error) {
+      console.error('식품 이름 수정 실패:', error);
+      alert('식품 이름 수정에 실패했습니다. 다시 시도해주세요.');
     }
   };
 
-  const handleSaveCategory = () => {
-    if (editingCategory) {
+  const handleSaveCategory = async () => {
+    if (!editingCategory || !menuData) return;
+
+    try {
+      const categoryId = getCategoryId(editingCategory as CategorySlugType);
+      await updateMenuMutation.mutateAsync({
+        menuId: menuData.id,
+        body: { categoryId },
+      });
       setSelectedCategory(editingCategory);
       setIsEditingCategoryField(false);
+
+      // 캐시 무효화로 목록 자동 새로고침
+      queryClient.invalidateQueries(['allStoreMenus']);
+      queryClient.invalidateQueries(['todayMenus']);
+    } catch (error) {
+      console.error('카테고리 수정 실패:', error);
+      alert('카테고리 수정에 실패했습니다. 다시 시도해주세요.');
     }
   };
 
-  const handleSaveImage = () => {
-    if (editingImageFile && editingImagePreviewUrl) {
+  const handleSaveImage = async () => {
+    if (!editingImageFile || !editingImagePreviewUrl || !menuData) return;
+
+    try {
+      // 이미지 업로드 API 호출
+      await uploadImageMutation.mutateAsync({
+        menuId: menuData.id,
+        imageFile: editingImageFile,
+      });
       setImageFile(editingImageFile);
       setImagePreviewUrl(editingImagePreviewUrl);
       setIsEditingImage(false);
+
+      // 캐시 무효화로 목록 자동 새로고침
+      queryClient.invalidateQueries(['allStoreMenus']);
+      queryClient.invalidateQueries(['todayMenus']);
+    } catch (error) {
+      console.error('이미지 수정 실패:', error);
+      alert('이미지 수정에 실패했습니다. 다시 시도해주세요.');
     }
   };
 
-  const handleSaveCost = () => {
-    if (editingCostPrice.trim()) {
+  const handleSaveCost = async () => {
+    if (!editingCostPrice.trim() || !menuData) return;
+
+    try {
+      await updateMenuMutation.mutateAsync({
+        menuId: menuData.id,
+        body: { originalPrice: parseInt(editingCostPrice) },
+      });
       setCostPrice(editingCostPrice);
       setIsEditingCost(false);
+
+      // 캐시 무효화로 목록 자동 새로고침
+      queryClient.invalidateQueries(['allStoreMenus']);
+      queryClient.invalidateQueries(['todayMenus']);
+    } catch (error) {
+      console.error('원가 수정 실패:', error);
+      alert('원가 수정에 실패했습니다. 다시 시도해주세요.');
     }
   };
 
-  const handleSaveSelling = () => {
-    if (editingSellingPrice.trim()) {
+  const handleSaveSelling = async () => {
+    if (!editingSellingPrice.trim() || !menuData) return;
+
+    try {
+      await updateMenuMutation.mutateAsync({
+        menuId: menuData.id,
+        body: { discountPrice: parseInt(editingSellingPrice) },
+      });
       setSellingPrice(editingSellingPrice);
       setIsEditingSelling(false);
+
+      // 캐시 무효화로 목록 자동 새로고침
+      queryClient.invalidateQueries(['allStoreMenus']);
+      queryClient.invalidateQueries(['todayMenus']);
+    } catch (error) {
+      console.error('판매가 수정 실패:', error);
+      alert('판매가 수정에 실패했습니다. 다시 시도해주세요.');
     }
   };
 

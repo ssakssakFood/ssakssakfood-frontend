@@ -13,6 +13,7 @@ import type {
   CreateMenuResponseDto,
   ImageUploadResponseDto,
   UploadTodayMenuDto,
+  UpdateMenuDto,
 } from "@/types/menu";
 
 /*
@@ -310,5 +311,27 @@ export const deleteMenu = async (menuId: number): Promise<string> => {
 export const useDeleteMenu = () => {
   return useMutation({
     mutationFn: (menuId: number) => deleteMenu(menuId),
+  });
+};
+
+/*
+메뉴의 기본 정보를 수정합니다.
+수정할 필드만 보내면 됩니다.
+ */
+export const updateMenu = async (
+  menuId: number,
+  body: UpdateMenuDto,
+): Promise<MenuDto> => {
+  const { data } = await api.patch<ApiResponse<MenuDto>>(
+    `/menus/${menuId}`,
+    body,
+  );
+  return data.result;
+};
+
+export const useUpdateMenu = () => {
+  return useMutation({
+    mutationFn: ({ menuId, body }: { menuId: number; body: UpdateMenuDto }) =>
+      updateMenu(menuId, body),
   });
 };

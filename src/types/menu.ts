@@ -162,3 +162,11 @@ export interface UploadTodayMenuDto {
   isShared: boolean;
   deadline: string; // yyyy-MM-dd HH:mm:ss 형식
 }
+
+// 메뉴 수정 요청 (모든 필드 선택)
+export interface UpdateMenuDto {
+  name?: string;
+  categoryId?: number;
+  originalPrice?: number;
+  discountPrice?: number;
+}
