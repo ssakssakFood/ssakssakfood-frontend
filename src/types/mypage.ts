@@ -8,6 +8,6 @@ export type UserPwRequestDTO = {
 };
 
 export type OwnerProfileRequestDTO = {
-  ownerName: null;
+  ownerName?: null;
   phoneNumber: string;
 };

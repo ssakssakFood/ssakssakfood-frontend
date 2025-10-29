@@ -149,7 +149,7 @@ export default function ManagerEdit() {
             }
 
             handlePhone.mutate(
-              { ownerName: null, phoneNumber: form.phone },
+              { phoneNumber: form.phone },
               {
                 onSuccess: () => {
                   setForm((pre) => ({ ...pre, phone: "" }));
