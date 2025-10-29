@@ -5,6 +5,7 @@ import MyPageInputField from "@/components/MyPageInputFiled";
 import {
   useMyProfile,
   usePatchNickname,
+  usePatchOwnerProfile,
   usePatchPhone,
 } from "@/api/mypage/mypage";
 import { useState } from "react";
@@ -31,23 +32,36 @@ export default function ManagerEdit() {
   });
 
   const [preview, setPreview] = useState("");
-  //닉넴
-  const handleNickName = usePatchNickname();
+  //폰번호 변경
+  const handlePhone = usePatchOwnerProfile();
 
-  const onChangePhone = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let v = e.target.value.replace(/\D/g, ""); // 숫자만
-    if (v.length > 11) v = v.slice(0, 11); // 최대 11자리
-    setForm((prev) => ({ ...prev, phone: v }));
+  const phoneRegex = /^01[0-9]-[0-9]{4}-[0-9]{4}$/;
+  const handleInputPhone = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const phoneNum = e.target.value.replace(/\D/g, "").slice(0, 11); // 숫자만, 최대 11자리
+    let formatted = "";
+    if (phoneNum.length < 4) {
+      formatted = phoneNum;
+    } else if (phoneNum.length < 8) {
+      formatted = `${phoneNum.slice(0, 3)}-${phoneNum.slice(3)}`;
+    } else {
+      formatted = `${phoneNum.slice(0, 3)}-${phoneNum.slice(3, 7)}-${phoneNum.slice(7)}`;
+    }
+    setForm((prev) => ({ ...prev, phone: formatted }));
   };
-  const onChangeNickname = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value
-      .slice(0, 20)
-      .replace(/[^가-힣a-zA-Z\s\u1100-\u11FF\u3130-\u318F\uAC00-\uD7AF]/g, "");
-    setForm((prev) => ({ ...prev, nickname: value }));
-  };
+
+  // const onChangePhone = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   let v = e.target.value.replace(/\D/g, ""); // 숫자만
+  //   if (v.length > 11) v = v.slice(0, 11); // 최대 11자리
+  //   setForm((prev) => ({ ...prev, phone: v }));
+  // };
+  // const onChangeNickname = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const value = e.target.value
+  //     .slice(0, 20)
+  //     .replace(/[^가-힣a-zA-Z\s\u1100-\u11FF\u3130-\u318F\uAC00-\uD7AF]/g, "");
+  //   setForm((prev) => ({ ...prev, nickname: value }));
+  // };
 
   //전번
-  const handlePhone = usePatchPhone();
 
   //프로필 이미지
   const uploadStoreProfile = useOwnerImg();
@@ -68,7 +82,7 @@ export default function ManagerEdit() {
     });
   };
 
-  const isValidPhone = (v: string) => /^010\d{8}$/.test(v);
+  const isValidPhone = (v: string) => phoneRegex.test(v);
   const isValidnickName = (v: string) => /^.{2,20}$/.test(v);
   return (
     <div className=" flex flex-col min-h-dvh">
@@ -95,7 +109,7 @@ export default function ManagerEdit() {
             onChange={handleImageChange}
           />
         </label>
-        <MyPageInputField
+        {/* <MyPageInputField
           className="w-full mb-6 mt-8"
           labelName="닉네임"
           value={form.nickname}
@@ -115,7 +129,7 @@ export default function ManagerEdit() {
               },
             });
           }}
-        />
+        /> */}
 
         <MyPageInputField
           className="w-full mb-6"
@@ -126,7 +140,7 @@ export default function ManagerEdit() {
           )}
           value={form.phone}
           onChangeClick={() => toggle("phone")}
-          onChange={onChangePhone}
+          onChange={handleInputPhone}
           isChange={open.phone}
           onChangeUser={() => {
             if (!isValidPhone(form.phone)) {
@@ -134,11 +148,14 @@ export default function ManagerEdit() {
               return;
             }
 
-            handlePhone.mutate(form.phone, {
-              onSuccess: () => {
-                setForm((pre) => ({ ...pre, phone: "" }));
-              },
-            });
+            handlePhone.mutate(
+              { ownerName: null, phoneNumber: form.phone },
+              {
+                onSuccess: () => {
+                  setForm((pre) => ({ ...pre, phone: "" }));
+                },
+              }
+            );
           }}
         />
       </div>
