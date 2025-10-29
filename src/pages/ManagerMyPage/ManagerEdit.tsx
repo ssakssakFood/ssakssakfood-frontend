@@ -3,6 +3,7 @@ import ImgUrl from "@/assets/images/progile.png";
 import Camera from "@/assets/images/camera.png";
 import MyPageInputField from "@/components/MyPageInputFiled";
 import {
+  useGetOwnerProfile,
   useMyProfile,
   usePatchNickname,
   usePatchOwnerProfile,
@@ -11,12 +12,12 @@ import {
 import { useState } from "react";
 import { useOwnerImg } from "@/api/mamber/onboarding";
 export default function ManagerEdit() {
-  const { data } = useMyProfile();
+  const { data } = useGetOwnerProfile();
   console.log(data);
-  type FieldKey = "nickname" | "loginId" | "password" | "phone";
+  type FieldKey = "nickname" | "name" | "password" | "phone";
   const [open, setOpen] = useState<Record<FieldKey, boolean>>({
     nickname: false,
-    loginId: false,
+    name: false,
     password: false,
     phone: false,
   });
@@ -49,17 +50,12 @@ export default function ManagerEdit() {
     setForm((prev) => ({ ...prev, phone: formatted }));
   };
 
-  // const onChangePhone = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   let v = e.target.value.replace(/\D/g, ""); // 숫자만
-  //   if (v.length > 11) v = v.slice(0, 11); // 최대 11자리
-  //   setForm((prev) => ({ ...prev, phone: v }));
-  // };
-  // const onChangeNickname = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   const value = e.target.value
-  //     .slice(0, 20)
-  //     .replace(/[^가-힣a-zA-Z\s\u1100-\u11FF\u3130-\u318F\uAC00-\uD7AF]/g, "");
-  //   setForm((prev) => ({ ...prev, nickname: value }));
-  // };
+  const onChangeNickname = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value
+      .slice(0, 20)
+      .replace(/[^가-힣a-zA-Z\s\u1100-\u11FF\u3130-\u318F\uAC00-\uD7AF]/g, "");
+    setForm((prev) => ({ ...prev, nickname: value }));
+  };
 
   //전번
 
@@ -109,9 +105,9 @@ export default function ManagerEdit() {
             onChange={handleImageChange}
           />
         </label>
-        {/* <MyPageInputField
+        <MyPageInputField
           className="w-full mb-6 mt-8"
-          labelName="닉네임"
+          labelName="대표자명"
           value={form.nickname}
           placeholder={data?.nickname}
           onChangeClick={() => toggle("nickname")}
@@ -129,7 +125,28 @@ export default function ManagerEdit() {
               },
             });
           }}
-        /> */}
+        />
+        <MyPageInputField
+          className="w-full mb-6"
+          labelName="가게명"
+          value={form.nickname}
+          placeholder={data?.store.name}
+          onChangeClick={() => toggle("nickname")}
+          onChange={onChangeNickname}
+          isChange={open.nickname}
+          onChangeUser={() => {
+            if (!isValidnickName(form.nickname)) {
+              alert("2글자에서 20글자 사이로 입력해주세요");
+              return;
+            }
+
+            handleNickName.mutate(form.nickname, {
+              onSuccess: () => {
+                setForm((pre) => ({ ...pre, nickname: "" }));
+              },
+            });
+          }}
+        />
 
         <MyPageInputField
           className="w-full mb-6"

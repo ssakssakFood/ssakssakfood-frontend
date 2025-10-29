@@ -8,6 +8,7 @@ import {
 } from "@/types/mypage";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 
+//사용자 내 프로필 조회
 export const getMyProfile = async () => {
   const { data } = await api.get("/users/me");
   return data;
@@ -19,7 +20,7 @@ export const useMyProfile = () => {
   });
 };
 
-//사용자 내프로필 조회
+//사장 내프로필 조회
 export const getOwnerProfile = async () => {
   const { data } = await api.get("/owners/me");
   return data;
