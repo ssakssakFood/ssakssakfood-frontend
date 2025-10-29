@@ -12,6 +12,8 @@ import { LatLng, NearbyResponseDto } from "@/types/nearby";
 import RouteMap from "@/pages/NearBy/NearbyMap";
 import FooterNav from "@/layout/FooterNav";
 import NearbyStorePage from "@/pages/NearBy/nearbyStore";
+import { useGetMyPrimaryLocation } from "@/api/location/location";
+import { isLoggedIn } from "@/utils/getUserInfo";
 
 // import MenuCard from "@/components/MenuCard";
 declare global {
@@ -21,6 +23,22 @@ declare global {
   }
 }
 export default function NearbyPage() {
+  const loggedIn = isLoggedIn();
+
+  const { data: primaryLocation } = useGetMyPrimaryLocation(loggedIn);
+  console.log(primaryLocation);
+  useEffect(() => {
+    if (loggedIn && primaryLocation) {
+      const cacheData = {
+        latitude: primaryLocation.latitude,
+        longitude: primaryLocation.longitude,
+        address: primaryLocation.jibunAddress || null,
+        fullAdress: primaryLocation.roadAddress || null,
+      };
+      sessionStorage.setItem("cached_geolocation", JSON.stringify(cacheData));
+    }
+  }, [loggedIn, primaryLocation]);
+
   const { latitude, longitude, loading, error } = useGeolocation();
   console.log(latitude, longitude, "위치치치치");
   const getNearbyAlong = useAlongRoute();
@@ -28,7 +46,7 @@ export default function NearbyPage() {
   const [ismodal, setIsModal] = useState(false);
   // const [storeModal, setStoreModal] = useState(false);
   const [selectedMarker, setSelectedMarker] = useState<number | undefined>(
-    undefined,
+    undefined
   );
 
   const mapRef = useRef<HTMLDivElement>(null);
@@ -42,7 +60,7 @@ export default function NearbyPage() {
   };
 
   const [selectedRoute, setSelectedRoute] = useState<NearbyResponseDto | null>(
-    null,
+    null
   );
 
   //출발지,목적지 상태
@@ -60,7 +78,7 @@ export default function NearbyPage() {
       lng: number;
       storeName?: string;
       distanceMeters?: number;
-    }>,
+    }>
   ) => {
     const kakao = window.kakao;
     if (!mapInstanceRef.current || !kakao) return;
@@ -131,7 +149,7 @@ export default function NearbyPage() {
             console.log(res, "근처경로조회");
             renderStoreMarkers(res?.markers ?? []);
           },
-        },
+        }
       );
     }); // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loading, error, latitude, longitude]);
@@ -165,7 +183,7 @@ export default function NearbyPage() {
           console.log("근처경로조회,루트임");
           renderStoreMarkers(res?.markers ?? []);
         },
-      },
+      }
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
