@@ -8,6 +8,7 @@ import { formatDeadline } from "@/utils/dateFormatter";
 import { useCreateReservation } from "@/api/reservation/reservation";
 import type { PaymentRequest, PaymentResponse } from "@/types/portone";
 import basicImage from "@/assets/images/basic.svg";
+import { AxiosError } from "axios";
 
 interface ReserveState {
   quantity: number;
@@ -198,22 +199,27 @@ export default function ReservePage() {
           reservationData.memberEmail,
         );
       },
-      onError: (error: any) => {
+      onError: (error: unknown) => {
         console.error("==== 예약 생성 실패 ====");
         console.error("전체 에러:", error);
-        console.error("에러 응답 데이터:", error.response?.data);
-        console.error("에러 상태 코드:", error.response?.status);
-        console.error("에러 헤더:", error.response?.headers);
 
-        const errorMessage = error.response?.data?.message || error.message;
-        const errorCode = error.response?.data?.code;
+        if (error instanceof AxiosError) {
+          console.error("에러 응답 데이터:", error.response?.data);
+          console.error("에러 상태 코드:", error.response?.status);
+          console.error("에러 헤더:", error.response?.headers);
 
-        alert(
-          `예약 생성에 실패했습니다.\n\n` +
-          `상태 코드: ${error.response?.status}\n` +
-          `에러 코드: ${errorCode || 'N/A'}\n` +
-          `메시지: ${errorMessage}`
-        );
+          const errorMessage = error.response?.data?.message || error.message;
+          const errorCode = error.response?.data?.code;
+
+          alert(
+            `예약 생성에 실패했습니다.\n\n` +
+            `상태 코드: ${error.response?.status}\n` +
+            `에러 코드: ${errorCode || 'N/A'}\n` +
+            `메시지: ${errorMessage}`
+          );
+        } else {
+          alert("예약 생성에 실패했습니다.");
+        }
       },
     });
   };
