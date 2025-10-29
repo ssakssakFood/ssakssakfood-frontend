@@ -110,3 +110,29 @@ export interface StoreDetailMenuDto {
   imageUrl: string;
   deadline: string;
 }
+
+// 오늘 판매식품 메뉴 아이템
+export interface TodayMenuDto {
+  id: number;
+  name: string;
+  categoryName: string;
+  originalPrice: number;
+  discountPrice: number;
+  surplusQuantity: number;
+  isShared: boolean;
+  deadline: string;
+  imageUrl: string;
+  isSoldOut: boolean;
+}
+
+// 오늘 판매식품 목록 응답
+export interface TodayMenusDto {
+  todayMenuCount: number;
+  menus: TodayMenuDto[];
+}
+
+// 전체 메뉴 목록 응답
+export interface AllMenusDto {
+  totalMenuCount: number;
+  menus: MenuDto[];
+}

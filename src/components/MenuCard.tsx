@@ -96,16 +96,18 @@ export function MenuImgCard({
   originalPrice,
   salePrice,
   name,
+  imageUrl,
 }: {
   originalPrice: number;
   salePrice: number;
   name: string;
+  imageUrl?: string;
 }) {
   return (
     <div className="relative w-[128px] h-[128px] flex-shrink-0">
       <img
-        src={mockImg}
-        alt="임시"
+        src={imageUrl || basicImage}
+        alt={name}
         className="w-full h-full object-cover rounded-[8px]"
       />
       <div
@@ -212,6 +214,7 @@ export function MenuTodayCard({
   stockCount,
   isShare,
   isSoldOut,
+  imageUrl,
 }: {
   name: string;
   originalPrice: number;
@@ -220,12 +223,17 @@ export function MenuTodayCard({
   stockCount: number;
   isShare?: boolean;
   isSoldOut?: boolean;
+  imageUrl?: string;
 }) {
   return (
     <div className="flex gap-[12px] items-center">
       {/* 이미지 영역 */}
       <div className="relative w-[114px] h-[114px] flex-shrink-0">
-        <img src={mockImg} alt="임시" className="w-full h-full rounded-[8px]" />
+        <img
+          src={imageUrl || basicImage}
+          alt={name}
+          className="w-full h-full rounded-[8px] object-cover"
+        />
         {isSoldOut && (
           <div className="absolute inset-0 bg-black opacity-50 rounded-[8px]" />
         )}

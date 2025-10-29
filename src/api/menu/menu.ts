@@ -7,6 +7,8 @@ import type {
   MenuSearchParams,
   StoreMenusDto,
   StoreDetailMenuDto,
+  TodayMenusDto,
+  AllMenusDto,
 } from "@/types/menu";
 
 /*
@@ -175,6 +177,49 @@ export const useGetStoreDetailMenus = (storeId: string) => {
   return useQuery({
     queryKey: ["storeDetailMenus", storeId],
     queryFn: () => getStoreDetailMenus(storeId),
+    enabled: !!storeId,
+  });
+};
+
+/*
+가게(storeId)의 오늘 판매 중인 등록식품 목록을 조회합니다.
+정렬 기준: 판매중 메뉴 → 마감기한 빠른 순 → 잉여수량 많은 순
+판매완료 메뉴는 후순위로 배치
+ */
+export const getTodayMenus = async (
+  storeId: number,
+): Promise<TodayMenusDto> => {
+  const { data } = await api.get<ApiResponse<TodayMenusDto>>(
+    `/menus/stores/${storeId}/menus/today`,
+  );
+  return data.result;
+};
+
+export const useGetTodayMenus = (storeId: number) => {
+  return useQuery({
+    queryKey: ["todayMenus", storeId],
+    queryFn: () => getTodayMenus(storeId),
+    enabled: !!storeId,
+  });
+};
+
+/*
+가게(storeId)의 전체 메뉴를 조회합니다.
+정렬: 등록 순서 기준
+ */
+export const getAllStoreMenus = async (
+  storeId: number,
+): Promise<AllMenusDto> => {
+  const { data } = await api.get<ApiResponse<AllMenusDto>>(
+    `/menus/stores/${storeId}/menus`,
+  );
+  return data.result;
+};
+
+export const useGetAllStoreMenus = (storeId: number) => {
+  return useQuery({
+    queryKey: ["allStoreMenus", storeId],
+    queryFn: () => getAllStoreMenus(storeId),
     enabled: !!storeId,
   });
 };
