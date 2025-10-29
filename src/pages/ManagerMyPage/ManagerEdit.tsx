@@ -113,14 +113,14 @@ export default function ManagerEdit() {
               return;
             }
 
-            handleProfile.mutate(
-              { phoneNumber: form.phone, ownerName: form.nickname },
-              {
-                onSuccess: () => {
-                  setForm((pre) => ({ ...pre, nickname: "" }));
-                },
-              },
-            );
+            // handleProfile.mutate(
+            //   { phoneNumber: form.phone, ownerName: form.nickname },
+            //   {
+            //     onSuccess: () => {
+            //       setForm((pre) => ({ ...pre, nickname: "" }));
+            //     },
+            //   },
+            // );
           }}
         />
         <MyPageInputField
