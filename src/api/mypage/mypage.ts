@@ -19,6 +19,19 @@ export const useMyProfile = () => {
   });
 };
 
+//사용자 내프로필 조회
+export const getOwnerProfile = async () => {
+  const { data } = await api.get("/owners/me");
+  return data;
+};
+export const useGetOwnerProfile = () => {
+  return useQuery({
+    queryFn: getOwnerProfile,
+    queryKey: ["ownerProfile"],
+    select: (res) => res.data,
+  });
+};
+
 //프로필 이미지 업로드
 export const postProfileImg = async (memberId: number) => {
   const { data } = await api.post(`/images/profile/${memberId}`);
