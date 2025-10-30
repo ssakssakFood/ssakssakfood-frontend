@@ -1,8 +1,9 @@
-import { useMutation } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import api from "../apiMember";
 import type {
   CreateReservationDto,
   ReservationDto,
+  MyReservationDto,
   ApiResponse,
 } from "@/types/reservation";
 
@@ -32,5 +33,22 @@ export const useCreateReservation = () => {
       menuId: number;
       body: CreateReservationDto;
     }) => createReservation(menuId, body),
+  });
+};
+
+/*
+고객이 자신이 예약한 모든 내역을 조회합니다.
+*/
+export const getMyReservations = async (): Promise<MyReservationDto[]> => {
+  const { data } = await api.get<ApiResponse<MyReservationDto[]>>(
+    `/reservations/my`,
+  );
+  return data.result;
+};
+
+export const useGetMyReservations = () => {
+  return useQuery({
+    queryKey: ["myReservations"],
+    queryFn: getMyReservations,
   });
 };

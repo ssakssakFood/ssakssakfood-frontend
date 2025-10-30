@@ -23,6 +23,19 @@ export interface ReservationDto {
   memberEmail: string;
 }
 
+// 내 예약 목록 조회
+export interface MyReservationDto {
+  reservationId: number;
+  menuName: string;
+  storeName: string;
+  menuImageUrl: string;
+  foodQuantity: number;
+  totalAmount: number;
+  reservedAt: string;
+  pickupTime: string;
+  status: ReservationStatus;
+}
+
 // API 응답 타입
 export interface ApiResponse<T> {
   isSuccess: boolean;
