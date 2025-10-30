@@ -30,9 +30,17 @@ export default function OwnerOrdersPage() {
     formattedDateForAPI,
   );
 
-  // "삭제된 메뉴" 필터링
+  // "삭제된 메뉴" 필터링 및 PENDING, CONFIRMED 상태만 표시, 픽업 시간이 지나지 않은 예약만 표시
   const filteredReservations = useMemo(() => {
-    return reservations?.filter((reservation) => reservation.menuName !== "삭제된 메뉴") || [];
+    const now = new Date();
+    return (
+      reservations?.filter(
+        (reservation) =>
+          reservation.menuName !== "삭제된 메뉴" &&
+          (reservation.status === "PENDING" || reservation.status === "CONFIRMED") &&
+          new Date(reservation.pickupTime) > now
+      ) || []
+    );
   }, [reservations]);
 
   // 화면에 표시할 날짜 포맷 (MM.DD)

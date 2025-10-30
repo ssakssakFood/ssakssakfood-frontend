@@ -11,9 +11,10 @@ interface OrderStatusCardProps {
   status: string;
 }
 
-//status가 "PENDING" 이면, "예약 확인 중"
-//status가 "CONFIRMED"면 "예약 확정" -> *픽업시간을 꼭 지켜주세요 표시 추가
-//status가 "CANCELLED"이면 "예약 취소됨" -> 배경색 #EDF1FF, 글자색 #496FF8로 바뀜.
+//status가 "PENDING" 이면, "결제 대기 중"
+//status가 "CONFIRMED"면 "결제 완료"
+//status가 "COMPLETED"면 "예약 확정" -> *픽업시간을 꼭 지켜주세요 표시 추가
+//status가 "CANCELED"이면 "예약 취소됨" -> 배경색 #EDF1FF, 글자색 #496FF8로 바뀜.
 
 const formatDateTime = (dateString: string) => {
   const date = new Date(dateString);
@@ -34,12 +35,12 @@ const getStatusLabel = (status: string, isExpired: boolean) => {
 
   switch (status) {
     case "PENDING":
-      return "예약 확인 중";
+      return "결제 대기 중";
     case "CONFIRMED":
-      return "예약 확정";
+      return "예약 확인중";
     case "COMPLETED":
-      return "픽업 완료";
-    case "CANCELLED":
+      return "예약 확정";
+    case "CANCELED":
       return "예약 취소됨";
     default:
       return status;
@@ -48,7 +49,7 @@ const getStatusLabel = (status: string, isExpired: boolean) => {
 
 const getStatusStyle = (status: string, isExpired: boolean) => {
   // PENDING이면서 픽업 시간이 지난 경우 취소 스타일 적용
-  if ((status === "PENDING" && isExpired) || status === "CANCELLED") {
+  if ((status === "PENDING" && isExpired) || status === "CANCELED") {
     return "text-[#496FF8] bg-[#EDF1FF]";
   }
   return "text-[#FE7549] bg-[#FFF2ED]";
@@ -101,19 +102,19 @@ export default function OrderStatusCard({
           </div>
         </div>
       </div>
-      {(status === "PENDING" || status === "CONFIRMED") && !isExpiredPending && (
+      {(status === "PENDING" || status === "CONFIRMED" || status === "COMPLETED") && !isExpiredPending && (
         <div className="bg-[#FFF2ED] rounded-2xl p-4 flex flex-col gap-2 mt-3">
           <div className="text-[18px] font-bold flex gap-4">
             픽업시간 <span>{formatDateTime(pickupTime)}</span>
           </div>
-          {status === "CONFIRMED" && (
+          {status === "COMPLETED" && (
             <div className="text-[12px] text-[#F30000] font-normal">
               * 픽업 시간을 꼭 지켜주세요.
             </div>
           )}
         </div>
       )}
-      {(status === "CANCELLED" || isExpiredPending) && (
+      {(status === "CANCELED" || isExpiredPending) && (
         <div className="bg-[#EDF1FF] rounded-2xl p-4 flex flex-col gap-2 mt-3">
           <div className="text-[18px] font-bold flex gap-4">
             취소 사유: <span>재고 없음</span>

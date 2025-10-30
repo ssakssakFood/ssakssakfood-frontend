@@ -4,6 +4,11 @@ import Button from "./Button";
 import ReservationConfirmModal from "./ReservationConfirmModal";
 import Modal from "./onBoarding/Modal";
 import type { OwnerReservationDto } from "@/types/reservation";
+import {
+  useCancelReservation,
+  useConfirmReservation,
+} from "@/api/reservation/reservation";
+import { useQueryClient } from "react-query";
 
 interface OwnerOrderStatusCardProps {
   reservation: OwnerReservationDto;
@@ -15,6 +20,10 @@ export default function OwnerOrderStatusCard({ reservation }: OwnerOrderStatusCa
   const [showCancelComplete, setShowCancelComplete] = useState(false);
   const [showConfirmComplete, setShowConfirmComplete] = useState(false);
 
+  const queryClient = useQueryClient();
+  const cancelMutation = useCancelReservation();
+  const confirmMutation = useConfirmReservation();
+
   const handleCancelClick = () => {
     setShowCancelConfirm(true);
   };
@@ -25,14 +34,32 @@ export default function OwnerOrderStatusCard({ reservation }: OwnerOrderStatusCa
 
   const handleCancelConfirm = () => {
     setShowCancelConfirm(false);
-    // TODO: 실제 예약 취소 API 호출
-    setShowCancelComplete(true);
+    cancelMutation.mutate(reservation.reservationId, {
+      onSuccess: () => {
+        setShowCancelComplete(true);
+        // 예약 목록 새로고침
+        queryClient.invalidateQueries(["storeReservations"]);
+      },
+      onError: (error) => {
+        console.error("예약 취소 실패:", error);
+        alert("예약 취소에 실패했습니다. 다시 시도해주세요.");
+      },
+    });
   };
 
   const handleConfirmConfirm = () => {
     setShowConfirmConfirm(false);
-    // TODO: 실제 예약 확정 API 호출
-    setShowConfirmComplete(true);
+    confirmMutation.mutate(reservation.reservationId, {
+      onSuccess: () => {
+        setShowConfirmComplete(true);
+        // 예약 목록 새로고침
+        queryClient.invalidateQueries(["storeReservations"]);
+      },
+      onError: (error) => {
+        console.error("예약 확정 실패:", error);
+        alert("예약 확정에 실패했습니다. 다시 시도해주세요.");
+      },
+    });
   };
 
   // 날짜 포맷팅

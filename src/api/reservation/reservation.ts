@@ -81,3 +81,39 @@ export const useGetStoreReservationsByDate = (
     enabled: !!storeId,
   });
 };
+
+/*
+특정 예약 ID에 해당하는 예약을 확정합니다.
+예약 상태가 'COMPLETED'로 변경됩니다.
+*/
+export const confirmReservation = async (
+  reservationId: number,
+): Promise<void> => {
+  await api.patch<ApiResponse<Record<string, never>>>(
+    `/reservations/${reservationId}/confirm`,
+  );
+};
+
+export const useConfirmReservation = () => {
+  return useMutation({
+    mutationFn: (reservationId: number) => confirmReservation(reservationId),
+  });
+};
+
+/*
+특정 예약 ID에 해당하는 예약을 취소합니다.
+예약 상태가 'CANCELED'로 변경됩니다.
+*/
+export const cancelReservation = async (
+  reservationId: number,
+): Promise<void> => {
+  await api.patch<ApiResponse<Record<string, never>>>(
+    `/reservations/${reservationId}/cancel`,
+  );
+};
+
+export const useCancelReservation = () => {
+  return useMutation({
+    mutationFn: (reservationId: number) => cancelReservation(reservationId),
+  });
+};
