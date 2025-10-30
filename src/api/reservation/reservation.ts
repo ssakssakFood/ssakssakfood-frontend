@@ -4,6 +4,7 @@ import type {
   CreateReservationDto,
   ReservationDto,
   MyReservationDto,
+  OwnerReservationDto,
   ApiResponse,
 } from "@/types/reservation";
 
@@ -50,5 +51,33 @@ export const useGetMyReservations = () => {
   return useQuery({
     queryKey: ["myReservations"],
     queryFn: getMyReservations,
+  });
+};
+
+/*
+특정 가게(storeId)에 대해 지정한 날짜(date)에 해당하는 예약 내역을 조회합니다.
+날짜는 yyyy-MM-dd 형식으로 전달합니다.
+*/
+export const getStoreReservationsByDate = async (
+  storeId: number,
+  date: string,
+): Promise<OwnerReservationDto[]> => {
+  const { data } = await api.get<ApiResponse<OwnerReservationDto[]>>(
+    `/reservations/store/${storeId}/date`,
+    {
+      params: { date },
+    },
+  );
+  return data.result;
+};
+
+export const useGetStoreReservationsByDate = (
+  storeId: number | undefined,
+  date: string,
+) => {
+  return useQuery({
+    queryKey: ["storeReservations", storeId, date],
+    queryFn: () => getStoreReservationsByDate(storeId!, date),
+    enabled: !!storeId,
   });
 };

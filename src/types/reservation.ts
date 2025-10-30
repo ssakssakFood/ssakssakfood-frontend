@@ -36,6 +36,19 @@ export interface MyReservationDto {
   status: ReservationStatus;
 }
 
+// 사장님 예약 목록 조회 (특정 날짜)
+export interface OwnerReservationDto {
+  reservationId: number;
+  menuName: string;
+  menuImageUrl: string;
+  foodQuantity: number;
+  totalAmount: number;
+  pickupTime: string;
+  status: ReservationStatus;
+  customerName: string;
+  customerPhone: string;
+}
+
 // API 응답 타입
 export interface ApiResponse<T> {
   isSuccess: boolean;

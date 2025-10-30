@@ -15,7 +15,7 @@ export default function UserOrdersPage() {
       <div>
         <h1 className="text-[20px] font-bold my-6">주문 내역</h1>
         <div className="flex items-center justify-center h-[200px]">
-          <p className="text-[#7F7F7F]">로딩 중...</p>
+          <p className="text-[#7F7F7F]">불러오는 중...</p>
         </div>
         <footer className="fixed bottom-0 left-0 right-0 w-full max-w-[401px] bg-white border-t border-gray-100 z-10 mx-auto">
           <FooterNav />
