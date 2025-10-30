@@ -26,7 +26,12 @@ const formatDateTime = (dateString: string) => {
   return `${month}.${day} (${dayOfWeek}) ${hours}:${minutes}`;
 };
 
-const getStatusLabel = (status: string) => {
+const getStatusLabel = (status: string, isExpired: boolean) => {
+  // PENDING이면서 픽업 시간이 지난 경우 취소로 표시
+  if (status === "PENDING" && isExpired) {
+    return "예약 취소됨";
+  }
+
   switch (status) {
     case "PENDING":
       return "예약 확인 중";
@@ -41,8 +46,9 @@ const getStatusLabel = (status: string) => {
   }
 };
 
-const getStatusStyle = (status: string) => {
-  if (status === "CANCELLED") {
+const getStatusStyle = (status: string, isExpired: boolean) => {
+  // PENDING이면서 픽업 시간이 지난 경우 취소 스타일 적용
+  if ((status === "PENDING" && isExpired) || status === "CANCELLED") {
     return "text-[#496FF8] bg-[#EDF1FF]";
   }
   return "text-[#FE7549] bg-[#FFF2ED]";
@@ -58,6 +64,10 @@ export default function OrderStatusCard({
   pickupTime,
   status,
 }: OrderStatusCardProps) {
+  // 픽업 시간이 지났는지 확인
+  const isPickupTimeExpired = new Date(pickupTime) < new Date();
+  const isExpiredPending = status === "PENDING" && isPickupTimeExpired;
+
   return (
     <div>
       <div className="flex justify-between items-center">
@@ -65,9 +75,9 @@ export default function OrderStatusCard({
           {formatDateTime(reservedAt)}
         </div>
         <div
-          className={`text-[14px] font-medium px-3 py-2 rounded-2xl ${getStatusStyle(status)}`}
+          className={`text-[14px] font-medium px-3 py-2 rounded-2xl ${getStatusStyle(status, isPickupTimeExpired)}`}
         >
-          {getStatusLabel(status)}
+          {getStatusLabel(status, isPickupTimeExpired)}
         </div>
       </div>
       <div className="flex gap-4 items-center">
@@ -91,17 +101,19 @@ export default function OrderStatusCard({
           </div>
         </div>
       </div>
-      {status === "CONFIRMED" && (
+      {(status === "PENDING" || status === "CONFIRMED") && !isExpiredPending && (
         <div className="bg-[#FFF2ED] rounded-2xl p-4 flex flex-col gap-2 mt-3">
           <div className="text-[18px] font-bold flex gap-4">
             픽업시간 <span>{formatDateTime(pickupTime)}</span>
           </div>
-          <div className="text-[12px] text-[#F30000] font-normal">
-            * 픽업 시간을 꼭 지켜주세요.
-          </div>
+          {status === "CONFIRMED" && (
+            <div className="text-[12px] text-[#F30000] font-normal">
+              * 픽업 시간을 꼭 지켜주세요.
+            </div>
+          )}
         </div>
       )}
-      {status === "CANCELLED" && (
+      {(status === "CANCELLED" || isExpiredPending) && (
         <div className="bg-[#EDF1FF] rounded-2xl p-4 flex flex-col gap-2 mt-3">
           <div className="text-[18px] font-bold flex gap-4">
             취소 사유: <span>재고 없음</span>
