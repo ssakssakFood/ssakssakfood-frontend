@@ -9,7 +9,6 @@ export default function OnBoardingComplete() {
 
   const handleComplete = () => {
     navigate("/login");
-    reset();
   };
   return (
     <div className="flex items-center flex-col min-h-dvh justify-between">

@@ -142,7 +142,7 @@ export default function ManagerEdit() {
                 onSuccess: () => {
                   setForm((pre) => ({ ...pre, nickname: "" }));
                 },
-              },
+              }
             );
           }}
         />
@@ -168,47 +168,18 @@ export default function ManagerEdit() {
                 onSuccess: () => {
                   setForm((pre) => ({ ...pre, storeName: "" }));
                 },
-              },
+              }
             );
           }}
         />
-        {/* 사업자등록번호 */}
-        <MyPageInputField
-          className="w-full mb-6"
-          labelName="사업자등록번호 "
-          placeholder={businessNum}
-          value={form.storePhoneNumber}
-          onChangeClick={() => toggle("storePhoneNumber")}
-          onChange={handleInputPhone}
-          isChange={open.storePhoneNumber}
-          onChangeUser={() => {
-            if (!isValidPhone(form.storePhoneNumber)) {
-              alert("유효한 전화번호를 입력해주세요");
-              return;
-            }
 
-            handleStore.mutate(
-              {
-                storeName: null,
-                storePhoneNumber: form.storePhoneNumber,
-                roadAddress: null,
-                detailAddress: null,
-              },
-              {
-                onSuccess: () => {
-                  setForm((pre) => ({ ...pre, storeName: "" }));
-                },
-              },
-            );
-          }}
-        />
         {/* 전화번호 */}
         <MyPageInputField
           className="w-full mb-6"
           labelName="전화번호 "
           placeholder={data?.phone?.replace(
             /^(\d{3})(\d{3,4})(\d{4})$/,
-            "$1-$2-$3",
+            "$1-$2-$3"
           )}
           value={form.phone}
           onChangeClick={() => toggle("phone")}
@@ -226,7 +197,7 @@ export default function ManagerEdit() {
                 onSuccess: () => {
                   setForm((pre) => ({ ...pre, phone: "" }));
                 },
-              },
+              }
             );
           }}
         />
