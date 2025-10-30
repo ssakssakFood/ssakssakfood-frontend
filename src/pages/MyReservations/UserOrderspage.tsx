@@ -43,9 +43,10 @@ export default function UserOrdersPage() {
   }
 
   // "삭제된 메뉴" 필터링
-  const filteredReservations = reservations?.filter(
-    (reservation) => reservation.menuName !== "삭제된 메뉴"
-  ) || [];
+  const filteredReservations =
+    reservations?.filter(
+      (reservation) => reservation.menuName !== "삭제된 메뉴",
+    ) || [];
 
   return (
     <div>

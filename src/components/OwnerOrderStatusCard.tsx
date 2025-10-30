@@ -14,7 +14,9 @@ interface OwnerOrderStatusCardProps {
   reservation: OwnerReservationDto;
 }
 
-export default function OwnerOrderStatusCard({ reservation }: OwnerOrderStatusCardProps) {
+export default function OwnerOrderStatusCard({
+  reservation,
+}: OwnerOrderStatusCardProps) {
   const [showCancelConfirm, setShowCancelConfirm] = useState(false);
   const [showConfirmConfirm, setShowConfirmConfirm] = useState(false);
   const [showCancelComplete, setShowCancelComplete] = useState(false);
@@ -109,10 +111,14 @@ export default function OwnerOrderStatusCard({ reservation }: OwnerOrderStatusCa
       </div>
       <div className="bg-[#FFF2ED] rounded-2xl p-4 flex flex-col gap-2 mt-3">
         <div className="text-[18px] font-bold flex gap-4">
-          수량 <span className="text-[#FE7549]">{reservation.foodQuantity}개</span>
+          수량{" "}
+          <span className="text-[#FE7549]">{reservation.foodQuantity}개</span>
         </div>
         <div className="text-[18px] font-bold flex gap-4">
-          픽업시간 <span className="text-[#FE7549]">{formatDateTime(reservation.pickupTime)}</span>
+          픽업시간{" "}
+          <span className="text-[#FE7549]">
+            {formatDateTime(reservation.pickupTime)}
+          </span>
         </div>
       </div>
       <div className="flex gap-2 mt-3">

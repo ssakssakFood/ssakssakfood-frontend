@@ -17,7 +17,9 @@ export default function Button({
     if (variant === "secondary") {
       return "bg-[#F3F3F3] text-[#7F7F7F]";
     }
-    return disabled ? "bg-grey-4 cursor-not-allowed text-white" : "bg-main1 text-white";
+    return disabled
+      ? "bg-grey-4 cursor-not-allowed text-white"
+      : "bg-main1 text-white";
   };
 
   return (

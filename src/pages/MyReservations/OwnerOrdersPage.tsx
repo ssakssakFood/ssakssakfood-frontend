@@ -25,10 +25,11 @@ export default function OwnerOrdersPage() {
   }, [selectedDate]);
 
   // 예약 내역 조회
-  const { data: reservations, isLoading, error } = useGetStoreReservationsByDate(
-    storeId,
-    formattedDateForAPI,
-  );
+  const {
+    data: reservations,
+    isLoading,
+    error,
+  } = useGetStoreReservationsByDate(storeId, formattedDateForAPI);
 
   // "삭제된 메뉴" 필터링 및 PENDING, CONFIRMED 상태만 표시, 픽업 시간이 지나지 않은 예약만 표시
   const filteredReservations = useMemo(() => {
@@ -37,8 +38,9 @@ export default function OwnerOrdersPage() {
       reservations?.filter(
         (reservation) =>
           reservation.menuName !== "삭제된 메뉴" &&
-          (reservation.status === "PENDING" || reservation.status === "CONFIRMED") &&
-          new Date(reservation.pickupTime) > now
+          (reservation.status === "PENDING" ||
+            reservation.status === "CONFIRMED") &&
+          new Date(reservation.pickupTime) > now,
       ) || []
     );
   }, [reservations]);

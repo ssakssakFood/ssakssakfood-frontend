@@ -67,7 +67,7 @@ export default function ReservePage() {
 
   if (state?.pickupTime) {
     // ISO 형식인 경우 Date 객체로 파싱
-    if (state.pickupTime.includes('T')) {
+    if (state.pickupTime.includes("T")) {
       const pickupDate = new Date(state.pickupTime);
       endHour = pickupDate.getHours();
       // 시작 시간은 기본값 9시 사용 (또는 다른 로직 필요 시 수정)

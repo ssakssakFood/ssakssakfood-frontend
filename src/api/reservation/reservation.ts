@@ -41,9 +41,8 @@ export const useCreateReservation = () => {
 고객이 자신이 예약한 모든 내역을 조회합니다.
 */
 export const getMyReservations = async (): Promise<MyReservationDto[]> => {
-  const { data } = await api.get<ApiResponse<MyReservationDto[]>>(
-    `/reservations/my`,
-  );
+  const { data } =
+    await api.get<ApiResponse<MyReservationDto[]>>(`/reservations/my`);
   return data.result;
 };
 

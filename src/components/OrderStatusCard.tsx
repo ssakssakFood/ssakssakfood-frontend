@@ -102,18 +102,21 @@ export default function OrderStatusCard({
           </div>
         </div>
       </div>
-      {(status === "PENDING" || status === "CONFIRMED" || status === "COMPLETED") && !isExpiredPending && (
-        <div className="bg-[#FFF2ED] rounded-2xl p-4 flex flex-col gap-2 mt-3">
-          <div className="text-[18px] font-bold flex gap-4">
-            픽업시간 <span>{formatDateTime(pickupTime)}</span>
-          </div>
-          {status === "COMPLETED" && (
-            <div className="text-[12px] text-[#F30000] font-normal">
-              * 픽업 시간을 꼭 지켜주세요.
+      {(status === "PENDING" ||
+        status === "CONFIRMED" ||
+        status === "COMPLETED") &&
+        !isExpiredPending && (
+          <div className="bg-[#FFF2ED] rounded-2xl p-4 flex flex-col gap-2 mt-3">
+            <div className="text-[18px] font-bold flex gap-4">
+              픽업시간 <span>{formatDateTime(pickupTime)}</span>
             </div>
-          )}
-        </div>
-      )}
+            {status === "COMPLETED" && (
+              <div className="text-[12px] text-[#F30000] font-normal">
+                * 픽업 시간을 꼭 지켜주세요.
+              </div>
+            )}
+          </div>
+        )}
       {(status === "CANCELED" || isExpiredPending) && (
         <div className="bg-[#EDF1FF] rounded-2xl p-4 flex flex-col gap-2 mt-3">
           <div className="text-[18px] font-bold flex gap-4">
