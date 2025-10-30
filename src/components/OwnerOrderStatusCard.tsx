@@ -133,7 +133,9 @@ export default function OwnerOrderStatusCard({
       </div>
       {reservation.status === "COMPLETED" ? (
         <div className="mt-3 bg-[#E8F5E9] rounded-xl p-4 text-center">
-          <span className="text-[16px] font-bold text-[#2E7D32]">확정된 주문</span>
+          <span className="text-[16px] font-bold text-[#2E7D32]">
+            확정된 주문
+          </span>
         </div>
       ) : (
         <div className="flex gap-2 mt-3">
