@@ -29,7 +29,7 @@ export default function LoginPage() {
     reset(
       manager
         ? { login: "chamcham", password: "Qwer123!" } // 사장님 프리셋
-        : { login: "qwer1234", password: "qwer1234Q!" } // 고객 프리셋
+        : { login: "qwer1234", password: "qwer1234Q!" }, // 고객 프리셋
     );
   }, [manager, reset]);
 
