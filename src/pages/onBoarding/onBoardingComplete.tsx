@@ -3,7 +3,7 @@ import Congratulations from "@/assets/icons/congratulations.svg";
 import { useOnboardingState } from "@/store/useOnboardingStore";
 import { useNavigate } from "react-router-dom";
 export default function OnBoardingComplete() {
-  const { loginId, reset } = useOnboardingState();
+  const { loginId } = useOnboardingState();
   console.log(loginId);
   const navigate = useNavigate();
 

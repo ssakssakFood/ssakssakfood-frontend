@@ -25,9 +25,6 @@ export default function ManagerEdit() {
     storePhoneNumber: false,
   });
 
-  const businessNum = data?.store.businessRegistrationNumber
-    ? `${data.store.businessRegistrationNumber.slice(0, 3)}-${data.store.businessRegistrationNumber.slice(3, 5)}-${data.store.businessRegistrationNumber.slice(5, 10)}`
-    : "";
   const toggle = (k: FieldKey) =>
     setOpen((prev) => ({ ...prev, [k]: !prev[k] }));
 
@@ -142,7 +139,7 @@ export default function ManagerEdit() {
                 onSuccess: () => {
                   setForm((pre) => ({ ...pre, nickname: "" }));
                 },
-              }
+              },
             );
           }}
         />
@@ -168,7 +165,7 @@ export default function ManagerEdit() {
                 onSuccess: () => {
                   setForm((pre) => ({ ...pre, storeName: "" }));
                 },
-              }
+              },
             );
           }}
         />
@@ -179,7 +176,7 @@ export default function ManagerEdit() {
           labelName="전화번호 "
           placeholder={data?.phone?.replace(
             /^(\d{3})(\d{3,4})(\d{4})$/,
-            "$1-$2-$3"
+            "$1-$2-$3",
           )}
           value={form.phone}
           onChangeClick={() => toggle("phone")}
@@ -197,7 +194,7 @@ export default function ManagerEdit() {
                 onSuccess: () => {
                   setForm((pre) => ({ ...pre, phone: "" }));
                 },
-              }
+              },
             );
           }}
         />
